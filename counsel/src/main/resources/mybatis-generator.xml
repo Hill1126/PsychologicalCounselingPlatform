@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <context id="MySql" defaultModelType="flat">
+
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <jdbcConnection
+                driverClass="com.mysql.cj.jdbc.Driver"
+                connectionURL="jdbc:mysql://106.13.98.231:3310/PsySystem"
+                userId="hill"
+                password="wbxgsnmm..."/>
+
+        <javaModelGenerator targetPackage="org.gdou.model" targetProject="src/main/java"></javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"></sqlMapGenerator>
+
+        <javaClientGenerator targetPackage="org.gdou.dao" targetProject="src/main/java"
+                             type="XMLMAPPER"></javaClientGenerator>
+
+        <table tableName="oauths">
+            <property name="modelOnly" value="false"/>
+        </table>
+
+    </context>
+
+</generatorConfiguration>
