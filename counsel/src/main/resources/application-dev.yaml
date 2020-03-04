@@ -2,4 +2,4 @@ server:
   # 端口号
   port: 8080
 log:
-  level: DEBUG
+  level: Debug

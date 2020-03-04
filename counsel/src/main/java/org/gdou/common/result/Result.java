@@ -1,22 +1,19 @@
 package org.gdou.common.result;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  * 统一API响应结果封装
- */
+ * @Author: HILL
+ * @date: 2020/3/2 20:29
+ *
+**/
 public class Result<T> {
     private int code;
     private String message;
     private T data;
-    @Autowired
-    private ObjectMapper objectMapper;
 
-    public Result setCode(ResultCode resultCode) {
-        this.code = resultCode.code();
+    public Result setCode(int code) {
+        this.code = code;
         return this;
     }
 
@@ -42,9 +39,4 @@ public class Result<T> {
         return this;
     }
 
-    @SneakyThrows
-    @Override
-    public String toString() {
-        return objectMapper.writeValueAsString(this);
-    }
 }

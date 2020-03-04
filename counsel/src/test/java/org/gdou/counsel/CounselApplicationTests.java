@@ -10,4 +10,8 @@ class CounselApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    public void fun(){
+
+    }
 }

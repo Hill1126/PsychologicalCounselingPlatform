@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
 **/
 @SpringBootApplication
-@MapperScan("org.gdou.dao")
+@MapperScan(basePackages = "org.gdou.dao")
 public class CounselApplication {
     public static void main(String[] args) {
         SpringApplication.run(CounselApplication.class, args);

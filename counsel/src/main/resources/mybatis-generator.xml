@@ -1,30 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE generatorConfiguration
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
-<generatorConfiguration>
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"><generatorConfiguration>
 
-    <context id="MySql" defaultModelType="flat">
+    <context id="MysqlTables" targetRuntime="MyBatis3">
+        <!--解决读取数据库中的comments中文乱码-->
+        <property name="javaFileEncoding" value="UTF-8"/>
 
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
-
+        <!--注释：课可通过type自动配置-->
+        <commentGenerator >
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!--jdbcConnection: 数据库连接的属性-->
         <jdbcConnection
                 driverClass="com.mysql.cj.jdbc.Driver"
                 connectionURL="jdbc:mysql://106.13.98.231:3310/PsySystem"
                 userId="hill"
                 password="wbxgsnmm..."/>
 
-        <javaModelGenerator targetPackage="org.gdou.model" targetProject="src/main/java"></javaModelGenerator>
+        <!--javaModelGenerator: Java模型生成器的属性 此元素是<context>元素的必需子元素。-->
+        <!--enableSubPackages: value为true时，包不存在会自动创建-->
+        <javaModelGenerator targetPackage="org.gdou.model.po" targetProject="src\main\java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"></sqlMapGenerator>
+        <!--Mapper.xml生成-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
 
         <javaClientGenerator targetPackage="org.gdou.dao" targetProject="src/main/java"
-                             type="XMLMAPPER"></javaClientGenerator>
+                             type="XMLMAPPER"/>
 
+        <!--  useActualColumnNames:如果为true，则MBG将使用从数据库元数据返回的列名作为生成的域对象的属性。
+                                   如果为false（默认），则MBG将尝试以驼峰式表示返回的名称。
+                                   默认值为false。-->
         <table tableName="oauths">
             <property name="modelOnly" value="false"/>
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
     </context>
-
 </generatorConfiguration>

@@ -41,8 +41,8 @@ spring:
       enabled: true
       force: true
 mybatis:
-  mapper-location: classpath:mapper/*.xml
-  type-aliases-package: org.gdou.model
+  type-aliases-package: org.gdou.model.po
+  mapper-locations: classpath:mapper/*.xml
 pagehelper:
   reasonable: true
   support-methods-arguments: true
