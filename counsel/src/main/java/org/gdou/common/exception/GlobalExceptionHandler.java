@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
         List<ObjectError> errors = e.getAllErrors();
         StringBuilder sb = new StringBuilder();
         errors.forEach((error)->{
-            log.info("{} {} ","参数校验不通过",error.getDefaultMessage());
+            log.info("{} 错误信息为：{} ","参数校验不通过",error.getDefaultMessage());
         });
 
         return ResultGenerator.genFailResult(errors.get(0).getDefaultMessage());

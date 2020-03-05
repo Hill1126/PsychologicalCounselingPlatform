@@ -1,11 +1,14 @@
 package org.gdou.dao;
 
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.gdou.model.po.Oauths;
 import org.gdou.model.po.OauthsExample;
 
+import java.util.List;
+
 public interface OauthsMapper {
+
+
     long countByExample(OauthsExample example);
 
     int deleteByExample(OauthsExample example);
@@ -19,6 +22,8 @@ public interface OauthsMapper {
     List<Oauths> selectByExample(OauthsExample example);
 
     Oauths selectByPrimaryKey(Integer id);
+
+    int ifExitsOauthId(String oauthId);
 
     int updateByExampleSelective(@Param("record") Oauths record, @Param("example") OauthsExample example);
 

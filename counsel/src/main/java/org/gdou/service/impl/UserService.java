@@ -40,8 +40,14 @@ public class UserService {
      * @return: void
     **/
     public Result register(User user){
-        //插入user，返回生成的id
 
+        //校验当前账号是否存在
+        int id = oauthsMapper.ifExitsOauthId(user.getAccount());
+        if(id>0) {
+            return ResultGenerator.genFailResult("账号已存在！");
+        }
+
+        //插入user，返回生成的id
         userMapper.insertSelective(user);
         log.info("数据表{}插入数据 生成的id为{} ","user",user.getId());
         //根据user的信息生成验证信息
@@ -67,6 +73,7 @@ public class UserService {
             var user = userMapper.selectByPrimaryKey(userId);
             //删除密码信息，返回user
             user.setPassword("");
+            log.info("用户{}通过{}方式验证登录",user.getName(),oauth.getOauthType());
             return ResultGenerator.genSuccessResult(user);
         }
         return ResultGenerator.genFailResult("用户不存在或密码错误");
