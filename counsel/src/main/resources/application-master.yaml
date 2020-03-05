@@ -2,4 +2,4 @@ server:
   # 端口号
   port: 80
 log:
-  level: Info
+  level: info
