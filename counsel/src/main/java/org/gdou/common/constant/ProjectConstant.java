@@ -8,4 +8,5 @@ package org.gdou.common.constant;
 **/
 public final class ProjectConstant {
 
+    public static final String USER_SESSION_KEY = "USER";
 }

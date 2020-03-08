@@ -79,4 +79,20 @@ public class UserService {
         return ResultGenerator.genFailResult("用户不存在或密码错误");
 
     }
+
+    /**
+     * 更新user的信息并返回新的user对象。
+     * @Author: HILL
+     * @date: 2020/3/7 23:27
+     *
+     * @param user 不包含密码的user
+     * @return: org.gdou.common.result.Result
+    **/
+    public User updateUserInfo(User user){
+        userMapper.updateByPrimaryKeySelective(user);
+        user = userMapper.selectByPrimaryKey(user.getId());
+        user.setPassword("");
+        return user;
+    }
+
 }
