@@ -99,8 +99,13 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>jcl-over-slf4j</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>jdk.tools</artifactId>
+                    <groupId>jdk.tools</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
+
     </dependencies>
     <repositories>
         <repository>
