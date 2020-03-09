@@ -1,9 +1,10 @@
 package org.gdou.dao;
 
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.gdou.model.po.User;
 import org.gdou.model.po.UserExample;
+
+import java.util.List;
 
 public interface UserMapper {
     long countByExample(UserExample example);

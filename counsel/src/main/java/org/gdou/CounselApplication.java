@@ -3,6 +3,7 @@ package org.gdou;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * 启动类
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 **/
 @SpringBootApplication
 @MapperScan(basePackages = "org.gdou.dao")
+@EnableAsync
 public class CounselApplication {
     public static void main(String[] args) {
         SpringApplication.run(CounselApplication.class, args);

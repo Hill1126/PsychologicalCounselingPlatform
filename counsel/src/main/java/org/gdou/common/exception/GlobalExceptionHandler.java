@@ -1,5 +1,6 @@
 package org.gdou.common.exception;
 
+import com.baidubce.BceClientException;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
@@ -43,5 +44,11 @@ public class GlobalExceptionHandler {
 
         log.error(e.getMessage());
         return ResultGenerator.genFailResult("系统发生未知错误，请稍候再试");
+    }
+
+    @ExceptionHandler(BceClientException.class)
+    public Result bceClientExceptionHandler(BceClientException e){
+        log.error("图片上传失败 详情：{}",e.getMessage());
+        return ResultGenerator.genFailResult("图片上传失败，请稍后再试");
     }
 }

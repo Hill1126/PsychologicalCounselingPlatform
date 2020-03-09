@@ -1,16 +1,19 @@
 package org.gdou.controller;
 
+import com.baidubce.services.bos.BosClient;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultCode;
 import org.gdou.common.result.ResultGenerator;
+import org.gdou.config.BaiDuBosConfig;
 import org.gdou.model.dto.UserInfoDto;
 import org.gdou.model.po.Oauths;
 import org.gdou.model.po.User;
 import org.gdou.service.impl.UserService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -34,9 +36,11 @@ import java.util.UUID;
 public class UserController {
 
     private UserService userService;
+    private BosClient bosClient;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, BosClient bosClient) {
         this.userService = userService;
+        this.bosClient = bosClient;
     }
 
     /**
@@ -89,17 +93,35 @@ public class UserController {
             if ( !(suffixName.toLowerCase()).contains("jpg") && !(suffixName.toLowerCase()).contains("png") ){
                 return ResultGenerator.genFailResult("上传的文件必须为png、jpg文件");
             }
-
-            //保存文件到项目的指定路径
+            //保存文件到百度的文件管理库
             var fileName = UUID.randomUUID().toString()+suffixName;
-            File file = new File("classpath:/image/fileName");
-            avatar.transferTo(file);
+            uploadAvatar(avatar, fileName);
+            StringBuilder stringBuilder = new StringBuilder();
+            //https://avatar-img.gz.bcebos.com/test-img
+            stringBuilder.append(ProjectConstant.AVATAR_BUCKET_NAME).append(".")
+                    .append(BaiDuBosConfig.GZ_ENDPOINT).append("/").append(fileName);
+            user.setAvatarUrl(stringBuilder.toString());
 
         }
         user =  userService.updateUserInfo(user);
         session.setAttribute(ProjectConstant.USER_SESSION_KEY,user);
         return ResultGenerator.genSuccessResult(user);
 
+    }
+
+    /**
+     * 采用异步方法上传图片到百度BOS
+     * @Author: HILL
+     * @date: 2020/3/9 16:47
+     *
+     * @param avatar
+     * @param fileName
+     * @return: void
+    **/
+    @Async("bosUploadExecutor")
+    void uploadAvatar(MultipartFile avatar, String fileName) throws IOException {
+        var putObjectResponse = bosClient.putObject(ProjectConstant.AVATAR_BUCKET_NAME, fileName, avatar.getInputStream());
+        log.info("插入图片{}到BOS 成功返回信息{} ",fileName,putObjectResponse.getETag());
     }
 
 }
