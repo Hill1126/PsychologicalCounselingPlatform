@@ -80,12 +80,44 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- >百度文件存储sdk<-->
+        <dependency>
+            <groupId>com.baidubce</groupId>
+            <artifactId>bce-java-sdk</artifactId>
+            <version>0.10.97</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>
             <id>alimaven</id>
             <name>aliyun maven</name>
             <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>center</id>
+            <name>center maven rpo</name>
+            <url>https://mvnrepository.com/artifact/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
