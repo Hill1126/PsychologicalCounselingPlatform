@@ -1,42 +1,90 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE generatorConfiguration
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--mybatis的代码生成器相关配置-->
+<!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"><generatorConfiguration>
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
-    <context id="MysqlTables" targetRuntime="MyBatis3">
-        <!--解决读取数据库中的comments中文乱码-->
-        <property name="javaFileEncoding" value="UTF-8"/>
+<generatorConfiguration>
+    <!-- 引入配置文件 -->
 
-        <!--注释：课可通过type自动配置-->
-        <commentGenerator >
-            <property name="suppressAllComments" value="true" />
+    <!-- 一个数据库一个context,context的子元素必须按照它给出的顺序
+        property*,plugin*,commentGenerator?,jdbcConnection,javaTypeResolver?,
+        javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+
+    -->
+    <context id="myContext" targetRuntime="MyBatis3" defaultModelType="flat">
+
+        <!-- 这个插件给生成的Java模型对象增加了equals和hashCode方法 -->
+        <!--<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
+        <!--覆盖生成XML文件-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+        <!-- 注释 -->
+        <commentGenerator>
+
+            <!-- 是否不生成注释 -->
+            <property name="suppressAllComments" value="true"/>
+            <!-- 不希望生成的注释中包含时间戳 -->
+            <!--<property name="suppressDate" value="true"/>-->
+            <!-- 添加 db 表中字段的注释，只有suppressAllComments为false时才生效-->
+            <!--<property name="addRemarkComments" value="true"/>-->
         </commentGenerator>
-        <!--jdbcConnection: 数据库连接的属性-->
-        <jdbcConnection
-                driverClass="com.mysql.cj.jdbc.Driver"
-                connectionURL="jdbc:mysql://106.13.98.231:3310/PsySystem"
-                userId="hill"
-                password="wbxgsnmm..."/>
 
-        <!--javaModelGenerator: Java模型生成器的属性 此元素是<context>元素的必需子元素。-->
-        <!--enableSubPackages: value为true时，包不存在会自动创建-->
-        <javaModelGenerator targetPackage="org.gdou.model.po" targetProject="src\main\java">
-            <property name="enableSubPackages" value="true"/>
+
+        <!-- jdbc连接 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://106.13.98.231:3310/PsySystem"
+                        userId="hill"
+                        password="wbxgsnmm...">
+            <!--高版本的 mysql-connector-java 需要设置 nullCatalogMeansCurrent=true-->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!--是否使用bigDecimal，默认false。
+                false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
+                true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal-->
+            <!--默认false
+                false，将所有 JDBC 的时间类型解析为 java.util.Date
+                true，将 JDBC 的时间类型按如下规则解析
+                    DATE	                -> java.time.LocalDate
+                    TIME	                -> java.time.LocalTime
+                    TIMESTAMP               -> java.time.LocalDateTime
+                    TIME_WITH_TIMEZONE  	-> java.time.OffsetTime
+                    TIMESTAMP_WITH_TIMEZONE	-> java.time.OffsetDateTime
+                -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <!-- 生成实体类地址 -->
+        <javaModelGenerator targetPackage="org.gdou.model.po" targetProject="src/main/java">
+            <!-- 是否让 schema 作为包的后缀，默认为false -->
+            <!--<property name="enableSubPackages" value="false"/>-->
+            <!-- 是否针对string类型的字段在set方法中进行修剪，默认false -->
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <!--Mapper.xml生成-->
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
 
-        <javaClientGenerator targetPackage="org.gdou.dao" targetProject="src/main/java"
-                             type="XMLMAPPER"/>
+        <!-- 生成Mapper.xml文件 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <!--<property name="enableSubPackages" value="false"/>-->
+        </sqlMapGenerator>
 
-        <!--  useActualColumnNames:如果为true，则MBG将使用从数据库元数据返回的列名作为生成的域对象的属性。
-                                   如果为false（默认），则MBG将尝试以驼峰式表示返回的名称。
-                                   默认值为false。-->
-        <table tableName="oauths">
-            <property name="modelOnly" value="false"/>
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        <!-- 生成 XxxMapper.java 接口-->
+        <javaClientGenerator targetPackage="org.gdou.dao" targetProject="src/main/java" type="XMLMAPPER">
+            <!--<property name="enableSubPackages" value="false"/>-->
+        </javaClientGenerator>
+
+
+        <!-- schema为数据库名，oracle需要配置，mysql不需要配置。
+             tableName为对应的数据库表名
+             domainObjectName 是要生成的实体类名(可以不指定，默认按帕斯卡命名法将表名转换成类名)
+             enableXXXByExample 默认为 true， 为 true 会生成一个对应Example帮助类，帮助你进行条件查询，不想要可以设为false
+              enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false" selectByExampleQueryId="false"
+             -->
+        <table  tableName="user" >
+            <!--是否使用实际列名,默认为false-->
+            <!--<property name="useActualColumnNames" value="false" />-->
         </table>
-
     </context>
 </generatorConfiguration>

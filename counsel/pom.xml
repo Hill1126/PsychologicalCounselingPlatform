@@ -156,6 +156,7 @@
 
                 <configuration>
                     <configurationFile>src/main/resources/mybatis-generator.xml</configurationFile>
+                    <verbose>true</verbose>
                     <overwrite>true</overwrite>
                 </configuration>
                 <dependencies>

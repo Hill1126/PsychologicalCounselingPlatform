@@ -1,6 +1,6 @@
 package org.gdou.model.po;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class User {
     private Integer id;
@@ -17,9 +17,9 @@ public class User {
 
     private String phone;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     private Integer userType;
 
@@ -79,19 +79,19 @@ public class User {
         this.phone = phone == null ? null : phone.trim();
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 

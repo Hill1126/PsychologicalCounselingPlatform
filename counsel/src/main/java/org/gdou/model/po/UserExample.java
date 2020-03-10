@@ -1,7 +1,7 @@
 package org.gdou.model.po;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class UserExample {
@@ -595,52 +595,52 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreatedAtEqualTo(Date value) {
+        public Criteria andCreatedAtEqualTo(LocalDateTime value) {
             addCriterion("created_at =", value, "createdAt");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedAtNotEqualTo(Date value) {
+        public Criteria andCreatedAtNotEqualTo(LocalDateTime value) {
             addCriterion("created_at <>", value, "createdAt");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedAtGreaterThan(Date value) {
+        public Criteria andCreatedAtGreaterThan(LocalDateTime value) {
             addCriterion("created_at >", value, "createdAt");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedAtGreaterThanOrEqualTo(Date value) {
+        public Criteria andCreatedAtGreaterThanOrEqualTo(LocalDateTime value) {
             addCriterion("created_at >=", value, "createdAt");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedAtLessThan(Date value) {
+        public Criteria andCreatedAtLessThan(LocalDateTime value) {
             addCriterion("created_at <", value, "createdAt");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedAtLessThanOrEqualTo(Date value) {
+        public Criteria andCreatedAtLessThanOrEqualTo(LocalDateTime value) {
             addCriterion("created_at <=", value, "createdAt");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedAtIn(List<Date> values) {
+        public Criteria andCreatedAtIn(List<LocalDateTime> values) {
             addCriterion("created_at in", values, "createdAt");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedAtNotIn(List<Date> values) {
+        public Criteria andCreatedAtNotIn(List<LocalDateTime> values) {
             addCriterion("created_at not in", values, "createdAt");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedAtBetween(Date value1, Date value2) {
+        public Criteria andCreatedAtBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("created_at between", value1, value2, "createdAt");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedAtNotBetween(Date value1, Date value2) {
+        public Criteria andCreatedAtNotBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("created_at not between", value1, value2, "createdAt");
             return (Criteria) this;
         }
@@ -655,52 +655,52 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdatedAtEqualTo(Date value) {
+        public Criteria andUpdatedAtEqualTo(LocalDateTime value) {
             addCriterion("updated_at =", value, "updatedAt");
             return (Criteria) this;
         }
 
-        public Criteria andUpdatedAtNotEqualTo(Date value) {
+        public Criteria andUpdatedAtNotEqualTo(LocalDateTime value) {
             addCriterion("updated_at <>", value, "updatedAt");
             return (Criteria) this;
         }
 
-        public Criteria andUpdatedAtGreaterThan(Date value) {
+        public Criteria andUpdatedAtGreaterThan(LocalDateTime value) {
             addCriterion("updated_at >", value, "updatedAt");
             return (Criteria) this;
         }
 
-        public Criteria andUpdatedAtGreaterThanOrEqualTo(Date value) {
+        public Criteria andUpdatedAtGreaterThanOrEqualTo(LocalDateTime value) {
             addCriterion("updated_at >=", value, "updatedAt");
             return (Criteria) this;
         }
 
-        public Criteria andUpdatedAtLessThan(Date value) {
+        public Criteria andUpdatedAtLessThan(LocalDateTime value) {
             addCriterion("updated_at <", value, "updatedAt");
             return (Criteria) this;
         }
 
-        public Criteria andUpdatedAtLessThanOrEqualTo(Date value) {
+        public Criteria andUpdatedAtLessThanOrEqualTo(LocalDateTime value) {
             addCriterion("updated_at <=", value, "updatedAt");
             return (Criteria) this;
         }
 
-        public Criteria andUpdatedAtIn(List<Date> values) {
+        public Criteria andUpdatedAtIn(List<LocalDateTime> values) {
             addCriterion("updated_at in", values, "updatedAt");
             return (Criteria) this;
         }
 
-        public Criteria andUpdatedAtNotIn(List<Date> values) {
+        public Criteria andUpdatedAtNotIn(List<LocalDateTime> values) {
             addCriterion("updated_at not in", values, "updatedAt");
             return (Criteria) this;
         }
 
-        public Criteria andUpdatedAtBetween(Date value1, Date value2) {
+        public Criteria andUpdatedAtBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("updated_at between", value1, value2, "updatedAt");
             return (Criteria) this;
         }
 
-        public Criteria andUpdatedAtNotBetween(Date value1, Date value2) {
+        public Criteria andUpdatedAtNotBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("updated_at not between", value1, value2, "updatedAt");
             return (Criteria) this;
         }

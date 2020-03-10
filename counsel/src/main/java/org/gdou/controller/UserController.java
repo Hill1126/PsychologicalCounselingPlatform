@@ -12,6 +12,7 @@ import org.gdou.model.dto.UserInfoDto;
 import org.gdou.model.po.Oauths;
 import org.gdou.model.po.User;
 import org.gdou.service.impl.UserService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -75,6 +77,7 @@ public class UserController {
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public Result register(@Validated User user){
         user.setUserType(UserType.STUDENT);
+        user.setCreatedAt(LocalDateTime.now());
         return userService.register(user);
     }
 
@@ -82,7 +85,7 @@ public class UserController {
     public Result editInfo(UserInfoDto userInfo, MultipartFile avatar,HttpSession session)
             throws IOException {
 
-        User user = new User();
+        var user = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
         BeanUtils.copyProperties(userInfo,user);
         //判断是否有头像文件上传
         if (avatar !=null){
@@ -96,17 +99,31 @@ public class UserController {
             //保存文件到百度的文件管理库
             var fileName = UUID.randomUUID().toString()+suffixName;
             uploadAvatar(avatar, fileName);
-            StringBuilder stringBuilder = new StringBuilder();
-            //https://avatar-img.gz.bcebos.com/test-img
-            stringBuilder.append(ProjectConstant.AVATAR_BUCKET_NAME).append(".")
-                    .append(BaiDuBosConfig.GZ_ENDPOINT).append("/").append(fileName);
-            user.setAvatarUrl(stringBuilder.toString());
+            user.setAvatarUrl(buildAvatarUrl(fileName));
 
         }
+        user.setUpdatedAt(LocalDateTime.now());
         user =  userService.updateUserInfo(user);
         session.setAttribute(ProjectConstant.USER_SESSION_KEY,user);
         return ResultGenerator.genSuccessResult(user);
 
+    }
+
+    /**
+     * 构建图片的url
+     * @Author: HILL
+     * @date: 2020/3/10 21:26
+     *
+     * @param fileName 图片文件名
+     * @return: java.lang.String 完成的http访问路径
+    **/
+    @NotNull
+    private String buildAvatarUrl(String fileName) {
+        //https://avatar-img.gz.bcebos.com/test-img
+        String url = "https://" +
+                ProjectConstant.AVATAR_BUCKET_NAME + "." +
+                BaiDuBosConfig.GZ_ENDPOINT + "/" + fileName;
+        return url;
     }
 
     /**

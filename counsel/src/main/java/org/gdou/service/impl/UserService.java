@@ -58,7 +58,7 @@ public class UserService {
 
         oauthsMapper.insert(userOauth);
         log.info("数据表{}插入数据 生成的id为{} ","oauths",userOauth.getId());
-        return ResultGenerator.genSuccessResult();
+        return ResultGenerator.genSuccessResult("注册成功！");
     }
 
 
@@ -69,11 +69,11 @@ public class UserService {
         List<Oauths> oauthList = oauthsMapper.selectByExample(example);
         //根据查询的凭证获取用户id
         if (oauthList!=null && oauthList.size()>0){
-            var userId = oauthList.get(0).getUserId();
-            var user = userMapper.selectByPrimaryKey(userId);
+            var selectOauth = oauthList.get(0);
+            var user = userMapper.selectByPrimaryKey(selectOauth.getUserId());
             //删除密码信息，返回user
             user.setPassword("");
-            log.info("用户{}通过{}方式验证登录",user.getName(),oauth.getOauthType());
+            log.info("用户 【{}】 通过 【{}】 方式验证登录",user.getName(),selectOauth.getOauthType());
             return ResultGenerator.genSuccessResult(user);
         }
         return ResultGenerator.genFailResult("用户不存在或密码错误");

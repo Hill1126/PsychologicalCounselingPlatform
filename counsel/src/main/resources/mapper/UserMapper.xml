@@ -108,14 +108,14 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into user (name, account, password, 
-      email, avatar_url, phone, 
-      created_at, updated_at, user_type
-      )
-    values (#{name,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{userType,jdbcType=INTEGER}
-      )
+    insert into user (id, name, account, 
+      password, email, avatar_url, 
+      phone, created_at, updated_at, 
+      user_type)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
+      #{userType,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="org.gdou.model.po.User">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -123,6 +123,9 @@
     </selectKey>
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="name != null">
         name,
       </if>
@@ -152,6 +155,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
@@ -242,6 +248,13 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="org.gdou.model.po.User">
+    <selectKey keyProperty='id' resultType='int' order='BEFORE'>
+      SELECT
+      (select id FROM user WHERE
+      id = #{id}
+      )id
+      from DUAL
+    </selectKey>
     update user
     <set>
       <if test="name != null">
@@ -287,7 +300,4 @@
       user_type = #{userType,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-
 </mapper>
