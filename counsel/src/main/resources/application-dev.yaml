@@ -3,3 +3,6 @@ server:
   port: 8080
 log:
   level: debug
+
+user:
+  interceptor: false

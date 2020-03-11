@@ -1,20 +1,17 @@
 package org.gdou.controller;
 
-import com.baidubce.services.bos.BosClient;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultCode;
 import org.gdou.common.result.ResultGenerator;
-import org.gdou.config.BaiDuBosConfig;
 import org.gdou.model.dto.UserInfoDto;
 import org.gdou.model.po.Oauths;
 import org.gdou.model.po.User;
+import org.gdou.service.impl.BosService;
 import org.gdou.service.impl.UserService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 /**
  * @author HILL
@@ -38,11 +34,11 @@ import java.util.UUID;
 public class UserController {
 
     private UserService userService;
-    private BosClient bosClient;
+    private BosService bosService;
 
-    public UserController(UserService userService, BosClient bosClient) {
+    public UserController(UserService userService, BosService bosService) {
         this.userService = userService;
-        this.bosClient = bosClient;
+        this.bosService = bosService;
     }
 
     /**
@@ -84,23 +80,15 @@ public class UserController {
     @RequestMapping("/editInfo")
     public Result editInfo(UserInfoDto userInfo, MultipartFile avatar,HttpSession session)
             throws IOException {
-
         var user = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
         BeanUtils.copyProperties(userInfo,user);
         //判断是否有头像文件上传
         if (avatar !=null){
-            //校验文件的后缀名是否为jpg、png
-            var originalFileName = avatar.getOriginalFilename();
-            var index = originalFileName.lastIndexOf(".");
-            String suffixName = originalFileName.substring(index);
-            if ( !(suffixName.toLowerCase()).contains("jpg") && !(suffixName.toLowerCase()).contains("png") ){
-                return ResultGenerator.genFailResult("上传的文件必须为png、jpg文件");
-            }
             //保存文件到百度的文件管理库
-            var fileName = UUID.randomUUID().toString()+suffixName;
-            uploadAvatar(avatar, fileName);
-            user.setAvatarUrl(buildAvatarUrl(fileName));
-
+            var result = (Result)bosService.uploadAvatar(avatar,user);
+            if (result.getCode()!=ResultCode.SUCCESS) {
+                return ResultGenerator.genFailResult("图片上传失败");
+            }
         }
         user.setUpdatedAt(LocalDateTime.now());
         user =  userService.updateUserInfo(user);
@@ -110,35 +98,22 @@ public class UserController {
     }
 
     /**
-     * 构建图片的url
+     * 将session保存的用户信息删除并返回结果
      * @Author: HILL
-     * @date: 2020/3/10 21:26
+     * @date: 2020/3/11 22:52
      *
-     * @param fileName 图片文件名
-     * @return: java.lang.String 完成的http访问路径
+     * @param session
+     * @return: org.gdou.common.result.Result
     **/
-    @NotNull
-    private String buildAvatarUrl(String fileName) {
-        //https://avatar-img.gz.bcebos.com/test-img
-        String url = "https://" +
-                ProjectConstant.AVATAR_BUCKET_NAME + "." +
-                BaiDuBosConfig.GZ_ENDPOINT + "/" + fileName;
-        return url;
+    @RequestMapping("/exit")
+    public Result exit(HttpSession session){
+        session.removeAttribute(ProjectConstant.USER_SESSION_KEY);
+        return ResultGenerator.genSuccessResult();
     }
 
-    /**
-     * 采用异步方法上传图片到百度BOS
-     * @Author: HILL
-     * @date: 2020/3/9 16:47
-     *
-     * @param avatar
-     * @param fileName
-     * @return: void
-    **/
-    @Async("bosUploadExecutor")
-    void uploadAvatar(MultipartFile avatar, String fileName) throws IOException {
-        var putObjectResponse = bosClient.putObject(ProjectConstant.AVATAR_BUCKET_NAME, fileName, avatar.getInputStream());
-        log.info("插入图片{}到BOS 成功返回信息{} ",fileName,putObjectResponse.getETag());
-    }
+
+
+
+
 
 }

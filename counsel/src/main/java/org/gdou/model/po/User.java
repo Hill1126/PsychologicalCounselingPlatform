@@ -1,14 +1,18 @@
 package org.gdou.model.po;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 public class User {
     private Integer id;
 
+    @NotBlank(message = "名字不能为空")
     private String name;
 
+    @NotBlank(message = "账号不能为空")
     private String account;
 
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     private String email;
