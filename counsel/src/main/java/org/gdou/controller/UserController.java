@@ -77,7 +77,7 @@ public class UserController {
         return userService.register(user);
     }
 
-    @RequestMapping("/editInfo")
+    @RequestMapping(value = "/editInfo",method = RequestMethod.POST)
     public Result editInfo(UserInfoDto userInfo, MultipartFile avatar,HttpSession session)
             throws IOException {
         var user = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);

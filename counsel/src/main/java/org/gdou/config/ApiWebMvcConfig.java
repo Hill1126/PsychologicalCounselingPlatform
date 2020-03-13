@@ -36,7 +36,7 @@ public class ApiWebMvcConfig implements WebMvcConfigurer {
         //登录检查过滤器
         if(startInterceptor){
             registry.addInterceptor(getLoginCheckInterceptor()).addPathPatterns("/**").excludePathPatterns(exclude)
-                    .excludePathPatterns("/user/login").excludePathPatterns("/user/register")
+                    .excludePathPatterns("/user/login").excludePathPatterns("/user/register").excludePathPatterns("/image/**")
                     .excludePathPatterns("/favicon.ico");
         }
 
