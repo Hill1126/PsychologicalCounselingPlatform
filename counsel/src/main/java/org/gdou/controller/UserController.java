@@ -52,7 +52,7 @@ public class UserController {
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public Result login(Oauths oauth, HttpSession session,boolean useTokenLogin){
+    public Result login(@Validated Oauths oauth, HttpSession session,boolean useTokenLogin){
         Result result = userService.login(oauth);
         if (result.getCode()== ResultCode.SUCCESS){
             //将用户放入session会话中，返回结果

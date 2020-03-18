@@ -51,4 +51,12 @@ public class GlobalExceptionHandler {
         log.error("图片上传失败 详情：{}",e.getMessage());
         return ResultGenerator.genFailResult("图片上传失败，请稍后再试");
     }
+
+    @ExceptionHandler(WebSocketNullPointException.class)
+    public Result webSocketUserNullExceptionHandler(WebSocketNullPointException e){
+        log.error("连接websocket失败，原因【{}】",e.getMessage());
+        return ResultGenerator.genFailResult("请登录后操作");
+    }
+
+
 }

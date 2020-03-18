@@ -106,6 +106,14 @@
             </exclusions>
         </dependency>
 
+        <!-- >咨询模块相关<-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+
+
     </dependencies>
     <repositories>
         <repository>

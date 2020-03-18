@@ -3,6 +3,7 @@ package org.gdou;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 **/
 @SpringBootApplication
 @MapperScan(basePackages = "org.gdou.dao")
+@ServletComponentScan(basePackages = "org.gdou.common.listener.*")
 @EnableAsync
 public class CounselApplication {
     public static void main(String[] args) {
