@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.gdou.dao.OauthsMapper">
-  <resultMap id="BaseResultMap" type="org.gdou.model.po.Oauths">
+<mapper namespace="org.gdou.dao.MsgRecordMapper">
+  <resultMap id="BaseResultMap" type="org.gdou.model.po.MsgRecord">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="oauth_type" jdbcType="VARCHAR" property="oauthType" />
-    <result column="oauth_id" jdbcType="VARCHAR" property="oauthId" />
-    <result column="unionid" jdbcType="VARCHAR" property="unionid" />
-    <result column="credential" jdbcType="VARCHAR" property="credential" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="sender_name" jdbcType="VARCHAR" property="senderName" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,15 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, oauth_type, oauth_id, unionid, credential
+    id, order_id, sender_name, receiver_name, time, content
   </sql>
-  <select id="selectByExample" parameterType="org.gdou.model.po.example.OauthsExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="org.gdou.model.po.example.MsgRecordExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from oauths
+    from msg_record
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -84,102 +84,99 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="ifExitsOauthId" parameterType="string" resultType="int">
-    select count(id)
-    from oauths
-    where oauth_id = #{oauthId}
-  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from oauths
+    from msg_record
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from oauths
+    delete from msg_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="org.gdou.model.po.example.OauthsExample">
-    delete from oauths
+  <delete id="deleteByExample" parameterType="org.gdou.model.po.example.MsgRecordExample">
+    delete from msg_record
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="org.gdou.model.po.Oauths">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into oauths (user_id, oauth_type, oauth_id, 
-      unionid, credential)
-    values (#{userId,jdbcType=INTEGER}, #{oauthType,jdbcType=VARCHAR}, #{oauthId,jdbcType=VARCHAR}, 
-      #{unionid,jdbcType=VARCHAR}, #{credential,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="org.gdou.model.po.MsgRecord">
+    insert into msg_record (id, order_id, sender_name, 
+      receiver_name, time, content
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{senderName,jdbcType=VARCHAR}, 
+      #{receiverName,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="org.gdou.model.po.Oauths">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into oauths
+  <insert id="insertSelective" parameterType="org.gdou.model.po.MsgRecord">
+    insert into msg_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        user_id,
+      <if test="id != null">
+        id,
       </if>
-      <if test="oauthType != null">
-        oauth_type,
+      <if test="orderId != null">
+        order_id,
       </if>
-      <if test="oauthId != null">
-        oauth_id,
+      <if test="senderName != null">
+        sender_name,
       </if>
-      <if test="unionid != null">
-        unionid,
+      <if test="receiverName != null">
+        receiver_name,
       </if>
-      <if test="credential != null">
-        credential,
+      <if test="time != null">
+        time,
+      </if>
+      <if test="content != null">
+        content,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
       </if>
-      <if test="oauthType != null">
-        #{oauthType,jdbcType=VARCHAR},
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
       </if>
-      <if test="oauthId != null">
-        #{oauthId,jdbcType=VARCHAR},
+      <if test="senderName != null">
+        #{senderName,jdbcType=VARCHAR},
       </if>
-      <if test="unionid != null">
-        #{unionid,jdbcType=VARCHAR},
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
       </if>
-      <if test="credential != null">
-        #{credential,jdbcType=VARCHAR},
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="org.gdou.model.po.example.OauthsExample" resultType="java.lang.Long">
-    select count(*) from oauths
+  <select id="countByExample" parameterType="org.gdou.model.po.example.MsgRecordExample" resultType="java.lang.Long">
+    select count(*) from msg_record
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update oauths
+    update msg_record
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=INTEGER},
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=INTEGER},
       </if>
-      <if test="record.oauthType != null">
-        oauth_type = #{record.oauthType,jdbcType=VARCHAR},
+      <if test="record.senderName != null">
+        sender_name = #{record.senderName,jdbcType=VARCHAR},
       </if>
-      <if test="record.oauthId != null">
-        oauth_id = #{record.oauthId,jdbcType=VARCHAR},
+      <if test="record.receiverName != null">
+        receiver_name = #{record.receiverName,jdbcType=VARCHAR},
       </if>
-      <if test="record.unionid != null">
-        unionid = #{record.unionid,jdbcType=VARCHAR},
+      <if test="record.time != null">
+        time = #{record.time,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.credential != null">
-        credential = #{record.credential,jdbcType=VARCHAR},
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -187,45 +184,45 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update oauths
+    update msg_record
     set id = #{record.id,jdbcType=INTEGER},
-      user_id = #{record.userId,jdbcType=INTEGER},
-      oauth_type = #{record.oauthType,jdbcType=VARCHAR},
-      oauth_id = #{record.oauthId,jdbcType=VARCHAR},
-      unionid = #{record.unionid,jdbcType=VARCHAR},
-      credential = #{record.credential,jdbcType=VARCHAR}
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      sender_name = #{record.senderName,jdbcType=VARCHAR},
+      receiver_name = #{record.receiverName,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      content = #{record.content,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="org.gdou.model.po.Oauths">
-    update oauths
+  <update id="updateByPrimaryKeySelective" parameterType="org.gdou.model.po.MsgRecord">
+    update msg_record
     <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
       </if>
-      <if test="oauthType != null">
-        oauth_type = #{oauthType,jdbcType=VARCHAR},
+      <if test="senderName != null">
+        sender_name = #{senderName,jdbcType=VARCHAR},
       </if>
-      <if test="oauthId != null">
-        oauth_id = #{oauthId,jdbcType=VARCHAR},
+      <if test="receiverName != null">
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
       </if>
-      <if test="unionid != null">
-        unionid = #{unionid,jdbcType=VARCHAR},
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
       </if>
-      <if test="credential != null">
-        credential = #{credential,jdbcType=VARCHAR},
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="org.gdou.model.po.Oauths">
-    update oauths
-    set user_id = #{userId,jdbcType=INTEGER},
-      oauth_type = #{oauthType,jdbcType=VARCHAR},
-      oauth_id = #{oauthId,jdbcType=VARCHAR},
-      unionid = #{unionid,jdbcType=VARCHAR},
-      credential = #{credential,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="org.gdou.model.po.MsgRecord">
+    update msg_record
+    set order_id = #{orderId,jdbcType=INTEGER},
+      sender_name = #{senderName,jdbcType=VARCHAR},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -74,7 +74,7 @@
   <sql id="Base_Column_List">
     id, name, account, password, email, avatar_url, phone, created_at, updated_at, user_type
   </sql>
-  <select id="selectByExample" parameterType="org.gdou.model.po.UserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="org.gdou.model.po.example.UserExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -98,7 +98,7 @@
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="org.gdou.model.po.UserExample">
+  <delete id="deleteByExample" parameterType="org.gdou.model.po.example.UserExample">
     delete from user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -187,7 +187,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="org.gdou.model.po.UserExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="org.gdou.model.po.example.UserExample" resultType="java.lang.Long">
     select count(*) from user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />

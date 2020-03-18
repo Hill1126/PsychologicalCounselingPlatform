@@ -2,7 +2,7 @@ package org.gdou.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.gdou.model.po.User;
-import org.gdou.model.po.UserExample;
+import org.gdou.model.po.example.UserExample;
 
 import java.util.List;
 

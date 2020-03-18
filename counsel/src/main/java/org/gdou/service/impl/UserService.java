@@ -7,7 +7,7 @@ import org.gdou.common.result.ResultGenerator;
 import org.gdou.dao.OauthsMapper;
 import org.gdou.dao.UserMapper;
 import org.gdou.model.po.Oauths;
-import org.gdou.model.po.OauthsExample;
+import org.gdou.model.po.example.OauthsExample;
 import org.gdou.model.po.User;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ package org.gdou.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.gdou.model.po.Oauths;
-import org.gdou.model.po.OauthsExample;
+import org.gdou.model.po.example.OauthsExample;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.gdou.model.po;
+package org.gdou.model.po.example;
 
 import java.util.ArrayList;
 import java.util.List;
