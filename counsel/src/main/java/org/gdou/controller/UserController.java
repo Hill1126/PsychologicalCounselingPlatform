@@ -1,5 +1,6 @@
 package org.gdou.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.constant.user.UserType;
@@ -68,11 +69,16 @@ public class UserController {
      * @Author: HILL
      * @date: 2020/3/2 17:37
      * @param user 注册的信息
+     * @param authCode 根据此码认证可认证为教师
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public Result register(@Validated User user){
-        user.setUserType(UserType.STUDENT);
+    public Result register(@Validated User user,String authCode){
+        if(!StringUtils.isEmpty(authCode) && "Teacher".equals(authCode)){
+            user.setUserType(UserType.TEACHER);
+        }else{
+            user.setUserType(UserType.STUDENT);
+        }
         user.setCreatedAt(LocalDateTime.now());
         return userService.register(user);
     }

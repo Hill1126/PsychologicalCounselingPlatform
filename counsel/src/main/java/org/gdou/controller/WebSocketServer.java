@@ -1,8 +1,10 @@
 package org.gdou.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.constant.ProjectConstant;
+import org.gdou.common.constant.chat.WorkOrderStatus;
 import org.gdou.common.exception.WebSocketNullPointException;
 import org.gdou.config.HttpSessionConfigurator;
 import org.gdou.dao.MsgRecordMapper;
@@ -40,6 +42,7 @@ public class WebSocketServer {
     **/
     private static Map<Integer, WebSocketServer> onlineClient = new ConcurrentHashMap<>();
 
+    @Getter
     private User user ;
     private int orderId;
     private Session session;
@@ -67,7 +70,7 @@ public class WebSocketServer {
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config , @PathParam("orderId") int orderId) throws IOException {
-        this.user = getUser(config);
+        this.user = getUserFromConfig(config);
         int currentUserId = user.getId();
         this.orderId = orderId;
         //放入map中，此session是javax.websocket.session
@@ -75,7 +78,7 @@ public class WebSocketServer {
         //验证连接条件,验证当前工单是否存在或已完结。
         WorkOrderExample workOrderExample = new WorkOrderExample();
         var criteria = workOrderExample.createCriteria();
-        criteria.andIdEqualTo(orderId).andStatusEqualTo(1);
+        criteria.andIdEqualTo(orderId).andStatusEqualTo(WorkOrderStatus.START);
         boolean exitsOrder = workOrderMapper.countByExample(workOrderExample)>0?true:false;
         //如果已存在连接，或工单状态检查失败
         if (onlineClient.containsKey(currentUserId) && !exitsOrder){
@@ -88,7 +91,7 @@ public class WebSocketServer {
     }
 
     @NotNull
-    private User getUser(EndpointConfig config) {
+    private User getUserFromConfig(EndpointConfig config) {
         //获取user信息
         var httpSession = (HttpSession)config.getUserProperties().get(HttpSession.class.getName());
         if (httpSession==null){
@@ -117,7 +120,7 @@ public class WebSocketServer {
         //如果成功，则记录消息
         if (success){
             MsgRecord msgRecord = MsgRecord.builder().orderId(this.orderId).content(messageDto.getContent())
-                    .senderName(user.getName()).receiverName(messageDto.getReceiverName())
+                    .senderName(user.getName()).receiverName(onlineClient.get(messageDto.getReceiverId()).getUser().getName())
                     .time(LocalDateTime.now()).build();
             msgRecordMapper.insert(msgRecord);
             //更新redis的记录时间
