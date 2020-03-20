@@ -3,6 +3,7 @@ package org.gdou.dao;
 import org.apache.ibatis.annotations.Param;
 import org.gdou.model.po.User;
 import org.gdou.model.po.example.UserExample;
+import org.gdou.model.vo.TeacherVo;
 
 import java.util.List;
 
@@ -28,4 +29,14 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    /**
+     * TODO
+     * @Author: HILL
+     * @date: 2020/3/20 18:08
+     * 
+ * @param isOrderByDesc
+     * @return: java.util.List<org.gdou.model.vo.TeacherVo>
+    **/
+    List<TeacherVo> selectAppointmentTeacher(boolean isOrderByDesc);
 }

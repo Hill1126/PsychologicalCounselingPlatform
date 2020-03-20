@@ -13,6 +13,12 @@
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="user_type" jdbcType="INTEGER" property="userType" />
   </resultMap>
+  <resultMap id="chatUserMap" type="org.gdou.model.vo.TeacherVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+  </resultMap>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -193,6 +199,24 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+  <select id="selectAppointmentTeacher" resultType="org.gdou.model.vo.TeacherVo" parameterType="boolean" resultMap="chatUserMap">
+    SELECT `user`.id,`user`.`name`,`user`.avatar_url
+      FROM
+      `user` ,
+      (SELECT teacher_id ,SUM(nine_am+ten_am+eleven_am+two_pm+three_pm+four_pm) total
+        from appointment_schedule
+        GROUP BY teacher_id
+        HAVING  total <![CDATA[ <= ]]> 12
+      ) as result
+      WHERE result.teacher_id=`user`.id
+      ORDER BY result.total
+      <if test="_parameter ==false ">
+        asc
+      </if>
+
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map">
     update user
     <set>

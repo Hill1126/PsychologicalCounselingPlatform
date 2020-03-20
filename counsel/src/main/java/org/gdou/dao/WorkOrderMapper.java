@@ -28,4 +28,6 @@ public interface WorkOrderMapper {
     int updateByPrimaryKeySelective(WorkOrder record);
 
     int updateByPrimaryKey(WorkOrder record);
+
+
 }

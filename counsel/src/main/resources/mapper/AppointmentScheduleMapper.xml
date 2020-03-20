@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gdou.dao.AppointmentScheduleMapper">
+  <resultMap id="BaseResultMap" type="org.gdou.model.po.AppointmentSchedule">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="nine_am" jdbcType="INTEGER" property="nineAm" />
+    <result column="ten_am" jdbcType="INTEGER" property="tenAm" />
+    <result column="eleven_am" jdbcType="INTEGER" property="elevenAm" />
+    <result column="two_pm" jdbcType="INTEGER" property="twoPm" />
+    <result column="three_pm" jdbcType="INTEGER" property="threePm" />
+    <result column="four_pm" jdbcType="INTEGER" property="fourPm" />
+    <result column="appointment_date" jdbcType="DATE" property="appointmentDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, teacher_id, nine_am, ten_am, eleven_am, two_pm, three_pm, four_pm, appointment_date
+  </sql>
+  <select id="selectByExample" parameterType="org.gdou.model.po.example.AppointmentScheduleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from appointment_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from appointment_schedule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from appointment_schedule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.gdou.model.po.example.AppointmentScheduleExample">
+    delete from appointment_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.gdou.model.po.AppointmentSchedule">
+    insert into appointment_schedule (id, teacher_id, nine_am, 
+      ten_am, eleven_am, two_pm, 
+      three_pm, four_pm, appointment_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER}, #{nineAm,jdbcType=INTEGER}, 
+      #{tenAm,jdbcType=INTEGER}, #{elevenAm,jdbcType=INTEGER}, #{twoPm,jdbcType=INTEGER}, 
+      #{threePm,jdbcType=INTEGER}, #{fourPm,jdbcType=INTEGER}, #{appointmentDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.gdou.model.po.AppointmentSchedule">
+    insert into appointment_schedule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="teacherId != null">
+        teacher_id,
+      </if>
+      <if test="nineAm != null">
+        nine_am,
+      </if>
+      <if test="tenAm != null">
+        ten_am,
+      </if>
+      <if test="elevenAm != null">
+        eleven_am,
+      </if>
+      <if test="twoPm != null">
+        two_pm,
+      </if>
+      <if test="threePm != null">
+        three_pm,
+      </if>
+      <if test="fourPm != null">
+        four_pm,
+      </if>
+      <if test="appointmentDate != null">
+        appointment_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="teacherId != null">
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="nineAm != null">
+        #{nineAm,jdbcType=INTEGER},
+      </if>
+      <if test="tenAm != null">
+        #{tenAm,jdbcType=INTEGER},
+      </if>
+      <if test="elevenAm != null">
+        #{elevenAm,jdbcType=INTEGER},
+      </if>
+      <if test="twoPm != null">
+        #{twoPm,jdbcType=INTEGER},
+      </if>
+      <if test="threePm != null">
+        #{threePm,jdbcType=INTEGER},
+      </if>
+      <if test="fourPm != null">
+        #{fourPm,jdbcType=INTEGER},
+      </if>
+      <if test="appointmentDate != null">
+        #{appointmentDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.gdou.model.po.example.AppointmentScheduleExample" resultType="java.lang.Long">
+    select count(*) from appointment_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update appointment_schedule
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.teacherId != null">
+        teacher_id = #{record.teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="record.nineAm != null">
+        nine_am = #{record.nineAm,jdbcType=INTEGER},
+      </if>
+      <if test="record.tenAm != null">
+        ten_am = #{record.tenAm,jdbcType=INTEGER},
+      </if>
+      <if test="record.elevenAm != null">
+        eleven_am = #{record.elevenAm,jdbcType=INTEGER},
+      </if>
+      <if test="record.twoPm != null">
+        two_pm = #{record.twoPm,jdbcType=INTEGER},
+      </if>
+      <if test="record.threePm != null">
+        three_pm = #{record.threePm,jdbcType=INTEGER},
+      </if>
+      <if test="record.fourPm != null">
+        four_pm = #{record.fourPm,jdbcType=INTEGER},
+      </if>
+      <if test="record.appointmentDate != null">
+        appointment_date = #{record.appointmentDate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update appointment_schedule
+    set id = #{record.id,jdbcType=INTEGER},
+      teacher_id = #{record.teacherId,jdbcType=INTEGER},
+      nine_am = #{record.nineAm,jdbcType=INTEGER},
+      ten_am = #{record.tenAm,jdbcType=INTEGER},
+      eleven_am = #{record.elevenAm,jdbcType=INTEGER},
+      two_pm = #{record.twoPm,jdbcType=INTEGER},
+      three_pm = #{record.threePm,jdbcType=INTEGER},
+      four_pm = #{record.fourPm,jdbcType=INTEGER},
+      appointment_date = #{record.appointmentDate,jdbcType=DATE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.gdou.model.po.AppointmentSchedule">
+    update appointment_schedule
+    <set>
+      <if test="teacherId != null">
+        teacher_id = #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="nineAm != null">
+        nine_am = #{nineAm,jdbcType=INTEGER},
+      </if>
+      <if test="tenAm != null">
+        ten_am = #{tenAm,jdbcType=INTEGER},
+      </if>
+      <if test="elevenAm != null">
+        eleven_am = #{elevenAm,jdbcType=INTEGER},
+      </if>
+      <if test="twoPm != null">
+        two_pm = #{twoPm,jdbcType=INTEGER},
+      </if>
+      <if test="threePm != null">
+        three_pm = #{threePm,jdbcType=INTEGER},
+      </if>
+      <if test="fourPm != null">
+        four_pm = #{fourPm,jdbcType=INTEGER},
+      </if>
+      <if test="appointmentDate != null">
+        appointment_date = #{appointmentDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.gdou.model.po.AppointmentSchedule">
+    update appointment_schedule
+    set teacher_id = #{teacherId,jdbcType=INTEGER},
+      nine_am = #{nineAm,jdbcType=INTEGER},
+      ten_am = #{tenAm,jdbcType=INTEGER},
+      eleven_am = #{elevenAm,jdbcType=INTEGER},
+      two_pm = #{twoPm,jdbcType=INTEGER},
+      three_pm = #{threePm,jdbcType=INTEGER},
+      four_pm = #{fourPm,jdbcType=INTEGER},
+      appointment_date = #{appointmentDate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
