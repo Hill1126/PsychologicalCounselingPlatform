@@ -200,18 +200,20 @@
     </if>
   </select>
 
-  <select id="selectAppointmentTeacher" resultType="org.gdou.model.vo.TeacherVo" parameterType="boolean" resultMap="chatUserMap">
+  <select id="selectAppointmentTeacher" resultType="org.gdou.model.vo.TeacherVo"
+          parameterType="org.gdou.model.qo.TeacherChatQo" resultMap="chatUserMap">
     SELECT `user`.id,`user`.`name`,`user`.avatar_url
       FROM
       `user` ,
       (SELECT teacher_id ,SUM(nine_am+ten_am+eleven_am+two_pm+three_pm+four_pm) total
         from appointment_schedule
+        WHERE appointment_date BETWEEN #{startDate} and #{endDate}
         GROUP BY teacher_id
         HAVING  total <![CDATA[ <= ]]> 12
       ) as result
       WHERE result.teacher_id=`user`.id
       ORDER BY result.total
-      <if test="_parameter ==false ">
+      <if test="isOrderByDesc ==false ">
         asc
       </if>
 

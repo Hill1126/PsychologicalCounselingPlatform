@@ -3,6 +3,7 @@ package org.gdou.dao;
 import org.apache.ibatis.annotations.Param;
 import org.gdou.model.po.User;
 import org.gdou.model.po.example.UserExample;
+import org.gdou.model.qo.TeacherChatQo;
 import org.gdou.model.vo.TeacherVo;
 
 import java.util.List;
@@ -35,8 +36,8 @@ public interface UserMapper {
      * @Author: HILL
      * @date: 2020/3/20 18:08
      * 
- * @param isOrderByDesc
+     * @param teacherChatQo
      * @return: java.util.List<org.gdou.model.vo.TeacherVo>
     **/
-    List<TeacherVo> selectAppointmentTeacher(boolean isOrderByDesc);
+    List<TeacherVo> selectAppointmentTeacher(TeacherChatQo teacherChatQo);
 }

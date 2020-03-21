@@ -1,6 +1,7 @@
 package org.gdou.counsel.user;
 
 import org.gdou.dao.UserMapper;
+import org.gdou.model.qo.TeacherChatQo;
 import org.gdou.model.vo.TeacherVo;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,20 +27,24 @@ public class UserTest {
     @Autowired
     private UserMapper userMapper;
 
+    private TeacherChatQo teacherChatQo = TeacherChatQo.quicklyBuild();
+
     @Test
     public void fun(){
         System.out.println(startInterceptor);
         Assert.assertNotNull(startInterceptor);
     }
 
+
     @Test
     public void fun1(){
-        List<TeacherVo> teacherVos = userMapper.selectAppointmentTeacher(false);
+        List<TeacherVo> teacherVos = userMapper.selectAppointmentTeacher(teacherChatQo);
 
     }
     @Test
     public void after(){
-        List<TeacherVo> teacherVos = userMapper.selectAppointmentTeacher(true);
+        teacherChatQo.setOrderByDesc(true);
+        List<TeacherVo> teacherVos = userMapper.selectAppointmentTeacher(teacherChatQo);
         teacherVos.forEach((teacherVo)->System.out.println(teacherVo.getName()));
     }
 }
