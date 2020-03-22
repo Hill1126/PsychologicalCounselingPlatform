@@ -49,9 +49,9 @@ public class CounselController {
     }
 
 
-    @RequestMapping
+    @RequestMapping("/availableTime")
     public Result getAppointmentTime(int teacherId){
-        return ResultGenerator.genSuccessResult();
+        return counselService.getAppointmentTimeById(teacherId);
     }
 
     @RequestMapping("/appointment")
