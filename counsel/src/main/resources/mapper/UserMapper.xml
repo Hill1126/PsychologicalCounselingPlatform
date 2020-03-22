@@ -202,20 +202,23 @@
 
   <select id="selectAppointmentTeacher" resultType="org.gdou.model.vo.TeacherVo"
           parameterType="org.gdou.model.qo.TeacherChatQo" resultMap="chatUserMap">
-    SELECT `user`.id,`user`.`name`,`user`.avatar_url
-      FROM
-      `user` ,
-      (SELECT teacher_id ,SUM(nine_am+ten_am+eleven_am+two_pm+three_pm+four_pm) total
-        from appointment_schedule
-        WHERE appointment_date BETWEEN #{startDate} and #{endDate}
-        GROUP BY teacher_id
-        HAVING  total <![CDATA[ <= ]]> 12
-      ) as result
-      WHERE result.teacher_id=`user`.id
-      ORDER BY result.total
-      <if test="isOrderByDesc ==false ">
-        asc
-      </if>
+          SELECT
+            teacher_id,
+            `user`.`name`,
+            `user`.avatar_url
+          FROM
+            `user`,
+            work_order
+          WHERE
+            work_order.teacher_id = `user`.id
+          AND work_order.appointment_date BETWEEN #{startDate}  AND #{endDate}
+          GROUP BY
+            teacher_id
+          HAVING COUNT(teacher_id) <![CDATA[ < ]]> 14
+          ORDER BY COUNT(teacher_id)
+          <if test="isHot ==false ">
+            asc
+          </if>
 
   </select>
 

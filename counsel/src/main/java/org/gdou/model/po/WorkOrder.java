@@ -2,6 +2,7 @@ package org.gdou.model.po;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class WorkOrder {
     private Integer id;
@@ -12,7 +13,7 @@ public class WorkOrder {
 
     private Integer teacherId;
 
-    private Short appointmentTime;
+    private LocalTime appointmentTime;
 
     private LocalDate appointmentDate;
 
@@ -52,11 +53,11 @@ public class WorkOrder {
         this.teacherId = teacherId;
     }
 
-    public Short getAppointmentTime() {
+    public LocalTime getAppointmentTime() {
         return appointmentTime;
     }
 
-    public void setAppointmentTime(Short appointmentTime) {
+    public void setAppointmentTime(LocalTime appointmentTime) {
         this.appointmentTime = appointmentTime;
     }
 

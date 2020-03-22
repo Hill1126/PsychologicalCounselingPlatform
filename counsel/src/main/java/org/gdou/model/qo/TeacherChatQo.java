@@ -17,7 +17,7 @@ public class TeacherChatQo {
 
     private LocalDate startDate;
     private LocalDate endDate;
-    private boolean isOrderByDesc;
+    private boolean isHot;
 
 
     public TeacherChatQo(LocalDate startDate, LocalDate endDate) {

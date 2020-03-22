@@ -39,11 +39,12 @@ public class UserTest {
     @Test
     public void fun1(){
         List<TeacherVo> teacherVos = userMapper.selectAppointmentTeacher(teacherChatQo);
+        teacherVos.forEach((teacherVo)->System.out.println(teacherVo.getName()));
 
     }
     @Test
     public void after(){
-        teacherChatQo.setOrderByDesc(true);
+        teacherChatQo.setHot(true);
         List<TeacherVo> teacherVos = userMapper.selectAppointmentTeacher(teacherChatQo);
         teacherVos.forEach((teacherVo)->System.out.println(teacherVo.getName()));
     }

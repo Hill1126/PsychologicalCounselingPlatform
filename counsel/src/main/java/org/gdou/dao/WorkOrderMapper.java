@@ -1,10 +1,9 @@
 package org.gdou.dao;
 
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.gdou.model.po.WorkOrder;
 import org.gdou.model.po.example.WorkOrderExample;
-
-import java.util.List;
 
 public interface WorkOrderMapper {
     long countByExample(WorkOrderExample example);
@@ -28,6 +27,4 @@ public interface WorkOrderMapper {
     int updateByPrimaryKeySelective(WorkOrder record);
 
     int updateByPrimaryKey(WorkOrder record);
-
-
 }

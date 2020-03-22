@@ -2,6 +2,7 @@ package org.gdou.model.po.example;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -356,52 +357,52 @@ public class WorkOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andAppointmentTimeEqualTo(Short value) {
+        public Criteria andAppointmentTimeEqualTo(LocalTime value) {
             addCriterion("appointment_time =", value, "appointmentTime");
             return (Criteria) this;
         }
 
-        public Criteria andAppointmentTimeNotEqualTo(Short value) {
+        public Criteria andAppointmentTimeNotEqualTo(LocalTime value) {
             addCriterion("appointment_time <>", value, "appointmentTime");
             return (Criteria) this;
         }
 
-        public Criteria andAppointmentTimeGreaterThan(Short value) {
+        public Criteria andAppointmentTimeGreaterThan(LocalTime value) {
             addCriterion("appointment_time >", value, "appointmentTime");
             return (Criteria) this;
         }
 
-        public Criteria andAppointmentTimeGreaterThanOrEqualTo(Short value) {
+        public Criteria andAppointmentTimeGreaterThanOrEqualTo(LocalTime value) {
             addCriterion("appointment_time >=", value, "appointmentTime");
             return (Criteria) this;
         }
 
-        public Criteria andAppointmentTimeLessThan(Short value) {
+        public Criteria andAppointmentTimeLessThan(LocalTime value) {
             addCriterion("appointment_time <", value, "appointmentTime");
             return (Criteria) this;
         }
 
-        public Criteria andAppointmentTimeLessThanOrEqualTo(Short value) {
+        public Criteria andAppointmentTimeLessThanOrEqualTo(LocalTime value) {
             addCriterion("appointment_time <=", value, "appointmentTime");
             return (Criteria) this;
         }
 
-        public Criteria andAppointmentTimeIn(List<Short> values) {
+        public Criteria andAppointmentTimeIn(List<LocalTime> values) {
             addCriterion("appointment_time in", values, "appointmentTime");
             return (Criteria) this;
         }
 
-        public Criteria andAppointmentTimeNotIn(List<Short> values) {
+        public Criteria andAppointmentTimeNotIn(List<LocalTime> values) {
             addCriterion("appointment_time not in", values, "appointmentTime");
             return (Criteria) this;
         }
 
-        public Criteria andAppointmentTimeBetween(Short value1, Short value2) {
+        public Criteria andAppointmentTimeBetween(LocalTime value1, LocalTime value2) {
             addCriterion("appointment_time between", value1, value2, "appointmentTime");
             return (Criteria) this;
         }
 
-        public Criteria andAppointmentTimeNotBetween(Short value1, Short value2) {
+        public Criteria andAppointmentTimeNotBetween(LocalTime value1, LocalTime value2) {
             addCriterion("appointment_time not between", value1, value2, "appointmentTime");
             return (Criteria) this;
         }

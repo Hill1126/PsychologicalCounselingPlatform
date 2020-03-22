@@ -82,7 +82,7 @@
               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false" selectByExampleQueryId="false"
              -->
-        <table  tableName="appointment_schedule" >
+        <table  tableName="work_order" >
             <!--是否使用实际列名,默认为false-->
             <!--<property name="useActualColumnNames" value="false" />-->
         </table>

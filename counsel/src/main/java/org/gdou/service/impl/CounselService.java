@@ -22,11 +22,11 @@ public class CounselService {
         this.userMapper = userMapper;
     }
 
-    public PageInfo getTeacherList(int pageNum, int pageSize, boolean isOrderByDesc){
+    public PageInfo getTeacherList(int pageNum, int pageSize, boolean isHot){
         PageHelper.startPage(pageNum,pageSize);
         //查找标识为老师且当前预约时间比较多的的用户。
         TeacherChatQo teacherChatQo = TeacherChatQo.quicklyBuild();
-        teacherChatQo.setOrderByDesc(isOrderByDesc);
+        teacherChatQo.setHot(isHot);
         PageInfo pageInfo = PageInfo.of(userMapper.selectAppointmentTeacher(teacherChatQo));
         return pageInfo;
     }
