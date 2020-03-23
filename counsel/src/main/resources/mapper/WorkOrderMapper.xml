@@ -187,7 +187,22 @@
         AND appointment_date BETWEEN #{startDate} AND #{endDate}
 
     </select>
-    <update id="updateByExampleSelective" parameterType="map">
+  <select id="checkAppointmentBeforeInsert" parameterType="org.gdou.model.dto.counsel.MakeAppointmentDto"
+          resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            work_order
+        WHERE
+            appointment_time = #{appointmentTime}
+        AND appointment_date = #{appointmentDate}
+        AND (
+            student_id = #{studentId}
+            OR teacher_id = #{teacherId}
+        )
+
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
     update work_order
     <set>
       <if test="record.id != null">

@@ -47,6 +47,7 @@ public class WorkOrderExample {
         return criteria;
     }
 
+
     public Criteria createCriteria() {
         Criteria criteria = createCriteriaInternal();
         if (oredCriteria.size() == 0) {

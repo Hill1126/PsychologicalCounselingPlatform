@@ -1,11 +1,13 @@
 package org.gdou.counsel.baidu;
 
-import com.baidubce.auth.DefaultBceCredentials;
 import com.baidubce.services.bos.BosClient;
-import com.baidubce.services.bos.BosClientConfiguration;
 import com.baidubce.services.bos.model.PutObjectResponse;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -18,23 +20,18 @@ import java.io.InputStream;
  * @version V1.0
  * @date 2020/3/8
  **/
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RunWith(SpringRunner.class)
 public class BosTest {
 
+    @Autowired
     BosClient client;
 
     @Test
     public void fun() throws FileNotFoundException {
-        var askey = "dd71e9aeb6e8433b86a10a998cf8e8ac";
-        var asSert = "d15f962503344d368ea68e010ee76f6c";
-        BosClientConfiguration config = new BosClientConfiguration();
-        config.setCredentials(new DefaultBceCredentials(askey, asSert));
-        config.setEndpoint("gz.bcebos.com");
-        client = new BosClient(config);
-
         File file = ResourceUtils.getFile("classpath:static/image/default_avatar.jpg");
         InputStream inputStream = new FileInputStream(file);
         PutObjectResponse putObjectResponse = client.putObject("avatar-img", "test-img", file);
-        System.out.println(putObjectResponse.getETag());
+        Assert.assertNotNull(putObjectResponse);
     }
 }

@@ -9,7 +9,7 @@ import org.gdou.common.exception.WebSocketNullPointException;
 import org.gdou.config.HttpSessionConfigurator;
 import org.gdou.dao.MsgRecordMapper;
 import org.gdou.dao.WorkOrderMapper;
-import org.gdou.model.dto.WebSocketMessageDto;
+import org.gdou.model.dto.counsel.WebSocketMessageDto;
 import org.gdou.model.po.MsgRecord;
 import org.gdou.model.po.User;
 import org.gdou.model.po.example.WorkOrderExample;
@@ -78,7 +78,7 @@ public class WebSocketServer {
         //验证连接条件,验证当前工单是否存在或已完结。
         WorkOrderExample workOrderExample = new WorkOrderExample();
         var criteria = workOrderExample.createCriteria();
-        criteria.andIdEqualTo(orderId).andStatusEqualTo(WorkOrderStatus.START);
+        criteria.andIdEqualTo(orderId).andStatusEqualTo(WorkOrderStatus.READY);
         boolean exitsOrder = workOrderMapper.countByExample(workOrderExample)>0?true:false;
         //如果已存在连接，或工单状态检查失败
         if (onlineClient.containsKey(currentUserId) && !exitsOrder){

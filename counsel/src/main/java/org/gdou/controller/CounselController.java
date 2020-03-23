@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
+import org.gdou.model.dto.counsel.MakeAppointmentDto;
 import org.gdou.service.impl.CounselService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,8 +56,8 @@ public class CounselController {
     }
 
     @RequestMapping("/appointment")
-    public Result makeAppointment(){
-        return ResultGenerator.genSuccessResult();
+    public Result makeAppointment(MakeAppointmentDto makeAppointmentDto){
+        return counselService.makeAppointment(makeAppointmentDto);
     }
 
 
