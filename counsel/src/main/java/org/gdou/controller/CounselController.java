@@ -2,13 +2,17 @@ package org.gdou.controller;
 
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
 import org.gdou.model.dto.counsel.MakeAppointmentDto;
+import org.gdou.model.po.User;
 import org.gdou.service.impl.CounselService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author HILL
@@ -56,7 +60,9 @@ public class CounselController {
     }
 
     @RequestMapping("/appointment")
-    public Result makeAppointment(MakeAppointmentDto makeAppointmentDto){
+    public Result makeAppointment(MakeAppointmentDto makeAppointmentDto, HttpSession session){
+        var attribute = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
+        makeAppointmentDto.setStudentId(attribute.getId());
         return counselService.makeAppointment(makeAppointmentDto);
     }
 
