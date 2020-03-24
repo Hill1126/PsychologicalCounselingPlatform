@@ -5,9 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
+import org.gdou.model.bo.MakeAppointmentBO;
 import org.gdou.model.dto.counsel.MakeAppointmentDto;
 import org.gdou.model.po.User;
 import org.gdou.service.impl.CounselService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,28 +56,29 @@ public class CounselController {
 
     }
 
-
     @RequestMapping("/availableTime")
     public Result getAppointmentTime(int teacherId){
         return counselService.getAppointmentTimeById(teacherId);
     }
 
     @RequestMapping("/appointment")
-    public Result makeAppointment(MakeAppointmentDto makeAppointmentDto, HttpSession session){
+    public Result makeAppointment(@Validated MakeAppointmentDto makeAppointmentDto, HttpSession session){
         var attribute = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
-        makeAppointmentDto.setStudentId(attribute.getId());
-        return counselService.makeAppointment(makeAppointmentDto);
+        MakeAppointmentBO bo = new MakeAppointmentBO();
+        BeanUtils.copyProperties(makeAppointmentDto,bo);
+        var appointmentDateTime = makeAppointmentDto.getAppointmentDateTime();
+        bo.setAppointmentTime(appointmentDateTime.toLocalTime());
+        bo.setAppointmentDate(appointmentDateTime.toLocalDate());
+        bo.setStudentId(attribute.getId());
+        return counselService.makeAppointment(bo);
     }
 
-
-
-
-   /* @RequestMapping("/myAppointment")
+    @RequestMapping("/myAppointment")
     public Result getWorkOrderById(HttpSession session){
         var user = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
-        List<>counselService.getWorkOrderByID(user.getId());
+        return counselService.getWorkOrderByID(user.getId());
     }
-*/
+
 
 
 

@@ -15,6 +15,13 @@
     <result column="appointment_time" jdbcType="TIME" property="appointmentTime" />
     <result column="appointment_date" jdbcType="DATE" property="appointmentDate" />
   </resultMap>
+  <resultMap id="myAppointmentVoMap" type="org.gdou.model.vo.MyAppointmentVo">
+    <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="appointment_time" jdbcType="TIME" property="appointmentTime" />
+    <result column="appointment_date" jdbcType="DATE" property="appointmentDate" />
+    <result column="teacher_name" jdbcType="VARCHAR" property="teacherName"/>
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -201,6 +208,22 @@
             OR teacher_id = #{teacherId}
         )
 
+  </select>
+  <select id="getMyAppointmentById" resultType="org.gdou.model.vo.MyAppointmentVo"
+          parameterType="integer" resultMap="myAppointmentVoMap">
+      SELECT
+          work_order.teacher_id,
+          `user`.`name` AS teacher_name,
+          appointment_time,
+          appointment_date,
+          `status`
+      FROM
+          work_order,
+          `user`
+      WHERE
+          work_order.teacher_id = `user`.id
+      AND student_id = #{value}
+      AND work_order.`status` = 1
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update work_order

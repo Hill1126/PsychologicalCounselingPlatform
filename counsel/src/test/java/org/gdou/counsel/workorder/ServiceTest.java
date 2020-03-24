@@ -2,7 +2,7 @@ package org.gdou.counsel.workorder;
 
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultCode;
-import org.gdou.model.dto.counsel.MakeAppointmentDto;
+import org.gdou.model.bo.MakeAppointmentBO;
 import org.gdou.service.impl.CounselService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,29 +26,36 @@ public class ServiceTest {
 
     @Autowired
     CounselService counselService;
-    MakeAppointmentDto dto;
+    MakeAppointmentBO bo;
 
     @Before
     public void before(){
-        dto = new MakeAppointmentDto();
-        dto.setAppointmentDate(LocalDate.of(2020,3,23));
-        dto.setAppointmentTime(LocalTime.of(9,0));
-        dto.setStudentId(14);
-        dto.setTeacherId(15);
+        bo = new MakeAppointmentBO();
+        bo.setAppointmentDate(LocalDate.of(2020,3,23));
+        bo.setAppointmentTime(LocalTime.of(9,0));
+        bo.setStudentId(14);
+        bo.setTeacherId(15);
+    }
+
+    @Test
+    public void getWorkOrderByIdTest(){
+        Result result = counselService.getWorkOrderByID(22);
+        Assert.assertNotNull(result.getData());
+
     }
 
     @Test
     public void makeAppointmentCheckTest(){
 
-        Result result = counselService.makeAppointment(dto);
+        Result result = counselService.makeAppointment(bo);
         Assert.assertEquals(ResultCode.FAIL,result.getCode());
     }
 
     @Test
     public void insertAppointmentTest(){
-        dto.setAppointmentTime(LocalTime.now());
-        dto.setAppointmentDate(LocalDate.now().plusDays(1));
-        Result result = counselService.makeAppointment(dto);
+        bo.setAppointmentTime(LocalTime.now());
+        bo.setAppointmentDate(LocalDate.now().plusDays(1));
+        Result result = counselService.makeAppointment(bo);
         Assert.assertEquals(ResultCode.SUCCESS,result.getCode());
     }
 

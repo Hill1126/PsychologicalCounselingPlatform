@@ -10,7 +10,7 @@ import org.gdou.common.result.ResultGenerator;
 import org.gdou.dao.UserMapper;
 import org.gdou.dao.WorkOrderMapper;
 import org.gdou.model.bo.AppointmentTimeBo;
-import org.gdou.model.dto.counsel.MakeAppointmentDto;
+import org.gdou.model.bo.MakeAppointmentBO;
 import org.gdou.model.po.WorkOrder;
 import org.gdou.model.qo.AvailableTimeQo;
 import org.gdou.model.qo.TeacherChatQo;
@@ -21,8 +21,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author HILL
@@ -55,8 +55,8 @@ public class CounselService {
         List<AppointmentTimeBo> timeList = workOrderMapper.getAppointmentById(new AvailableTimeQo(id,
                 now,now.plusDays(1)));
         //分离出今天与明天已预约的时间
-        HashMap<LocalTime, Boolean> todayListMap = TimeQuantum.getDefaultTimeMap();
-        HashMap<LocalTime, Boolean> tomorrowTimeMap = TimeQuantum.getDefaultTimeMap();
+        Map<LocalTime, Boolean> todayListMap = TimeQuantum.getDefaultTimeMap();
+        Map<LocalTime, Boolean> tomorrowTimeMap = TimeQuantum.getDefaultTimeMap();
         timeList.forEach((bo)->{
             //根据日期设定某个时间段已经被预约
             if(bo.getAppointmentDate().equals(now)){
@@ -69,15 +69,15 @@ public class CounselService {
 
     }
 
-    public Result makeAppointment(MakeAppointmentDto dto){
+    public Result makeAppointment(MakeAppointmentBO bo){
         //根据dto构建WorkOrder对象
         WorkOrder workOrder = new WorkOrder();
-        BeanUtils.copyProperties(dto,workOrder);
+        BeanUtils.copyProperties(bo,workOrder);
         workOrder.setCreateAt(LocalDateTime.now());
         workOrder.setStatus(WorkOrderStatus.READY);
         synchronized (this){
             //判断当前时间段是否已经被预约
-            if (workOrderMapper.checkAppointmentBeforeInsert(dto)>0){
+            if (workOrderMapper.checkAppointmentBeforeInsert(bo)>0){
                 return ResultGenerator.genFailResult("该时间段已被预约");
             }
             workOrderMapper.insert(workOrder);
@@ -88,5 +88,15 @@ public class CounselService {
     }
 
 
-
+    /**
+     * 根据id查询当前未完成的咨询工单
+     * @Author: HILL
+     * @date: 2020/3/24 22:17
+     *
+     * @param id 要查询的id
+     * @return: org.gdou.common.result.Result
+    **/
+    public Result getWorkOrderByID(Integer id) {
+        return ResultGenerator.genSuccessResult(workOrderMapper.getMyAppointmentById(id));
+    }
 }

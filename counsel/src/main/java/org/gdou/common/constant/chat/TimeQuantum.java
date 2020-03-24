@@ -2,6 +2,7 @@ package org.gdou.common.constant.chat;
 
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * 描述时间段，用于预约时的时间段确定
@@ -37,9 +38,9 @@ public class TimeQuantum {
      *
      * @return: java.util.HashMap<java.time.LocalTime,java.lang.Boolean>
     **/
-    public static HashMap<LocalTime,Boolean> getDefaultTimeMap(){
-        var map = new HashMap<LocalTime,Boolean>(8);
-        timeMap.putAll(map);
+    public static TreeMap<LocalTime,Boolean> getDefaultTimeMap(){
+        var map = new TreeMap<LocalTime,Boolean>();
+        map.putAll(timeMap);
         return map;
     }
 
