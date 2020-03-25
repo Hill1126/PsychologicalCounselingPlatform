@@ -7,11 +7,14 @@ import org.gdou.common.constant.chat.TimeQuantum;
 import org.gdou.common.constant.chat.WorkOrderStatus;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
+import org.gdou.dao.MsgRecordMapper;
 import org.gdou.dao.UserMapper;
 import org.gdou.dao.WorkOrderMapper;
 import org.gdou.model.bo.AppointmentTimeBo;
 import org.gdou.model.bo.MakeAppointmentBO;
+import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.po.WorkOrder;
+import org.gdou.model.po.example.MsgRecordExample;
 import org.gdou.model.qo.AvailableTimeQo;
 import org.gdou.model.qo.CounselHistoryQo;
 import org.gdou.model.qo.TeacherChatQo;
@@ -37,12 +40,13 @@ public class CounselService {
 
     private UserMapper userMapper;
     private WorkOrderMapper workOrderMapper;
+    private MsgRecordMapper msgRecordMapper;
 
-    public CounselService(UserMapper userMapper, WorkOrderMapper workOrderMapper) {
+    public CounselService(UserMapper userMapper, WorkOrderMapper workOrderMapper, MsgRecordMapper msgRecordMapper) {
         this.userMapper = userMapper;
         this.workOrderMapper = workOrderMapper;
+        this.msgRecordMapper = msgRecordMapper;
     }
-
 
     public PageInfo getTeacherList(int pageNum, int pageSize, boolean isHot){
         PageHelper.startPage(pageNum,pageSize);
@@ -117,4 +121,12 @@ public class CounselService {
         return ResultGenerator.genSuccessResult(historyList);
     }
 
+    public Result getMsgRecord(Integer wordOrderId, PageInfoDto pageInfoDto) {
+        MsgRecordExample recordExample = new MsgRecordExample();
+        recordExample.createCriteria().andOrderIdEqualTo(wordOrderId);
+        //根据发送时间的降序排列
+        recordExample.setOrderByClause("time desc");
+        PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
+        return ResultGenerator.genSuccessResult(PageInfo.of(msgRecordMapper.selectByExample(recordExample)));
+    }
 }

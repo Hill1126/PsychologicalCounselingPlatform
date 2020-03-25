@@ -3,6 +3,7 @@ package org.gdou.counsel.workorder;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultCode;
 import org.gdou.model.bo.MakeAppointmentBO;
+import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.qo.CounselHistoryQo;
 import org.gdou.service.impl.CounselService;
 import org.junit.Assert;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * @author HILL
@@ -74,6 +76,16 @@ public class ServiceTest {
         qo.setStudentId(14);
         Result myCounselHistory = counselService.getMyCounselHistory(qo);
         System.out.println(myCounselHistory.getData().toString());
+    }
+
+    @Test
+    public void getMsgRecordTest(){
+        PageInfoDto dto = new PageInfoDto();
+        dto.setPageSize(10);
+        dto.setPageNum(1);
+        Result msgRecord = counselService.getMsgRecord(10010,dto);
+        var data = (List)msgRecord.getData();
+        Assert.assertNotNull(data);
     }
 
 }

@@ -119,7 +119,7 @@ public class WebSocketServer {
         boolean success = sendMessage(messageDto);
         //如果成功，则记录消息
         if (success){
-            MsgRecord msgRecord = MsgRecord.builder().orderId(this.orderId).content(messageDto.getContent())
+           MsgRecord msgRecord = MsgRecord.builder().orderId(this.orderId).content(messageDto.getContent())
                     .senderName(user.getName()).receiverName(onlineClient.get(messageDto.getReceiverId()).getUser().getName())
                     .time(LocalDateTime.now()).build();
             msgRecordMapper.insert(msgRecord);

@@ -7,6 +7,7 @@ import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
 import org.gdou.model.bo.MakeAppointmentBO;
+import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.dto.counsel.MakeAppointmentDto;
 import org.gdou.model.po.User;
 import org.gdou.model.qo.CounselHistoryQo;
@@ -126,6 +127,18 @@ public class CounselController {
         return counselService.getMyCounselHistory(historyQo);
     }
 
+    /**
+     * 返回用户咨询历史聊天记录
+     * @Author: HILL
+     * @date: 2020/3/25 22:22
+     *
+     * @param wordOrderId
+     * @return: org.gdou.common.result.Result
+    **/
+    @RequestMapping("/msgRecord")
+    public Result getMsgRecord(Integer wordOrderId, @Validated PageInfoDto pageInfoDto){
+       return counselService.getMsgRecord(wordOrderId,pageInfoDto);
+    }
 
 
 

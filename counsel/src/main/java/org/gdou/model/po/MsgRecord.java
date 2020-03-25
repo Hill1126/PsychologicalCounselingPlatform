@@ -1,9 +1,11 @@
 package org.gdou.model.po;
 
 import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 @Builder
 public class MsgRecord {
     private Integer id;
@@ -17,6 +19,19 @@ public class MsgRecord {
     private LocalDateTime time;
 
     private String content;
+
+    public MsgRecord(){
+
+    }
+
+    public MsgRecord(Integer id, Integer orderId, String senderName, String receiverName, LocalDateTime time, String content) {
+        this.id = id;
+        this.orderId = orderId;
+        this.senderName = senderName;
+        this.receiverName = receiverName;
+        this.time = time;
+        this.content = content;
+    }
 
     public Integer getId() {
         return id;
