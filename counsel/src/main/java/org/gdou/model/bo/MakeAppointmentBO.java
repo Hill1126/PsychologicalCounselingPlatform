@@ -14,7 +14,9 @@ import java.time.LocalTime;
 public class MakeAppointmentBO {
 
     private Integer studentId;
+    private String studentName;
     private Integer teacherId;
+    private String teacherName;
     private LocalDate  appointmentDate;
     private LocalTime appointmentTime;
 }

@@ -6,6 +6,8 @@ import org.gdou.model.bo.MakeAppointmentBO;
 import org.gdou.model.po.WorkOrder;
 import org.gdou.model.po.example.WorkOrderExample;
 import org.gdou.model.qo.AvailableTimeQo;
+import org.gdou.model.qo.CounselHistoryQo;
+import org.gdou.model.vo.CounselHistoryVo;
 import org.gdou.model.vo.MyAppointmentVo;
 
 import java.util.List;
@@ -27,7 +29,9 @@ public interface WorkOrderMapper {
 
     List<AppointmentTimeBo> getAppointmentById(AvailableTimeQo availableTimeQo);
 
-    List<MyAppointmentVo> getMyAppointmentById(Integer studentId);
+    List<MyAppointmentVo> getMyAppointmentById(Integer id);
+
+    List<CounselHistoryVo> getCounselHistory(CounselHistoryQo counselHistoryQo);
 
     int checkAppointmentBeforeInsert(MakeAppointmentBO dto);
 

@@ -22,6 +22,16 @@
     <result column="teacher_name" jdbcType="VARCHAR" property="teacherName"/>
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
+  <resultMap id="historyCounselMap" type="org.gdou.model.vo.CounselHistoryVo">
+    <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="student_id" jdbcType="INTEGER" property="studentId"/>
+    <result column="appointment_time" jdbcType="TIME" property="appointmentTime" />
+    <result column="appointment_date" jdbcType="DATE" property="appointmentDate" />
+    <result column="teacher_name" jdbcType="VARCHAR" property="teacherName"/>
+    <result column="student_name" jdbcType="VARCHAR" property="studentName"/>
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -224,6 +234,55 @@
           work_order.teacher_id = `user`.id
       AND student_id = #{value}
       AND work_order.`status` = 1
+  </select>
+  <select id="getCounselHistory" resultType="org.gdou.model.vo.CounselHistoryVo"
+   parameterType="org.gdou.model.qo.CounselHistoryQo" resultMap="historyCounselMap">
+    SELECT
+          `user`.`name` AS
+         <if test="teacherId!=null">student_name,</if>
+         <if test="studentId!=null">student_name,</if>
+          Raw.appointment_date,
+          Raw.appointment_time,
+          Raw.`status`,
+          Raw.student_id,
+          Raw.teacher_id,
+          Raw.title,
+        <if test="teacherId!=null"> Raw.teacher_name</if>
+        <if test="studentId!=null"> Raw.student_name</if>
+      FROM
+          `user`,
+          (
+              SELECT
+                  teacher_id,
+                  `user`.`name` AS
+                  <if test="teacherId!=null">teacher_name,</if>
+                  <if test="studentId!=null">student_name,</if>
+                  student_id,
+                  `status`,
+                  appointment_time,
+                  appointment_date,
+                  title
+              FROM
+                  work_order,
+                  `user`
+              WHERE
+              `status` != 1
+              <if test="teacherId!=null">
+                AND    teacher_id = #{teacherId}
+                AND teacher_id = `user`.id
+              </if>
+              <if test="studentId!=null">
+                AND    student_id = #{studentId}
+                AND    student_id = `user`.id
+              </if>
+          ) Raw
+      WHERE
+        <if test="teacherId!=null">Raw.student_id = `user`.id</if>
+        <if test="studentId!=null">Raw.teacher_id = `user`.id</if>
+
+
+
+
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update work_order

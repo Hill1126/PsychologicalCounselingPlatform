@@ -13,8 +13,10 @@ import org.gdou.model.bo.AppointmentTimeBo;
 import org.gdou.model.bo.MakeAppointmentBO;
 import org.gdou.model.po.WorkOrder;
 import org.gdou.model.qo.AvailableTimeQo;
+import org.gdou.model.qo.CounselHistoryQo;
 import org.gdou.model.qo.TeacherChatQo;
 import org.gdou.model.vo.AppointmentTimeVo;
+import org.gdou.model.vo.CounselHistoryVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +77,8 @@ public class CounselService {
         BeanUtils.copyProperties(bo,workOrder);
         workOrder.setCreateAt(LocalDateTime.now());
         workOrder.setStatus(WorkOrderStatus.READY);
+        //设置本次工单的标题
+        workOrder.setTitle(String.format("%s与%s在%s的咨询",bo.getStudentName(),bo.getTeacherName(),bo.getAppointmentDate()));
         synchronized (this){
             //判断当前时间段是否已经被预约
             if (workOrderMapper.checkAppointmentBeforeInsert(bo)>0){
@@ -83,13 +87,13 @@ public class CounselService {
             workOrderMapper.insert(workOrder);
         }
 
-        return ResultGenerator.genSuccessResult();
+        return ResultGenerator.genSuccessResult("预约成功");
 
     }
 
 
     /**
-     * 根据id查询当前未完成的咨询工单
+     * 根据id查询当前惊醒中的咨询工单
      * @Author: HILL
      * @date: 2020/3/24 22:17
      *
@@ -99,4 +103,18 @@ public class CounselService {
     public Result getWorkOrderByID(Integer id) {
         return ResultGenerator.genSuccessResult(workOrderMapper.getMyAppointmentById(id));
     }
+
+    /**
+     * 根据当前用户的id查询相应的历史咨询数据
+     * @Author: HILL
+     * @date: 2020/3/25 17:16
+     *
+     * @param qo
+     * @return: org.gdou.common.result.Result
+    **/
+    public Result getMyCounselHistory(CounselHistoryQo qo){
+        List<CounselHistoryVo> historyList = workOrderMapper.getCounselHistory(qo);
+        return ResultGenerator.genSuccessResult(historyList);
+    }
+
 }

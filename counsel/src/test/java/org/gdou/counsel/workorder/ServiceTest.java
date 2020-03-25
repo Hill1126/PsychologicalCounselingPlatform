@@ -3,6 +3,7 @@ package org.gdou.counsel.workorder;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultCode;
 import org.gdou.model.bo.MakeAppointmentBO;
+import org.gdou.model.qo.CounselHistoryQo;
 import org.gdou.service.impl.CounselService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,7 +35,9 @@ public class ServiceTest {
         bo.setAppointmentDate(LocalDate.of(2020,3,23));
         bo.setAppointmentTime(LocalTime.of(9,0));
         bo.setStudentId(14);
+        bo.setStudentName("testStudent");
         bo.setTeacherId(15);
+        bo.setTeacherName("testTeacher");
     }
 
     @Test
@@ -59,5 +62,18 @@ public class ServiceTest {
         Assert.assertEquals(ResultCode.SUCCESS,result.getCode());
     }
 
+    @Test
+    public void historyCounselTest(){
+
+        CounselHistoryQo qo = new CounselHistoryQo();
+        qo.setTeacherId(15);
+        Result history = counselService.getMyCounselHistory(qo);
+        System.out.println(history.getData().toString());
+        Assert.assertNotNull(history.getData());
+        qo.setTeacherId(null);
+        qo.setStudentId(14);
+        Result myCounselHistory = counselService.getMyCounselHistory(qo);
+        System.out.println(myCounselHistory.getData().toString());
+    }
 
 }
