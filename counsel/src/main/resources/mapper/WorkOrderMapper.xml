@@ -281,10 +281,26 @@
         <if test="studentId!=null">Raw.teacher_id = `user`.id</if>
 
 
-
-
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+
+    <select id="getTodoCounsel" resultType="org.gdou.model.bo.TodoCounselBo"
+     parameterType="org.gdou.model.qo.AvailableTimeQo" resultMap="historyCounselMap">
+        SELECT
+            student_id,
+            `user`.`name` as student_name,
+            appointment_date,
+            appointment_time,
+            title
+        FROM
+            work_order,
+            `user`
+        WHERE
+            student_id = `user`.id
+        AND teacher_id = #{id}
+        AND appointment_date BETWEEN #{startDate} AND #{endDate}
+        AND `status` = 1
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update work_order
     <set>
       <if test="record.id != null">

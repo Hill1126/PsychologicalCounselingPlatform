@@ -88,4 +88,10 @@ public class ServiceTest {
         Assert.assertNotNull(data);
     }
 
+    @Test
+    public void getTodoCounselTest(){
+        Result counsel = counselService.getTodoCounsel(14);
+        System.out.println(counsel.getData());
+    }
+
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 /**
+ * 存放需要查询的id，和时间间隔
  * @author HILL
  * @version V1.0
  * @date 2020/3/22

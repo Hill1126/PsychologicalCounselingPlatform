@@ -3,6 +3,7 @@ package org.gdou.dao;
 import org.apache.ibatis.annotations.Param;
 import org.gdou.model.bo.AppointmentTimeBo;
 import org.gdou.model.bo.MakeAppointmentBO;
+import org.gdou.model.bo.TodoCounselBo;
 import org.gdou.model.po.WorkOrder;
 import org.gdou.model.po.example.WorkOrderExample;
 import org.gdou.model.qo.AvailableTimeQo;
@@ -42,4 +43,6 @@ public interface WorkOrderMapper {
     int updateByPrimaryKeySelective(WorkOrder record);
 
     int updateByPrimaryKey(WorkOrder record);
+
+    List<TodoCounselBo> getTodoCounsel(AvailableTimeQo availableTimeQoo);
 }

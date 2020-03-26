@@ -12,6 +12,7 @@ import org.gdou.dao.UserMapper;
 import org.gdou.dao.WorkOrderMapper;
 import org.gdou.model.bo.AppointmentTimeBo;
 import org.gdou.model.bo.MakeAppointmentBO;
+import org.gdou.model.bo.TodoCounselBo;
 import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.po.WorkOrder;
 import org.gdou.model.po.example.MsgRecordExample;
@@ -20,12 +21,14 @@ import org.gdou.model.qo.CounselHistoryQo;
 import org.gdou.model.qo.TeacherChatQo;
 import org.gdou.model.vo.AppointmentTimeVo;
 import org.gdou.model.vo.CounselHistoryVo;
+import org.gdou.model.vo.TodoListVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -128,5 +131,33 @@ public class CounselService {
         recordExample.setOrderByClause("time desc");
         PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
         return ResultGenerator.genSuccessResult(PageInfo.of(msgRecordMapper.selectByExample(recordExample)));
+    }
+
+    /**
+     * 返回老师当前进行中的预约单
+     * 同时区分今日和明日
+     * @Author: HILL
+     * @date: 2020/3/26 22:23
+     *
+     * @param id 老师的id
+     * @return: org.gdou.common.result.Result
+    **/
+    public Result getTodoCounsel(Integer id) {
+        LocalDate now = LocalDate.now();
+        AvailableTimeQo qo = new AvailableTimeQo(id,now,now.plusDays(1));
+        List<TodoCounselBo> todoCounselList = workOrderMapper.getTodoCounsel(qo);
+        var todayCounsel = new ArrayList<TodoCounselBo>();
+        var tomorrowCounsel = new ArrayList<TodoCounselBo>();
+        //将获取的vo按照日期分为两个List
+        todoCounselList.forEach((counselVo)->{
+            if (counselVo.getAppointmentDate().equals(now)){
+                todayCounsel.add(counselVo);
+            }else{
+                tomorrowCounsel.add(counselVo);
+            }
+        });
+        todoCounselList.clear();
+        return ResultGenerator.genSuccessResult(new TodoListVo(todayCounsel,tomorrowCounsel));
+
     }
 }

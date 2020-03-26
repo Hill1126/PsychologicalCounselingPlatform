@@ -140,6 +140,18 @@ public class CounselController {
        return counselService.getMsgRecord(wordOrderId,pageInfoDto);
     }
 
+    /**
+     * TODO
+     * @Author: HILL
+     * @date: 2020/3/25 23:03
+     * 
+     * @return: org.gdou.common.result.Result
+    **/    
+    @RequestMapping("/todoCounsel")
+    public Result getTodoCounsel(HttpSession session){
+        var user = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
+        return counselService.getTodoCounsel(user.getId());
+    }
 
 
 }
