@@ -19,8 +19,8 @@ public class ThreadPoolTaskConfig {
     @Bean("bosUploadExecutor")
     public ThreadPoolTaskExecutor BosUploadExecutor(){
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(4);
-        executor.setMaxPoolSize(10);
+        executor.setCorePoolSize(1);
+        executor.setMaxPoolSize(4);
         executor.setQueueCapacity(30);
         executor.setKeepAliveSeconds(10);
         executor.setThreadNamePrefix("bosUpload-Thread-");
@@ -28,7 +28,20 @@ public class ThreadPoolTaskConfig {
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
         return executor;
+    }
 
+    @Bean("msgInsertExecutor")
+    public ThreadPoolTaskExecutor MsgInsertExecutor(){
+        var executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(1);
+        executor.setMaxPoolSize(5);
+        executor.setQueueCapacity(30);
+        executor.setKeepAliveSeconds(20);
+        executor.setThreadNamePrefix("msgInsert-Thread-");
+        //拒绝策略为交付给原线程执行
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.initialize();
+        return executor;
     }
 
 }

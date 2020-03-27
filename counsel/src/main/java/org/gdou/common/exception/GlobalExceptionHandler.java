@@ -13,8 +13,9 @@ import java.util.List;
 
 /**
  * @author HILL
- * @version V1.0
- * @date 2020/3/2
+ * @version V1.1
+ * @date 2020/3/27
+ *
  **/
 @RestControllerAdvice
 @Slf4j
@@ -43,7 +44,7 @@ public class GlobalExceptionHandler {
     public Result commonExceptionHandler(Exception e){
 
         log.error(e.getMessage());
-        return ResultGenerator.genFailResult("系统发生未知错误，请稍候再试");
+        return ResultGenerator.genFailResult("系统发生未知错误,错误信息为："+e.getMessage());
     }
 
     @ExceptionHandler(BceClientException.class)

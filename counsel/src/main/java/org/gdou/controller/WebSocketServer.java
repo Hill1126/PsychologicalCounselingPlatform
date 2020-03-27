@@ -7,12 +7,12 @@ import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.constant.chat.WorkOrderStatus;
 import org.gdou.common.exception.WebSocketNullPointException;
 import org.gdou.config.HttpSessionConfigurator;
-import org.gdou.dao.MsgRecordMapper;
 import org.gdou.dao.WorkOrderMapper;
 import org.gdou.model.dto.counsel.WebSocketMessageDto;
 import org.gdou.model.po.MsgRecord;
 import org.gdou.model.po.User;
 import org.gdou.model.po.example.WorkOrderExample;
+import org.gdou.service.impl.CounselService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  **/
 @Component
 @Slf4j
-@ServerEndpoint(value = "/chat/{orderId}" ,configurator = HttpSessionConfigurator.class)
+@ServerEndpoint(value = "/chat/{workOrderId}" ,configurator = HttpSessionConfigurator.class)
 public class WebSocketServer {
 
     /**
@@ -53,7 +53,7 @@ public class WebSocketServer {
      * 由于ServerEndPoint不是spring管理，这里提供注入方法给spring注入。
      **/
     private static WorkOrderMapper workOrderMapper;
-    private static MsgRecordMapper msgRecordMapper;
+    private static CounselService counselService;
 
     @Autowired
     public void setWorkOrderMapper(WorkOrderMapper workOrderMapper) {
@@ -61,24 +61,25 @@ public class WebSocketServer {
     }
 
     @Autowired
-    public void setMsgRecordMapper(MsgRecordMapper msgRecordMapper) {
-        WebSocketServer.msgRecordMapper = msgRecordMapper;
+    public  void setCounselService(CounselService counselService) {
+        WebSocketServer.counselService = counselService;
     }
+
 
     /**
      * 当客户端打开连接：1.添加会话对象 2.更新在线人数
      */
     @OnOpen
-    public void onOpen(Session session, EndpointConfig config , @PathParam("orderId") int orderId) throws IOException {
+    public void onOpen(Session session, EndpointConfig config , @PathParam("workOrderId") int workOrderId) throws IOException {
         this.user = getUserFromConfig(config);
         int currentUserId = user.getId();
-        this.orderId = orderId;
+        this.orderId = workOrderId;
         //放入map中，此session是javax.websocket.session
         this.session = session;
         //验证连接条件,验证当前工单是否存在或已完结。
         WorkOrderExample workOrderExample = new WorkOrderExample();
         var criteria = workOrderExample.createCriteria();
-        criteria.andIdEqualTo(orderId).andStatusEqualTo(WorkOrderStatus.READY);
+        criteria.andIdEqualTo(workOrderId).andStatusEqualTo(WorkOrderStatus.READY);
         boolean exitsOrder = workOrderMapper.countByExample(workOrderExample)>0?true:false;
         //如果已存在连接，或工单状态检查失败
         if (onlineClient.containsKey(currentUserId) && !exitsOrder){
@@ -119,16 +120,20 @@ public class WebSocketServer {
         boolean success = sendMessage(messageDto);
         //如果成功，则记录消息
         if (success){
-           MsgRecord msgRecord = MsgRecord.builder().orderId(this.orderId).content(messageDto.getContent())
-                    .senderName(user.getName()).receiverName(onlineClient.get(messageDto.getReceiverId()).getUser().getName())
-                    .time(LocalDateTime.now()).build();
-            msgRecordMapper.insert(msgRecord);
-            //更新redis的记录时间
+            buildMsgRecord(messageDto);
         }else {
             session.getBasicRemote().sendText("【系统消息】消息发送失败，对方已断开连接！");
         }
 
     }
+
+    private void buildMsgRecord(WebSocketMessageDto messageDto) {
+        MsgRecord msgRecord = MsgRecord.builder().orderId(this.orderId).content(messageDto.getContent())
+                .senderName(user.getName()).receiverName(onlineClient.get(messageDto.getReceiverId()).getUser().getName())
+                .time(LocalDateTime.now()).build();
+        counselService.insertMsgRecord(msgRecord);
+    }
+
 
     /**
      * 当关闭连接：1.移除会话对象

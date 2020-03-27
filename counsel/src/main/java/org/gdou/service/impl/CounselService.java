@@ -14,6 +14,7 @@ import org.gdou.model.bo.AppointmentTimeBo;
 import org.gdou.model.bo.MakeAppointmentBO;
 import org.gdou.model.bo.TodoCounselBo;
 import org.gdou.model.dto.PageInfoDto;
+import org.gdou.model.po.MsgRecord;
 import org.gdou.model.po.WorkOrder;
 import org.gdou.model.po.example.MsgRecordExample;
 import org.gdou.model.qo.AvailableTimeQo;
@@ -23,6 +24,7 @@ import org.gdou.model.vo.AppointmentTimeVo;
 import org.gdou.model.vo.CounselHistoryVo;
 import org.gdou.model.vo.TodoListVo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -159,5 +161,19 @@ public class CounselService {
         todoCounselList.clear();
         return ResultGenerator.genSuccessResult(new TodoListVo(todayCounsel,tomorrowCounsel));
 
+    }
+
+    /**
+     * 异步插入消息记录到表中
+     * @Author: HILL
+     * @date: 2020/3/27 21:47
+     *
+     * @param msgRecord
+     * @return: void
+    **/
+    @Async("msgInsertExecutor")
+    public void insertMsgRecord(MsgRecord msgRecord) {
+        msgRecordMapper.insert(msgRecord);
+        //更新redis的记录时间
     }
 }

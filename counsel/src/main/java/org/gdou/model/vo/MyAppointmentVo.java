@@ -19,5 +19,6 @@ public class MyAppointmentVo {
 
     private Integer status;
 
+    private Integer workOrderId;
 
 }

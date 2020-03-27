@@ -21,6 +21,7 @@
     <result column="appointment_date" jdbcType="DATE" property="appointmentDate" />
     <result column="teacher_name" jdbcType="VARCHAR" property="teacherName"/>
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="workOrder_id" jdbcType="INTEGER" property="workOrderId" />
   </resultMap>
   <resultMap id="historyCounselMap" type="org.gdou.model.vo.CounselHistoryVo">
     <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
@@ -32,6 +33,14 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="title" jdbcType="VARCHAR" property="title" />
   </resultMap>
+    <resultMap id="todoCounselMap" type="org.gdou.model.bo.TodoCounselBo">
+        <result column="student_id" jdbcType="INTEGER" property="studentId"/>
+        <result column="appointment_time" jdbcType="TIME" property="appointmentTime" />
+        <result column="appointment_date" jdbcType="DATE" property="appointmentDate" />
+        <result column="student_name" jdbcType="VARCHAR" property="studentName"/>
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="workOrder_id" jdbcType="INTEGER" property="workOrderId" />
+    </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -226,7 +235,8 @@
           `user`.`name` AS teacher_name,
           appointment_time,
           appointment_date,
-          `status`
+          `status`,
+          work_order.id as workOrder_id
       FROM
           work_order,
           `user`
@@ -284,13 +294,14 @@
   </select>
 
     <select id="getTodoCounsel" resultType="org.gdou.model.bo.TodoCounselBo"
-     parameterType="org.gdou.model.qo.AvailableTimeQo" resultMap="historyCounselMap">
+     parameterType="org.gdou.model.qo.AvailableTimeQo" resultMap="todoCounselMap">
         SELECT
             student_id,
             `user`.`name` as student_name,
             appointment_date,
             appointment_time,
-            title
+            title,
+            work_order.id as workOrder_id
         FROM
             work_order,
             `user`

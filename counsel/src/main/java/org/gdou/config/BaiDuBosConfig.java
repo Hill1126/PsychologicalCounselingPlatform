@@ -23,6 +23,7 @@ public class BaiDuBosConfig {
         BosClientConfiguration config = new BosClientConfiguration();
         config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
         config.setEndpoint(GZ_ENDPOINT);
+        config.setEnableHttpAsyncPut(true);
         return new BosClient(config);
 
     }

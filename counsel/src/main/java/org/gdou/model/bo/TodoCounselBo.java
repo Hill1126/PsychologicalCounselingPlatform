@@ -18,5 +18,6 @@ public class TodoCounselBo {
     private LocalTime appointmentTime;
     private LocalDate appointmentDate;
     private String title;
+    private Integer workOrderId;
 
 }
