@@ -1,9 +1,10 @@
 package org.gdou.model.po;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class User {
+public class User implements Serializable {
     private Integer id;
 
     @NotBlank(message = "名字不能为空")

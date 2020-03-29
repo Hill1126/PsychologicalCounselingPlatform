@@ -44,7 +44,7 @@ public class WebSocketServer {
 
     @Getter
     private User user ;
-    private int orderId;
+    private int workOrderId;
     private Session session;
 
 
@@ -73,7 +73,7 @@ public class WebSocketServer {
     public void onOpen(Session session, EndpointConfig config , @PathParam("workOrderId") int workOrderId) throws IOException {
         this.user = getUserFromConfig(config);
         int currentUserId = user.getId();
-        this.orderId = workOrderId;
+        this.workOrderId = workOrderId;
         //放入map中，此session是javax.websocket.session
         this.session = session;
         //验证连接条件,验证当前工单是否存在或已完结。
@@ -128,7 +128,7 @@ public class WebSocketServer {
     }
 
     private void buildMsgRecord(WebSocketMessageDto messageDto) {
-        MsgRecord msgRecord = MsgRecord.builder().orderId(this.orderId).content(messageDto.getContent())
+        MsgRecord msgRecord = MsgRecord.builder().orderId(this.workOrderId).content(messageDto.getContent())
                 .senderName(user.getName()).receiverName(onlineClient.get(messageDto.getReceiverId()).getUser().getName())
                 .time(LocalDateTime.now()).build();
         counselService.insertMsgRecord(msgRecord);

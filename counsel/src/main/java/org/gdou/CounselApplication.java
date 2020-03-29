@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * 启动类
@@ -16,6 +17,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @MapperScan(basePackages = "org.gdou.dao")
 @ServletComponentScan(basePackages = "org.gdou.common.listener.*")
 @EnableAsync
+@EnableScheduling
 public class CounselApplication {
     public static void main(String[] args) {
         SpringApplication.run(CounselApplication.class, args);

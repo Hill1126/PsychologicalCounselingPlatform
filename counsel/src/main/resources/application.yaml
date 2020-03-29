@@ -42,6 +42,17 @@ spring:
       enabled: true
       force: true
 
+  #redis相关
+  redis:
+    host: 18.163.180.46
+    password: wbxgsnmm...
+    jedis:
+      pool:
+        max-active: 10
+        max-wait: -1
+        max-idle: 4
+        min-idle: 0
+    timeout: 2000
 mybatis:
   type-aliases-package: org.gdou.model.po
   mapper-locations: classpath:mapper/*.xml
@@ -50,5 +61,7 @@ pagehelper:
   support-methods-arguments: true
   params: count=countSql
   helper-dialect: mysql
+
+
 
 
