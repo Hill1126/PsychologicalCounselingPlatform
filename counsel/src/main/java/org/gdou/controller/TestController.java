@@ -5,15 +5,16 @@ import org.gdou.common.result.ResultGenerator;
 import org.gdou.common.utils.RedisUtil;
 import org.gdou.model.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author HILL
  * @version V1.0
  * @date 2020/3/29
  **/
-@Controller("/test")
+@RestController
+@RequestMapping("/test")
 public class TestController {
 
     @Autowired
