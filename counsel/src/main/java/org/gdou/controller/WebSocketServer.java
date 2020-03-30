@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.constant.chat.WorkOrderStatus;
 import org.gdou.common.exception.WebSocketNullPointException;
+import org.gdou.common.utils.RedisUtil;
 import org.gdou.config.HttpSessionConfigurator;
 import org.gdou.dao.WorkOrderMapper;
 import org.gdou.model.dto.counsel.WebSocketMessageDto;
@@ -54,6 +55,12 @@ public class WebSocketServer {
      **/
     private static WorkOrderMapper workOrderMapper;
     private static CounselService counselService;
+    private static RedisUtil redisUtil;
+
+    @Autowired
+    public  void setRedisUtil(RedisUtil redisUtil) {
+        WebSocketServer.redisUtil = redisUtil;
+    }
 
     @Autowired
     public void setWorkOrderMapper(WorkOrderMapper workOrderMapper) {

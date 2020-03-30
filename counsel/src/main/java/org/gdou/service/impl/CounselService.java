@@ -3,10 +3,12 @@ package org.gdou.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.constant.chat.TimeQuantum;
 import org.gdou.common.constant.chat.WorkOrderStatus;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
+import org.gdou.common.utils.RedisUtil;
 import org.gdou.dao.MsgRecordMapper;
 import org.gdou.dao.UserMapper;
 import org.gdou.dao.WorkOrderMapper;
@@ -46,11 +48,13 @@ public class CounselService {
     private UserMapper userMapper;
     private WorkOrderMapper workOrderMapper;
     private MsgRecordMapper msgRecordMapper;
+    private RedisUtil redisUtil;
 
-    public CounselService(UserMapper userMapper, WorkOrderMapper workOrderMapper, MsgRecordMapper msgRecordMapper) {
+    public CounselService(UserMapper userMapper, WorkOrderMapper workOrderMapper, MsgRecordMapper msgRecordMapper, RedisUtil redisUtil) {
         this.userMapper = userMapper;
         this.workOrderMapper = workOrderMapper;
         this.msgRecordMapper = msgRecordMapper;
+        this.redisUtil = redisUtil;
     }
 
     public PageInfo getTeacherList(int pageNum, int pageSize, boolean isHot){
@@ -164,7 +168,7 @@ public class CounselService {
     }
 
     /**
-     * 异步插入消息记录到表中
+     * 异步插入消息记录到表中,并更新redis当前咨询工单的活跃时间
      * @Author: HILL
      * @date: 2020/3/27 21:47
      *
@@ -175,5 +179,7 @@ public class CounselService {
     public void insertMsgRecord(MsgRecord msgRecord) {
         msgRecordMapper.insert(msgRecord);
         //更新redis的记录时间
+        redisUtil.hset(ProjectConstant.ORDER_KEY,msgRecord.getOrderId().toString(),
+                "1",ProjectConstant.ORDER_KEY_EXPRIE);
     }
 }

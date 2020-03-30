@@ -8,6 +8,7 @@ import org.gdou.model.po.WorkOrder;
 import org.gdou.model.po.example.WorkOrderExample;
 import org.gdou.model.qo.AvailableTimeQo;
 import org.gdou.model.qo.CounselHistoryQo;
+import org.gdou.model.qo.TimeQo;
 import org.gdou.model.vo.CounselHistoryVo;
 import org.gdou.model.vo.MyAppointmentVo;
 
@@ -44,5 +45,14 @@ public interface WorkOrderMapper {
 
     int updateByPrimaryKey(WorkOrder record);
 
+    void updateStatusByIds(List<Integer> ids);
+
+
     List<TodoCounselBo> getTodoCounsel(AvailableTimeQo availableTimeQoo);
+
+    List<Integer> getTimeUpOrderId(TimeQo timeQo);
+
+
+
+
 }

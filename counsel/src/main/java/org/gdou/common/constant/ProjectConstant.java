@@ -9,5 +9,8 @@ package org.gdou.common.constant;
 public final class ProjectConstant {
 
     public static final String USER_SESSION_KEY = "USER";
+    public static final String ORDER_KEY = "COUNSEL_ORDER";
+    public static final Long ORDER_KEY_EXPRIE = 1000*60*15L;
+
     public static final String AVATAR_BUCKET_NAME = "avatar-img";
 }

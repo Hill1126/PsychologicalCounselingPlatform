@@ -311,6 +311,15 @@
         AND appointment_date BETWEEN #{startDate} AND #{endDate}
         AND `status` = 1
     </select>
+    <select id="getTimeUpOrderId" resultType="java.lang.Integer" parameterType="org.gdou.model.qo.TimeQo">
+
+            select id
+            from work_order
+            where appointment_time <![CDATA[ <= ]]> #{time}
+            and appointment_date <![CDATA[ <= ]]> #{endDate}
+            and status = 1;
+
+    </select>
     <update id="updateByExampleSelective" parameterType="map">
     update work_order
     <set>
@@ -395,4 +404,14 @@
       title = #{title,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <update id="updateStatusByIds">
+        update work_order
+        set status = 2
+        where id in
+        <foreach collection="list" item="id" index="index"
+                 open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </update>
 </mapper>

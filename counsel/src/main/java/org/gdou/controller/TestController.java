@@ -33,9 +33,9 @@ public class TestController {
     @RequestMapping("/get")
     public Result redisGetTest(){
         long start = System.currentTimeMillis();
-        Object test = redisUtil.get("test");
+        User test = (User)redisUtil.get("test");
         long end = System.currentTimeMillis();
-        return ResultGenerator.genSuccessResult((start-end)+"ms");
+        return ResultGenerator.genSuccessResult((start-end)+test.getName());
     }
 
 }
