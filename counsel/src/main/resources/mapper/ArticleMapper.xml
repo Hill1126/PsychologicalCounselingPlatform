@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gdou.dao.ArticleMapper">
+  <resultMap id="BaseResultMap" type="org.gdou.model.po.Article">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="article_source" jdbcType="VARCHAR" property="articleSource" />
+    <result column="article_url" jdbcType="VARCHAR" property="articleUrl" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="article_category" jdbcType="VARCHAR" property="articleCategory" />
+    <result column="article_label" jdbcType="VARCHAR" property="articleLabel" />
+    <result column="article_status" jdbcType="INTEGER" property="articleStatus" />
+    <result column="head_img_url" jdbcType="VARCHAR" property="headImgUrl" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.gdou.model.po.Article">
+    <result column="article_content" jdbcType="LONGVARCHAR" property="articleContent" />
+    <result column="content_html" jdbcType="LONGVARCHAR" property="contentHtml" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, create_at, update_at, article_source, article_url, author, article_category, 
+    article_label, article_status, head_img_url
+  </sql>
+  <sql id="Blob_Column_List">
+    article_content, content_html
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.gdou.model.po.Article">
+    insert into article (id, title, create_at, 
+      update_at, article_source, article_url, 
+      author, article_category, article_label, 
+      article_status, head_img_url, article_content, 
+      content_html)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{articleSource,jdbcType=VARCHAR}, #{articleUrl,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{articleCategory,jdbcType=VARCHAR}, #{articleLabel,jdbcType=VARCHAR}, 
+      #{articleStatus,jdbcType=INTEGER}, #{headImgUrl,jdbcType=VARCHAR}, #{articleContent,jdbcType=LONGVARCHAR}, 
+      #{contentHtml,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.gdou.model.po.Article">
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="updateAt != null">
+        update_at,
+      </if>
+      <if test="articleSource != null">
+        article_source,
+      </if>
+      <if test="articleUrl != null">
+        article_url,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="articleCategory != null">
+        article_category,
+      </if>
+      <if test="articleLabel != null">
+        article_label,
+      </if>
+      <if test="articleStatus != null">
+        article_status,
+      </if>
+      <if test="headImgUrl != null">
+        head_img_url,
+      </if>
+      <if test="articleContent != null">
+        article_content,
+      </if>
+      <if test="contentHtml != null">
+        content_html,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null">
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleSource != null">
+        #{articleSource,jdbcType=VARCHAR},
+      </if>
+      <if test="articleUrl != null">
+        #{articleUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="articleCategory != null">
+        #{articleCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="articleLabel != null">
+        #{articleLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="articleStatus != null">
+        #{articleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="headImgUrl != null">
+        #{headImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="articleContent != null">
+        #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="contentHtml != null">
+        #{contentHtml,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.gdou.model.po.Article">
+    update article
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleSource != null">
+        article_source = #{articleSource,jdbcType=VARCHAR},
+      </if>
+      <if test="articleUrl != null">
+        article_url = #{articleUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="articleCategory != null">
+        article_category = #{articleCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="articleLabel != null">
+        article_label = #{articleLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="articleStatus != null">
+        article_status = #{articleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="headImgUrl != null">
+        head_img_url = #{headImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="articleContent != null">
+        article_content = #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="contentHtml != null">
+        content_html = #{contentHtml,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.gdou.model.po.Article">
+    update article
+    set title = #{title,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      article_source = #{articleSource,jdbcType=VARCHAR},
+      article_url = #{articleUrl,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      article_category = #{articleCategory,jdbcType=VARCHAR},
+      article_label = #{articleLabel,jdbcType=VARCHAR},
+      article_status = #{articleStatus,jdbcType=INTEGER},
+      head_img_url = #{headImgUrl,jdbcType=VARCHAR},
+      article_content = #{articleContent,jdbcType=LONGVARCHAR},
+      content_html = #{contentHtml,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.gdou.model.po.Article">
+    update article
+    set title = #{title,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      article_source = #{articleSource,jdbcType=VARCHAR},
+      article_url = #{articleUrl,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      article_category = #{articleCategory,jdbcType=VARCHAR},
+      article_label = #{articleLabel,jdbcType=VARCHAR},
+      article_status = #{articleStatus,jdbcType=INTEGER},
+      head_img_url = #{headImgUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
