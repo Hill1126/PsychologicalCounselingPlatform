@@ -2,7 +2,7 @@ package org.gdou.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.result.Result;
-import org.gdou.common.result.ResultGenerator;
+import org.gdou.service.impl.ArticleService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,11 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ArticleController {
 
+    private ArticleService articleService;
 
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 
-    @RequestMapping("/getArticleList")
-    public Result getArticle(String category){
-        return ResultGenerator.genSuccessResult(category);
+    @RequestMapping("/getArticleCategory")
+    public Result getArticleCategory(){
+        return articleService.getArticleCategory();
     }
 
 

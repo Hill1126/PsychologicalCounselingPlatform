@@ -18,6 +18,13 @@
     from config
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getValueByName" resultType="java.lang.String">
+    SELECT `value`
+    FROM config
+    WHERE `name` = #{param2}
+    AND `status` = 1
+    AND scope = #{param1}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from config
     where id = #{id,jdbcType=INTEGER}
