@@ -33,13 +33,13 @@ public class CounselTimeJob {
     }
 
     /**
-     * 每隔一小时进行工单的更新。
+     * 从10点到22点，每隔一小时进行工单的更新。
      * @Author: HILL
      * @date: 2020/3/27 22:22
      *
      * @return: void
     **/
-    @Scheduled(cron = "0 2 */1 * * ?")
+    @Scheduled(cron = "0 2 10-22/1 * * ?")
     public void updateOrderStatus(){
         log.info("定时任务：updateOrderStatus已启动");
         //获取需要更新状态的id

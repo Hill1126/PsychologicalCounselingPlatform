@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 public class PageInfoDto {
 
     @NotNull(message = "分页信息不能为空")
-    private Integer pageSize;
+    private Integer pageSize = 5;
     @NotNull(message = "分页信息不能为空")
-    private Integer pageNum;
+    private Integer pageNum = 1;
 
 }

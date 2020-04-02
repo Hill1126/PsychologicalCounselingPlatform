@@ -2,7 +2,9 @@ package org.gdou.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.result.Result;
+import org.gdou.model.dto.PageInfoDto;
 import org.gdou.service.impl.ArticleService;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +30,15 @@ public class ArticleController {
         return articleService.getArticleCategory();
     }
 
+    @RequestMapping("/preview")
+    public Result getArticlePreview(PageInfoDto pageInfoDto,String category){
+        return articleService.getArticlePreview(pageInfoDto,category);
+    }
+
+    @RequestMapping("/{articleId}")
+    public Result getArticle(@PathVariable Integer articleId){
+        return articleService.getArticleById(articleId);
+    }
 
 
 }

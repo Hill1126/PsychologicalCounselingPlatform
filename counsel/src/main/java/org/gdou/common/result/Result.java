@@ -8,6 +8,7 @@ package org.gdou.common.result;
  *
 **/
 public class Result<T> {
+    private static final String DEFAULT_SUCCESS_MESSAGE = "SUCCESS";
     private int code;
     private String message;
     private T data;
@@ -38,6 +39,34 @@ public class Result<T> {
         this.data = data;
         return this;
     }
+
+
+
+    public static Result genSuccessResult() {
+        return new Result()
+                .setCode(ResultCode.SUCCESS)
+                .setMessage(DEFAULT_SUCCESS_MESSAGE);
+    }
+
+    public static <T> Result<T> genSuccessResult(T data) {
+        return new Result()
+                .setCode(ResultCode.SUCCESS)
+                .setMessage(DEFAULT_SUCCESS_MESSAGE)
+                .setData(data);
+    }
+
+    public static Result genFailResult(String message) {
+        return new Result()
+                .setCode(ResultCode.FAIL)
+                .setMessage(message);
+    }
+
+    public static Result genNotFound(String message){
+        return new Result()
+                .setCode(ResultCode.NOT_FOUND)
+                .setMessage(message);
+    }
+
 
     @Override
     public String toString() {

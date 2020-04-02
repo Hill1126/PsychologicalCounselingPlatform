@@ -1,8 +1,9 @@
 package org.gdou.model.po;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Article {
+public class Article implements Serializable {
     private Integer id;
 
     private String title;

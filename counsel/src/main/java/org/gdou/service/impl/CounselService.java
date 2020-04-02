@@ -180,6 +180,6 @@ public class CounselService {
         msgRecordMapper.insert(msgRecord);
         //更新redis的记录时间
         redisUtil.hset(ProjectConstant.ORDER_KEY,msgRecord.getOrderId().toString(),
-                "1",ProjectConstant.ORDER_KEY_EXPRIE);
+                "1",ProjectConstant.ORDER_KEY_EXPIRE);
     }
 }
