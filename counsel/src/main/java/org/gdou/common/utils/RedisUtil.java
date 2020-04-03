@@ -25,6 +25,7 @@ public class RedisUtil {
     public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
+
     //=============================common============================
 
     /**
