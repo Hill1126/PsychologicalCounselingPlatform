@@ -5,9 +5,11 @@ import org.gdou.model.po.User;
 import org.gdou.model.po.example.UserExample;
 import org.gdou.model.qo.TeacherChatQo;
 import org.gdou.model.vo.TeacherVo;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface UserMapper {
     long countByExample(UserExample example);
 

@@ -3,9 +3,11 @@ package org.gdou.dao;
 import org.apache.ibatis.annotations.Param;
 import org.gdou.model.po.MsgRecord;
 import org.gdou.model.po.example.MsgRecordExample;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface MsgRecordMapper {
     long countByExample(MsgRecordExample example);
 

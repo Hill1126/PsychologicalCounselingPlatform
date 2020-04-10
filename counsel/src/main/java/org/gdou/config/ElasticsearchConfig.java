@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
-import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 
 /**
  * @author HILL
@@ -13,11 +12,10 @@ import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfig
  * @date 2020/4/4
  **/
 @Configuration
-public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
+public class ElasticsearchConfig  {
 
-    @Override
     @Bean
-    public RestHighLevelClient elasticsearchClient() {
+    public RestHighLevelClient restHighLevelClient() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo("18.163.180.46:9200")
                 .withBasicAuth("elastic","wbxgsnmm...")

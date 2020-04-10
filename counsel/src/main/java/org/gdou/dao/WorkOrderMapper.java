@@ -11,9 +11,11 @@ import org.gdou.model.qo.CounselHistoryQo;
 import org.gdou.model.qo.TimeQo;
 import org.gdou.model.vo.CounselHistoryVo;
 import org.gdou.model.vo.MyAppointmentVo;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface WorkOrderMapper {
     long countByExample(WorkOrderExample example);
 

@@ -1,9 +1,11 @@
 package org.gdou.dao;
 
 import org.gdou.model.po.Config;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ConfigMapper {
     int deleteByPrimaryKey(Integer id);
 
