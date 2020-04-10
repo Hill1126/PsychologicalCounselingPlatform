@@ -1,2 +1,4 @@
 /counsel/target/
 /logs/
+/.idea/*
+/.idea
