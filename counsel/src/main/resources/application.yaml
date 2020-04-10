@@ -53,6 +53,8 @@ spring:
         max-idle: 4
         min-idle: 0
     timeout: 2000
+
+
 mybatis:
   type-aliases-package: org.gdou.model.po
   mapper-locations: classpath:mapper/*.xml

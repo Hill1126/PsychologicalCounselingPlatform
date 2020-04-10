@@ -1,5 +1,6 @@
 package org.gdou.config;
 
+import org.gdou.common.interceptor.ArticleSearchInterceptor;
 import org.gdou.common.interceptor.LoginCheckInterceptor;
 import org.gdou.common.interceptor.SystemLogInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,8 @@ public class ApiWebMvcConfig implements WebMvcConfigurer {
     }
     @Bean
     public HandlerInterceptor getLoginCheckInterceptor(){return new LoginCheckInterceptor(); }
+    @Bean
+    public HandlerInterceptor getArticleController(){return new ArticleSearchInterceptor();}
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -35,6 +38,8 @@ public class ApiWebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(getLoginCheckInterceptor()).addPathPatterns("/**").excludePathPatterns(exclude)
                 .excludePathPatterns("/user/login").excludePathPatterns("/user/register").excludePathPatterns("/image/**")
                 .excludePathPatterns("/favicon.ico");
+        //添加文章搜索过滤器
+        registry.addInterceptor(getArticleController()).addPathPatterns("/article/search");
 
 
     }

@@ -1,4 +1,4 @@
-package org.gdou.common.exception;
+package org.gdou.common.exception.runtime;
 
 /**
  * @author HILL

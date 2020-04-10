@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.constant.chat.WorkOrderStatus;
-import org.gdou.common.exception.WebSocketNullPointException;
+import org.gdou.common.exception.runtime.WebSocketNullPointException;
 import org.gdou.common.utils.RedisUtil;
 import org.gdou.config.HttpSessionConfigurator;
 import org.gdou.dao.WorkOrderMapper;

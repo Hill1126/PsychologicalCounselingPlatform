@@ -14,4 +14,16 @@ public final class ProjectConstant {
     public static final String ARTICLE_KEY = "ARTICLE";
 
     public static final String AVATAR_BUCKET_NAME = "avatar-img";
+    /** es相关常量
+    */
+    public static final String ARTICLE_INDEX_NAME = "article";
+    public static final String ARTICLE_TYPE_NAME = "_doc";
+
+    /**
+     * 搜索相关变量
+     */
+    public static final String SCROLL_ID_NAME = "scrollId";
+    public static final Long SCROLL_ID_EXPIRE_TIME = 1*60*5L;
+    public static final String SEARCH_KEY_WORD = "keyWord";
+
 }

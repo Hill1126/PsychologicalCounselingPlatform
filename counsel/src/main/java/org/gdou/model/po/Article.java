@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Article implements Serializable {
+
     private Integer id;
 
     private String title;

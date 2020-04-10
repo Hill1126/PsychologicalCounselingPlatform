@@ -2,6 +2,8 @@ package org.gdou.common.exception;
 
 import com.baidubce.BceClientException;
 import lombok.extern.slf4j.Slf4j;
+import org.gdou.common.exception.runtime.EsIndexException;
+import org.gdou.common.exception.runtime.WebSocketNullPointException;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
 import org.springframework.validation.BindException;
@@ -57,6 +59,13 @@ public class GlobalExceptionHandler {
     public Result webSocketUserNullExceptionHandler(WebSocketNullPointException e){
         log.error("连接websocket失败，原因【{}】",e.getMessage());
         return ResultGenerator.genFailResult("请登录后操作");
+    }
+
+    @ExceptionHandler(EsIndexException.class)
+    public Result EsIndexExceptionHandler(EsIndexException e){
+        log.error("文章导入es失败，id为【{}】",e.getArticle().getId());
+        log.error(e.getMessage());
+        return Result.genFailResult("文章导入es失败，请重试。");
     }
 
 
