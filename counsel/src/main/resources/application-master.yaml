@@ -1,6 +1,6 @@
 server:
   # 端口号
-  port: 8090
+  port: 80
 log:
   level: info
 
