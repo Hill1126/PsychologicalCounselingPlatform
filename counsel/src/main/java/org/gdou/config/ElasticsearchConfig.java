@@ -1,6 +1,7 @@
 package org.gdou.config;
 
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
@@ -14,10 +15,15 @@ import org.springframework.data.elasticsearch.client.RestClients;
 @Configuration
 public class ElasticsearchConfig  {
 
+    @Value("${elasticsearch.host}")
+    String host;
+    @Value("${elasticsearch.port}")
+    String port;
+
     @Bean
     public RestHighLevelClient restHighLevelClient() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo("18.163.180.46:9200")
+                .connectedTo(host+":"+port)
                 .withBasicAuth("elastic","wbxgsnmm...")
                 .withConnectTimeout(10000L)
                 .build();

@@ -6,3 +6,18 @@ log:
 
 user:
   interceptor: false
+
+#es连接
+elasticsearch:
+  host: localhost
+  port: 9200
+spring:
+  redis:
+    host: localhost
+    jedis:
+      pool:
+        max-active: 10
+        max-wait: -1
+        max-idle: 4
+        min-idle: 0
+    timeout: 2000

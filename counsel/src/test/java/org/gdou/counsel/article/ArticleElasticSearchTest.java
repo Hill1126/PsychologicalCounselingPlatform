@@ -40,7 +40,7 @@ public class ArticleElasticSearchTest {
     @Autowired
     ArticleMapper articleMapper;
     @Autowired
-    RestHighLevelClient highLevelClient;
+    RestHighLevelClient restHighLevelClient;
     @Autowired
     ObjectMapper objectMapper;
 
@@ -49,18 +49,18 @@ public class ArticleElasticSearchTest {
         Integer integer = 1001011;
         Map map = new HashMap();
         Article article = articleMapper.selectByPrimaryKey(integer);
-        IndexRequest request = new IndexRequest("article", "_doc",integer.toString())
+        IndexRequest request = new IndexRequest("article", "doc",integer.toString())
                 .source(objectMapper.writeValueAsString(article), XContentType.JSON)
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
 
-        IndexResponse response = highLevelClient.index(request, RequestOptions.DEFAULT);
+        IndexResponse response = restHighLevelClient.index(request, RequestOptions.DEFAULT);
 
     }
 
     @Test
     public void getTest() throws IOException {
         GetRequest getRequest = new GetRequest("test","doc",1001011+"");
-        GetResponse documentFields = highLevelClient.get(getRequest, RequestOptions.DEFAULT);
+        GetResponse documentFields = restHighLevelClient.get(getRequest, RequestOptions.DEFAULT);
         Article article = objectMapper.readValue(documentFields.getSourceAsString(), Article.class);
     }
 
@@ -70,7 +70,7 @@ public class ArticleElasticSearchTest {
         var map = new HashMap<String,Object>();
         map.put("articleSource","tencent");
         updateRequest.doc(map);
-        highLevelClient.update(updateRequest,RequestOptions.DEFAULT);
+        restHighLevelClient.update(updateRequest,RequestOptions.DEFAULT);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class ArticleElasticSearchTest {
         var searchBuilder = new SearchSourceBuilder();
         searchBuilder.query(QueryBuilders.matchQuery("title","美方"));
         searchRequest.source(searchBuilder);
-        SearchResponse search = highLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
 
 
     }
@@ -98,19 +98,19 @@ public class ArticleElasticSearchTest {
         searchSourceBuilder.query(QueryBuilders.matchQuery("title","美方"));
         searchRequest.source(searchSourceBuilder);
 
-        SearchResponse searchResponse = highLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         String scrollId = searchResponse.getScrollId();
         SearchHit[] searchHits = searchResponse.getHits().getHits();
 
             SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
             scrollRequest.scroll(scroll);
-            searchResponse = highLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
+            searchResponse = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
             scrollId = searchResponse.getScrollId();
             searchHits = searchResponse.getHits().getHits();
 
         ClearScrollRequest clearScrollRequest = new ClearScrollRequest();
         clearScrollRequest.addScrollId(scrollId);
-        ClearScrollResponse clearScrollResponse = highLevelClient.clearScroll(clearScrollRequest, RequestOptions.DEFAULT);
+        ClearScrollResponse clearScrollResponse = restHighLevelClient.clearScroll(clearScrollRequest, RequestOptions.DEFAULT);
         boolean succeeded = clearScrollResponse.isSucceeded();
     }
 
