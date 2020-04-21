@@ -37,7 +37,7 @@ public class ApiWebMvcConfig implements WebMvcConfigurer {
         //登录检查过滤器
         registry.addInterceptor(getLoginCheckInterceptor()).addPathPatterns("/**").excludePathPatterns(exclude)
                 .excludePathPatterns("/user/login").excludePathPatterns("/user/register").excludePathPatterns("/image/**")
-                .excludePathPatterns("/favicon.ico");
+                .excludePathPatterns("/.well-known/**");
         //添加文章搜索过滤器
         registry.addInterceptor(getArticleController()).addPathPatterns("/article/search");
 
@@ -47,7 +47,8 @@ public class ApiWebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/");
+                .addResourceLocations("classpath:/static/")
+                .addResourceLocations("classpath:/static/**");
     }
 
 }
