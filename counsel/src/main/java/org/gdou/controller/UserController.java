@@ -7,7 +7,8 @@ import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultCode;
 import org.gdou.common.result.ResultGenerator;
-import org.gdou.model.dto.UserInfoDto;
+import org.gdou.model.dto.user.UserInfoDto;
+import org.gdou.model.dto.user.UserRegisterDto;
 import org.gdou.model.po.Oauths;
 import org.gdou.model.po.User;
 import org.gdou.service.impl.BosService;
@@ -68,12 +69,14 @@ public class UserController {
      * 用户传入登录账号、姓名、密码即可完成注册
      * @Author: HILL
      * @date: 2020/3/2 17:37
-     * @param user 注册的信息
+     * @param userRegisterDto 注册的信息
      * @param authCode 根据此码认证可认证为教师
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public Result register(@Validated User user,String authCode){
+    public Result register(@Validated UserRegisterDto userRegisterDto, String authCode){
+        var user = new User();
+        BeanUtils.copyProperties(userRegisterDto,user);
         if(!StringUtils.isEmpty(authCode) && "Teacher".equals(authCode)){
             user.setUserType(UserType.TEACHER);
         }else{

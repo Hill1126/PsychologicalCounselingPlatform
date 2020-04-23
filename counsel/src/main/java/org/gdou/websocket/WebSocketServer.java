@@ -1,4 +1,4 @@
-package org.gdou.controller;
+package org.gdou.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;

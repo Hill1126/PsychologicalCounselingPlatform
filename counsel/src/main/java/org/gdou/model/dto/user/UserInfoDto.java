@@ -1,4 +1,4 @@
-package org.gdou.model.dto;
+package org.gdou.model.dto.user;
 
 import lombok.Data;
 

@@ -43,6 +43,10 @@ spring:
       force: true
 
 
+
+
+
+
 mybatis:
   type-aliases-package: org.gdou.model.po
   mapper-locations: classpath:mapper/*.xml
@@ -52,9 +56,6 @@ pagehelper:
   params: count=countSql
   helper-dialect: mysql
 
-#server:
-#  ssl:
-#    key-store: classpath:keystore.p12
-#    key-store-password: wbxgsnmm...
-#    key-store-type: PKCS12
-#    key-alias: tomcat
+
+
+

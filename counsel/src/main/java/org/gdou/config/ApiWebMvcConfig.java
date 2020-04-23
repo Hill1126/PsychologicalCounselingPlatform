@@ -33,7 +33,6 @@ public class ApiWebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //日志记录过滤器
         String[] exclude = {"/","/static/**","/templates/**","/index.html"};
-        registry.addInterceptor(getSystemLogInterceptor()).addPathPatterns("/**").excludePathPatterns(exclude);
         //登录检查过滤器
         registry.addInterceptor(getLoginCheckInterceptor()).addPathPatterns("/**").excludePathPatterns(exclude)
                 .excludePathPatterns("/user/login").excludePathPatterns("/user/register").excludePathPatterns("/image/**")
