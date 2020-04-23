@@ -2,7 +2,7 @@ server:
   # 端口号
   port: 80
 log:
-  level: debug
+  level: info
 
 user:
   interceptor: true
