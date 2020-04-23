@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gdou.dao.DefaultResultMapper">
+  <resultMap id="BaseResultMap" type="org.gdou.model.po.DefaultResult">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="paper_id" jdbcType="INTEGER" property="paperId" />
+    <result column="score_start" jdbcType="DOUBLE" property="scoreStart" />
+    <result column="score_end" jdbcType="DOUBLE" property="scoreEnd" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.gdou.model.po.DefaultResult">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, paper_id, score_start, score_end
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from default_result
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from default_result
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.gdou.model.po.DefaultResult">
+    insert into default_result (id, paper_id, score_start, 
+      score_end, description)
+    values (#{id,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER}, #{scoreStart,jdbcType=DOUBLE}, 
+      #{scoreEnd,jdbcType=DOUBLE}, #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.gdou.model.po.DefaultResult">
+    insert into default_result
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="paperId != null">
+        paper_id,
+      </if>
+      <if test="scoreStart != null">
+        score_start,
+      </if>
+      <if test="scoreEnd != null">
+        score_end,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="paperId != null">
+        #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="scoreStart != null">
+        #{scoreStart,jdbcType=DOUBLE},
+      </if>
+      <if test="scoreEnd != null">
+        #{scoreEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.gdou.model.po.DefaultResult">
+    update default_result
+    <set>
+      <if test="paperId != null">
+        paper_id = #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="scoreStart != null">
+        score_start = #{scoreStart,jdbcType=DOUBLE},
+      </if>
+      <if test="scoreEnd != null">
+        score_end = #{scoreEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.gdou.model.po.DefaultResult">
+    update default_result
+    set paper_id = #{paperId,jdbcType=INTEGER},
+      score_start = #{scoreStart,jdbcType=DOUBLE},
+      score_end = #{scoreEnd,jdbcType=DOUBLE},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.gdou.model.po.DefaultResult">
+    update default_result
+    set paper_id = #{paperId,jdbcType=INTEGER},
+      score_start = #{scoreStart,jdbcType=DOUBLE},
+      score_end = #{scoreEnd,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

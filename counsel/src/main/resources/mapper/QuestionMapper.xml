@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gdou.dao.QuestionMapper">
+  <resultMap id="BaseResultMap" type="org.gdou.model.po.Question">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="paper_id" jdbcType="INTEGER" property="paperId" />
+    <result column="question_title" jdbcType="VARCHAR" property="questionTitle" />
+    <result column="question_type" jdbcType="VARCHAR" property="questionType" />
+    <result column="question_status" jdbcType="INTEGER" property="questionStatus" />
+    <result column="creat_at" jdbcType="TIMESTAMP" property="creatAt" />
+    <result column="creat_by" jdbcType="VARCHAR" property="creatBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, paper_id, question_title, question_type, question_status, creat_at, creat_by
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from question
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from question
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.gdou.model.po.Question">
+    insert into question (id, paper_id, question_title, 
+      question_type, question_status, creat_at, 
+      creat_by)
+    values (#{id,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER}, #{questionTitle,jdbcType=VARCHAR}, 
+      #{questionType,jdbcType=VARCHAR}, #{questionStatus,jdbcType=INTEGER}, #{creatAt,jdbcType=TIMESTAMP}, 
+      #{creatBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.gdou.model.po.Question">
+    insert into question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="paperId != null">
+        paper_id,
+      </if>
+      <if test="questionTitle != null">
+        question_title,
+      </if>
+      <if test="questionType != null">
+        question_type,
+      </if>
+      <if test="questionStatus != null">
+        question_status,
+      </if>
+      <if test="creatAt != null">
+        creat_at,
+      </if>
+      <if test="creatBy != null">
+        creat_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="paperId != null">
+        #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="questionTitle != null">
+        #{questionTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null">
+        #{questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="questionStatus != null">
+        #{questionStatus,jdbcType=INTEGER},
+      </if>
+      <if test="creatAt != null">
+        #{creatAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatBy != null">
+        #{creatBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.gdou.model.po.Question">
+    update question
+    <set>
+      <if test="paperId != null">
+        paper_id = #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="questionTitle != null">
+        question_title = #{questionTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null">
+        question_type = #{questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="questionStatus != null">
+        question_status = #{questionStatus,jdbcType=INTEGER},
+      </if>
+      <if test="creatAt != null">
+        creat_at = #{creatAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatBy != null">
+        creat_by = #{creatBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.gdou.model.po.Question">
+    update question
+    set paper_id = #{paperId,jdbcType=INTEGER},
+      question_title = #{questionTitle,jdbcType=VARCHAR},
+      question_type = #{questionType,jdbcType=VARCHAR},
+      question_status = #{questionStatus,jdbcType=INTEGER},
+      creat_at = #{creatAt,jdbcType=TIMESTAMP},
+      creat_by = #{creatBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

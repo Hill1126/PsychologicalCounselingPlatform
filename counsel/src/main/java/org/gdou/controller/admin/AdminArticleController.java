@@ -1,4 +1,4 @@
-package org.gdou.controller;
+package org.gdou.controller.admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gdou.common.constant.article.ArticleStatus;
@@ -18,13 +18,13 @@ import java.time.LocalDateTime;
  * @date 2020/4/8
  **/
 @RestController
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/admin/article")
+public class AdminArticleController {
 
 
     AdminService adminService;
 
-    public AdminController(AdminService adminService) {
+    public AdminArticleController(AdminService adminService) {
         this.adminService = adminService;
     }
 
@@ -36,7 +36,7 @@ public class AdminController {
      * @param articleDto
      * @return: org.gdou.common.result.Result
     **/
-    @RequestMapping("/putArticle")
+    @RequestMapping("/put")
     public Result putArticle(ArticleDto articleDto) throws JsonProcessingException {
         var article = new Article();
         BeanUtils.copyProperties(articleDto,article);

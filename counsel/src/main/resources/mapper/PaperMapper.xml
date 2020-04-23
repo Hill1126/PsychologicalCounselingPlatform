@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gdou.dao.PaperMapper">
+  <resultMap id="BaseResultMap" type="org.gdou.model.po.Paper">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="paper_title" jdbcType="VARCHAR" property="paperTitle" />
+    <result column="creat_at" jdbcType="TIMESTAMP" property="creatAt" />
+    <result column="creat_user_id" jdbcType="INTEGER" property="creatUserId" />
+    <result column="paper_status" jdbcType="INTEGER" property="paperStatus" />
+    <result column="paper_type" jdbcType="VARCHAR" property="paperType" />
+    <result column="paper_abstract" jdbcType="VARCHAR" property="paperAbstract" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, paper_title, creat_at, creat_user_id, paper_status, paper_type, paper_abstract
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from paper
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="listPapers" resultType="org.gdou.model.po.Paper" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from paper
+    where creat_user_id = #{value}
+    and paper_status != -1
+
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from paper
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.gdou.model.po.Paper">
+    insert into paper (id, paper_title, creat_at, 
+      creat_user_id, paper_status, paper_type, 
+      paper_abstract)
+    values (#{id,jdbcType=INTEGER}, #{paperTitle,jdbcType=VARCHAR}, #{creatAt,jdbcType=TIMESTAMP}, 
+      #{creatUserId,jdbcType=INTEGER}, #{paperStatus,jdbcType=INTEGER}, #{paperType,jdbcType=VARCHAR}, 
+      #{paperAbstract,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.gdou.model.po.Paper">
+    insert into paper
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="paperTitle != null">
+        paper_title,
+      </if>
+      <if test="creatAt != null">
+        creat_at,
+      </if>
+      <if test="creatUserId != null">
+        creat_user_id,
+      </if>
+      <if test="paperStatus != null">
+        paper_status,
+      </if>
+      <if test="paperType != null">
+        paper_type,
+      </if>
+      <if test="paperAbstract != null">
+        paper_abstract,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="paperTitle != null">
+        #{paperTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="creatAt != null">
+        #{creatAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatUserId != null">
+        #{creatUserId,jdbcType=INTEGER},
+      </if>
+      <if test="paperStatus != null">
+        #{paperStatus,jdbcType=INTEGER},
+      </if>
+      <if test="paperType != null">
+        #{paperType,jdbcType=VARCHAR},
+      </if>
+      <if test="paperAbstract != null">
+        #{paperAbstract,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.gdou.model.po.Paper">
+    update paper
+    <set>
+      <if test="paperTitle != null">
+        paper_title = #{paperTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="creatAt != null">
+        creat_at = #{creatAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatUserId != null">
+        creat_user_id = #{creatUserId,jdbcType=INTEGER},
+      </if>
+      <if test="paperStatus != null">
+        paper_status = #{paperStatus,jdbcType=INTEGER},
+      </if>
+      <if test="paperType != null">
+        paper_type = #{paperType,jdbcType=VARCHAR},
+      </if>
+      <if test="paperAbstract != null">
+        paper_abstract = #{paperAbstract,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.gdou.model.po.Paper">
+    update paper
+    set paper_title = #{paperTitle,jdbcType=VARCHAR},
+      creat_at = #{creatAt,jdbcType=TIMESTAMP},
+      creat_user_id = #{creatUserId,jdbcType=INTEGER},
+      paper_status = #{paperStatus,jdbcType=INTEGER},
+      paper_type = #{paperType,jdbcType=VARCHAR},
+      paper_abstract = #{paperAbstract,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

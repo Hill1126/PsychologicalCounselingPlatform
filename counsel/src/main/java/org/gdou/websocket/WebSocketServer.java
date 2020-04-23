@@ -92,6 +92,7 @@ public class WebSocketServer {
         if (onlineClient.containsKey(currentUserId) && !exitsOrder){
             onClose(session);
             log.info("用户{} 连接验证失败",user.getName());
+            this.session.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION,"请传入预约工单号"));
         }
         onlineClient.put(currentUserId,this);
         log.info("用户id{} 已连接",currentUserId);
