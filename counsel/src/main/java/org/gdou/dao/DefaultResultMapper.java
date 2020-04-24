@@ -18,4 +18,6 @@ public interface DefaultResultMapper {
     int updateByPrimaryKeyWithBLOBs(DefaultResult record);
 
     int updateByPrimaryKey(DefaultResult record);
+
+    String getResultByScore(Integer paperId, Double totalScore);
 }

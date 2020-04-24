@@ -2,7 +2,7 @@ package org.gdou.common.interceptor;
 
 import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.result.Result;
-import org.gdou.common.result.ResultGenerator;
+import org.gdou.common.result.ResultCode;
 import org.gdou.model.po.Oauths;
 import org.gdou.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
         if (user==null){
             response.setContentType("text/json;charset=UTF-8");
-            response.getWriter().write(ResultGenerator.genFailResult("请登陆后操作").toString());
+            Result result = new Result();
+            result.setMessage("请登陆后操作");
+            result.setCode(ResultCode.UNAUTHORIZED);
+            response.getWriter().write(result.toString());
             return false;
         }
         return true;

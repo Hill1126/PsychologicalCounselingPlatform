@@ -23,7 +23,7 @@ public class DefaultResultService {
         defaultResultMapper.insert(defaultResult);
         log.info("成功为试卷id:【{}】添加默认结果，分数范围是:{}-{}"
                 ,defaultResult.getPaperId(),defaultResult.getScoreStart(),defaultResult.getScoreEnd());
-        return Result.genSuccessResult();
+        return Result.genSuccessResult(defaultResult);
     }
 
     public Result updateResult(DefaultResult defaultResult) {

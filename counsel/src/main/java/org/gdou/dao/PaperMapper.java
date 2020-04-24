@@ -1,6 +1,7 @@
 package org.gdou.dao;
 
 import org.gdou.model.po.Paper;
+import org.gdou.model.vo.paper.PaperAbstractVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface PaperMapper {
     int updateByPrimaryKey(Paper record);
 
     List<Paper> listPapers(Integer userId);
+
+    List<PaperAbstractVo> listPreviews();
 }

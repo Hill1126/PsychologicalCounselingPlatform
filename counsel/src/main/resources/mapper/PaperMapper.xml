@@ -3,12 +3,19 @@
 <mapper namespace="org.gdou.dao.PaperMapper">
   <resultMap id="BaseResultMap" type="org.gdou.model.po.Paper">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="paper_title" jdbcType="VARCHAR" property="paperTitle" />
     <result column="creat_at" jdbcType="TIMESTAMP" property="creatAt" />
     <result column="creat_user_id" jdbcType="INTEGER" property="creatUserId" />
     <result column="paper_status" jdbcType="INTEGER" property="paperStatus" />
     <result column="paper_type" jdbcType="VARCHAR" property="paperType" />
     <result column="paper_abstract" jdbcType="VARCHAR" property="paperAbstract" />
+    <result column="paper_title" jdbcType="VARCHAR" property="paperTitle" />
+  </resultMap>
+  <resultMap id="PaperPreviewMap" type="org.gdou.model.vo.paper.PaperAbstractVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="paper_title" jdbcType="VARCHAR" property="paperTitle" />
+    <result column="paper_abstract" jdbcType="VARCHAR" property="paperAbstract" />
+    <result column="creat_at" jdbcType="TIMESTAMP" property="creatAt" />
+    <result column="questionSetter" jdbcType="VARCHAR" property="questionSetter" />
   </resultMap>
   <sql id="Base_Column_List">
     id, paper_title, creat_at, creat_user_id, paper_status, paper_type, paper_abstract
@@ -26,6 +33,20 @@
     where creat_user_id = #{value}
     and paper_status != -1
 
+  </select>
+  <select id="listPreviews" resultType="org.gdou.model.vo.paper.PaperAbstractVo"
+          resultMap="PaperPreviewMap">
+      SELECT
+        paper.id,
+        paper_title,
+        paper_abstract,
+        paper.creat_at,
+        `user`.`name` as questionSetter
+    FROM
+        paper,`user`
+    WHERE
+				paper.creat_user_id = `user`.id
+        and paper_status != - 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from paper

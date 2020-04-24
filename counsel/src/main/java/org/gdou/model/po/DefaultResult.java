@@ -60,4 +60,7 @@ public class DefaultResult {
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
     }
+
+
+
 }

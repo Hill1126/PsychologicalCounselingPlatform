@@ -1,5 +1,8 @@
 package org.gdou.model.po;
 
+/**
+ * @author HILL
+ */
 public class Answer {
     private Integer id;
 

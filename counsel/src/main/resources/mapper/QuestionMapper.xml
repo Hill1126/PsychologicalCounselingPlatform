@@ -10,8 +10,8 @@
     <result column="creat_at" jdbcType="TIMESTAMP" property="creatAt" />
     <result column="creat_by" jdbcType="VARCHAR" property="creatBy" />
   </resultMap>
-  <resultMap id="QuestionVoMap" type="org.gdou.model.vo.QuestionsVo">
-    <id column="id" jdbcType="INTEGER" property="id" />
+  <resultMap id="QuestionVoMap" type="org.gdou.model.vo.paper.QuestionsVo">
+    <id column="id" jdbcType="INTEGER" property="questionId" />
     <result column="paper_id" jdbcType="INTEGER" property="paperId" />
     <result column="question_title" jdbcType="VARCHAR" property="questionTitle" />
   </resultMap>
@@ -37,7 +37,7 @@
         AND paper.creat_user_id = #{param2}
 
   </select>
-  <select id="listQuestions" resultType="org.gdou.model.vo.QuestionsVo" resultMap="QuestionVoMap">
+  <select id="listQuestions" resultType="org.gdou.model.vo.paper.QuestionsVo" resultMap="QuestionVoMap">
     SELECT
         *
     FROM

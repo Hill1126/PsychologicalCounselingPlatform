@@ -1,6 +1,7 @@
 package org.gdou.model.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
@@ -9,7 +10,8 @@ import javax.validation.constraints.NotNull;
  * @version V1.0
  * @date 2020/3/25
  **/
-@Data
+@Getter
+@Setter
 public class PageInfoDto {
 
     @NotNull(message = "分页信息不能为空")
@@ -17,4 +19,11 @@ public class PageInfoDto {
     @NotNull(message = "分页信息不能为空")
     private Integer pageNum = 1;
 
+    @Override
+    public String toString() {
+        return "PageInfoDto{" +
+                "pageSize=" + pageSize +
+                ", pageNum=" + pageNum +
+                '}';
+    }
 }

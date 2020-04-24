@@ -1,7 +1,7 @@
 package org.gdou.dao;
 
 import org.gdou.model.po.Question;
-import org.gdou.model.vo.QuestionsVo;
+import org.gdou.model.vo.paper.QuestionsVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

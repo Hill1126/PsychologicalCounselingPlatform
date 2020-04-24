@@ -67,7 +67,7 @@ public class AdminQuestionController {
         return questionService.updateQuestion(questionDto,user);
     }
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/get")
     public Result listQuestions( Integer paperId){
         if (paperId==null){
             return Result.genFailResult("试卷id不能为空");

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gdou.dao.TestRecordMapper">
+  <resultMap id="BaseResultMap" type="org.gdou.model.po.TestRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="paper_id" jdbcType="INTEGER" property="paperId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="total_score" jdbcType="DOUBLE" property="totalScore" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.gdou.model.po.TestRecord">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <resultMap id="TestRecordVoMap" type="org.gdou.model.vo.TestRecordVo">
+    <result column="total_score" jdbcType="DOUBLE" property="totalScore" />
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    <result column="testTime" jdbcType="TIMESTAMP" property="testTime" />
+    <result column="paper_abstract" jdbcType="VARCHAR" property="paperAbstract" />
+    <result column="paper_title" jdbcType="VARCHAR" property="paperTitle" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, paper_id, user_id, create_at, total_score
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from test_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="listRecords" resultType="org.gdou.model.vo.TestRecordVo" resultMap="TestRecordVoMap">
+    SELECT
+        paper.paper_title,
+        paper.paper_abstract,
+        test_record.create_at AS testTime,
+        test_record.description,
+        test_record.total_score
+    FROM
+        paper,
+        test_record
+    WHERE
+        test_record.user_id = #{value}
+        AND test_record.paper_id = paper.id
+
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from test_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.gdou.model.po.TestRecord">
+    insert into test_record (id, paper_id, user_id, 
+      create_at, total_score, description
+      )
+    values (#{id,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{totalScore,jdbcType=DOUBLE}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.gdou.model.po.TestRecord">
+    insert into test_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="paperId != null">
+        paper_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="totalScore != null">
+        total_score,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="paperId != null">
+        #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalScore != null">
+        #{totalScore,jdbcType=DOUBLE},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.gdou.model.po.TestRecord">
+    update test_record
+    <set>
+      <if test="paperId != null">
+        paper_id = #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalScore != null">
+        total_score = #{totalScore,jdbcType=DOUBLE},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.gdou.model.po.TestRecord">
+    update test_record
+    set paper_id = #{paperId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      total_score = #{totalScore,jdbcType=DOUBLE},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.gdou.model.po.TestRecord">
+    update test_record
+    set paper_id = #{paperId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      total_score = #{totalScore,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

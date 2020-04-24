@@ -24,17 +24,35 @@
     from default_result
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="getResultByScore" resultType="java.lang.String">
+      SELECT
+      description
+      FROM
+      default_result
+      WHERE
+      score_start <![CDATA[ < ]]> #{param2}
+      AND score_end <![CDATA[ >= ]]> #{param2}
+      AND paper_id= #{param1}
+
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from default_result
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="org.gdou.model.po.DefaultResult">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into default_result (id, paper_id, score_start, 
       score_end, description)
     values (#{id,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER}, #{scoreStart,jdbcType=DOUBLE}, 
       #{scoreEnd,jdbcType=DOUBLE}, #{description,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.gdou.model.po.DefaultResult">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into default_result
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

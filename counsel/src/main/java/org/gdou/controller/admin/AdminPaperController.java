@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -63,7 +62,6 @@ public class AdminPaperController {
      * @Author: HILL
      * @date: 2020/4/22 22:52
      *
-     * @param paperId 试卷id
      * @param paperDto 试卷需要更新的信息更新
      * @return: org.gdou.common.result.Result
      **/
@@ -79,15 +77,18 @@ public class AdminPaperController {
     }
 
 
-    @RequestMapping(value = "/result",method = RequestMethod.POST)
+    @RequestMapping(value = "/addResult",method = RequestMethod.POST)
     public Result addDefaultResult(@Validated DefaultResult defaultResult){
-        //判断是否是更新，删除等情况
-        if (defaultResult.getId()!=null){
-            return defaultResultService.updateResult(defaultResult);
-        }
         return defaultResultService.addDefaultResult(defaultResult);
     }
 
+    @RequestMapping(value = "/updateResult",method = RequestMethod.POST)
+    public Result updateDefaultResult(DefaultResult defaultResult){
+        if (defaultResult.getId()==null){
+            return Result.genFailResult("默认结果id不能为空");
+        }
+        return defaultResultService.updateResult(defaultResult);
+    }
 
 
 

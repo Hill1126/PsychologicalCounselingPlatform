@@ -43,12 +43,19 @@ public class PaperServiceTest {
     public void updateTest(){
         var paperDto = new PaperDto();
         paperDto.setPaperAbstract(LocalDateTime.now().toString());
-        paperService.updatePaper(1111,paperDto);
+        paperDto.setId(1111);
+        paperService.updatePaper(paperDto);
     }
 
     @Test
     public void listPapersTest(){
         Result result = paperService.listPapers(1111);
+    }
+
+    @Test
+    public void fun(){
+        Result result = paperService.getPaper(300101);
+        System.out.println(result.getData().toString());
     }
 
 }

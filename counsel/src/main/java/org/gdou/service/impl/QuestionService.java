@@ -10,7 +10,7 @@ import org.gdou.model.dto.paper.question.QuestionDto;
 import org.gdou.model.po.Answer;
 import org.gdou.model.po.Question;
 import org.gdou.model.po.User;
-import org.gdou.model.vo.QuestionsVo;
+import org.gdou.model.vo.paper.QuestionsVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class QuestionService {
     @Autowired
     private AnswerMapper answerMapper;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
     /**
      * 给某个试卷添加问题
      * @Author: HILL
@@ -89,12 +89,12 @@ public class QuestionService {
         //先获取试卷的所有问题。
         var questionVoList = questionMapper.listQuestions(paperId);
         //生成问题id的集合，根据问题id查找对应的答案。
-        List<Integer> ids = questionVoList.stream().map(QuestionsVo::getId).collect(Collectors.toList());
+        List<Integer> ids = questionVoList.stream().map(QuestionsVo::getQuestionId).collect(Collectors.toList());
         List<Answer> answerList = answerMapper.listAnswers(ids);
         //根据id匹配答案与题目
         Map<Integer, List<Answer>> collect = answerList.stream().collect(Collectors.groupingBy(Answer::getQuestionId));
         questionVoList.forEach((vo) -> {
-            vo.setAnswerList(collect.get(vo.getId()));
+            vo.setAnswerList(collect.get(vo.getQuestionId()));
         });
         return Result.genSuccessResult(questionVoList);
 
