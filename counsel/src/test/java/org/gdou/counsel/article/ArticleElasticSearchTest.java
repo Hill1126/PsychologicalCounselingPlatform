@@ -49,7 +49,7 @@ public class ArticleElasticSearchTest {
         Integer integer = 1001011;
         Map map = new HashMap();
         Article article = articleMapper.selectByPrimaryKey(integer);
-        IndexRequest request = new IndexRequest("article", "doc",integer.toString())
+        IndexRequest request = new IndexRequest("test", "doc",integer.toString())
                 .source(objectMapper.writeValueAsString(article), XContentType.JSON)
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
 
@@ -90,14 +90,14 @@ public class ArticleElasticSearchTest {
     }
 
     @Test
-    public void scrollTest() throws IOException {
+    public void scrollTest(){
         final Scroll scroll = new Scroll(TimeValue.timeValueMinutes(1L));
         SearchRequest searchRequest = new SearchRequest("article");
         searchRequest.scroll(scroll);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.matchQuery("title","美方"));
         searchRequest.source(searchSourceBuilder);
-
+        try {
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         String scrollId = searchResponse.getScrollId();
         SearchHit[] searchHits = searchResponse.getHits().getHits();
@@ -112,6 +112,10 @@ public class ArticleElasticSearchTest {
         clearScrollRequest.addScrollId(scrollId);
         ClearScrollResponse clearScrollResponse = restHighLevelClient.clearScroll(clearScrollRequest, RequestOptions.DEFAULT);
         boolean succeeded = clearScrollResponse.isSucceeded();
+        }catch (Exception e){
+
+        }
+
     }
 
 }
