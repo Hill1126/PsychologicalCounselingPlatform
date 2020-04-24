@@ -7,6 +7,6 @@ package org.gdou.common.constant.article;
  **/
 public class ArticleStatus {
     public static final int NORMAL = 1;
-    public static final int DELETE = 2;
+    public static final int DELETE = -1;
 
 }

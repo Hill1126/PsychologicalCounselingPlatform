@@ -10,6 +10,11 @@
     <result column="creat_at" jdbcType="TIMESTAMP" property="creatAt" />
     <result column="creat_by" jdbcType="VARCHAR" property="creatBy" />
   </resultMap>
+  <resultMap id="QuestionVoMap" type="org.gdou.model.vo.QuestionsVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="paper_id" jdbcType="INTEGER" property="paperId" />
+    <result column="question_title" jdbcType="VARCHAR" property="questionTitle" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, paper_id, question_title, question_type, question_status, creat_at, creat_by
   </sql>
@@ -19,11 +24,37 @@
     from question
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="checkUserAuthority" resultType="java.lang.Integer">
+    SELECT
+        COUNT(*)
+    FROM
+        question,
+        `user`,
+        paper
+    WHERE
+        question.id = #{param1}
+        AND question.paper_id = paper.id
+        AND paper.creat_user_id = #{param2}
+
+  </select>
+  <select id="listQuestions" resultType="org.gdou.model.vo.QuestionsVo" resultMap="QuestionVoMap">
+    SELECT
+        *
+    FROM
+        question
+    WHERE
+        question_status != - 1
+        AND paper_id = #{value}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from question
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="org.gdou.model.po.Question">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into question (id, paper_id, question_title, 
       question_type, question_status, creat_at, 
       creat_by)
@@ -32,6 +63,9 @@
       #{creatBy,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.gdou.model.po.Question">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into question
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

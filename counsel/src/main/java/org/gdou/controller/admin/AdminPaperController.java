@@ -68,8 +68,8 @@ public class AdminPaperController {
      * @return: org.gdou.common.result.Result
      **/
     @RequestMapping(value = "/update",method = RequestMethod.POST)
-    public Result updateStatus(@NotNull Integer paperId, PaperDto paperDto){
-        return  paperService.updatePaper(paperId,paperDto);
+    public Result updateStatus(@Validated PaperDto paperDto){
+        return  paperService.updatePaper(paperDto);
     }
 
     @RequestMapping("/get")

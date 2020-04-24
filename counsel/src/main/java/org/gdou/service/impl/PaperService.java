@@ -30,7 +30,7 @@ public class PaperService {
         return Result.genSuccessResult();
     }
 
-    public Result updatePaper(Integer paperId, PaperDto paperDto) {
+    public Result updatePaper( PaperDto paperDto) {
         var paper = new Paper();
         BeanUtils.copyProperties(paperDto,paper);
         paperMapper.updateByPrimaryKeySelective(paper);

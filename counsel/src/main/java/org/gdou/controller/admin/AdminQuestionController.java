@@ -3,8 +3,16 @@ package org.gdou.controller.admin;
 import org.gdou.common.constant.CommonDataStatus;
 import org.gdou.common.result.Result;
 import org.gdou.common.utils.UserUtils;
+import org.gdou.model.dto.paper.question.CreateAnswerDto;
+import org.gdou.model.dto.paper.question.QuestionDto;
+import org.gdou.model.dto.paper.question.UpdateAnswerDto;
+import org.gdou.model.po.Answer;
 import org.gdou.model.po.Question;
+import org.gdou.model.po.User;
+import org.gdou.service.impl.AnswerService;
 import org.gdou.service.impl.QuestionService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,18 +27,29 @@ import java.time.LocalDateTime;
  **/
 @RestController
 @RequestMapping("/admin/question")
+@Validated
 public class AdminQuestionController {
 
-    public AdminQuestionController(QuestionService questionService) {
+    public AdminQuestionController(QuestionService questionService, AnswerService answerService) {
         this.questionService = questionService;
+        this.answerService = answerService;
     }
 
-
     private QuestionService questionService;
+    private AnswerService answerService;
 
-    @RequestMapping(value = "/",method = RequestMethod.POST)
+    /**
+     * 根据所给出的试卷id，为该试卷设置一个问题。
+     * @Author: HILL
+     * @date: 2020/4/23 14:31
+     *
+     * @param paperId
+     * @param questionTitle
+     * @param request
+     * @return: org.gdou.common.result.Result
+    **/
+    @RequestMapping(value = "/creat",method = RequestMethod.POST)
     public Result addQuestion(Integer paperId, String questionTitle, HttpServletRequest request){
-
         var user = UserUtils.getUserInRequest(request);
         //构建问题对象
         Question question = new Question();
@@ -41,4 +60,52 @@ public class AdminQuestionController {
         question.setQuestionStatus(CommonDataStatus.PUBLIC);
         return questionService.addQuestion(question);
     }
+
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public Result updateQuestion(QuestionDto questionDto,HttpServletRequest request){
+        User user = UserUtils.getUserInRequest(request);
+        return questionService.updateQuestion(questionDto,user);
+    }
+
+    @RequestMapping(value = "/")
+    public Result listQuestions( Integer paperId){
+        if (paperId==null){
+            return Result.genFailResult("试卷id不能为空");
+        }
+        return questionService.listQuestions(paperId);
+    }
+
+    /**
+     *
+     * @Author: HILL
+     * @date: 2020/4/24 13:46
+     *
+     * @return: org.gdou.common.result.Result
+    **/
+    @RequestMapping("/addAnswer")
+    public Result addAnswer(@Validated CreateAnswerDto answerDto){
+        var answer = new Answer();
+        BeanUtils.copyProperties(answerDto,answer);
+        //新建答案默认正常状态
+        answer.setAnswerStatus(CommonDataStatus.PUBLIC);
+        return answerService.addAnswer(answer);
+    }
+
+    /**
+     * 根据传入的答案对象修改，同时答案id不能为空，指定的问题不能修改。
+     * @Author: HILL
+     * @date: 2020/4/24 14:10
+     *
+     * @param answerDto 要修改的答案
+     * @return: org.gdou.common.result.Result
+    **/
+    @RequestMapping("/updateAnswer")
+    public Result updateAnswer(UpdateAnswerDto answerDto){
+        var answer = new Answer();
+        BeanUtils.copyProperties(answerDto,answer);
+        return answerService.updateAnswer(answer);
+    }
+
+
+
 }

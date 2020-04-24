@@ -1,7 +1,10 @@
 package org.gdou.dao;
 
 import org.gdou.model.po.Question;
+import org.gdou.model.vo.QuestionsVo;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface QuestionMapper {
@@ -16,4 +19,8 @@ public interface QuestionMapper {
     int updateByPrimaryKeySelective(Question record);
 
     int updateByPrimaryKey(Question record);
+
+    int checkUserAuthority(Integer questionId, Integer userId);
+
+    List<QuestionsVo> listQuestions(Integer paperId);
 }

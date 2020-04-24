@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gdou.dao.AnswerMapper">
+  <resultMap id="BaseResultMap" type="org.gdou.model.po.Answer">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="question_id" jdbcType="INTEGER" property="questionId" />
+    <result column="answer_value" jdbcType="VARCHAR" property="answerValue" />
+    <result column="answer_score" jdbcType="DOUBLE" property="answerScore" />
+    <result column="answer_status" jdbcType="INTEGER" property="answerStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, question_id, answer_value, answer_score, answer_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from answer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="listAnswers" resultType="org.gdou.model.po.Answer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM
+            answer
+        WHERE answer.question_id IN
+      <foreach collection="list" item="id" index="index"
+               open="(" close=")" separator=",">
+        #{id}
+      </foreach>
+        AND answer_status != -1
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from answer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.gdou.model.po.Answer">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into answer (id, question_id, answer_value, 
+      answer_score, answer_status)
+    values (#{id,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{answerValue,jdbcType=VARCHAR}, 
+      #{answerScore,jdbcType=DOUBLE}, #{answerStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="org.gdou.model.po.Answer">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into answer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="questionId != null">
+        question_id,
+      </if>
+      <if test="answerValue != null">
+        answer_value,
+      </if>
+      <if test="answerScore != null">
+        answer_score,
+      </if>
+      <if test="answerStatus != null">
+        answer_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="questionId != null">
+        #{questionId,jdbcType=INTEGER},
+      </if>
+      <if test="answerValue != null">
+        #{answerValue,jdbcType=VARCHAR},
+      </if>
+      <if test="answerScore != null">
+        #{answerScore,jdbcType=DOUBLE},
+      </if>
+      <if test="answerStatus != null">
+        #{answerStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.gdou.model.po.Answer">
+    update answer
+    <set>
+      <if test="questionId != null">
+        question_id = #{questionId,jdbcType=INTEGER},
+      </if>
+      <if test="answerValue != null">
+        answer_value = #{answerValue,jdbcType=VARCHAR},
+      </if>
+      <if test="answerScore != null">
+        answer_score = #{answerScore,jdbcType=DOUBLE},
+      </if>
+      <if test="answerStatus != null">
+        answer_status = #{answerStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.gdou.model.po.Answer">
+    update answer
+    set question_id = #{questionId,jdbcType=INTEGER},
+      answer_value = #{answerValue,jdbcType=VARCHAR},
+      answer_score = #{answerScore,jdbcType=DOUBLE},
+      answer_status = #{answerStatus,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
