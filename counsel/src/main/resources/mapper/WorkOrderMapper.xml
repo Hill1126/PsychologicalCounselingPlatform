@@ -32,6 +32,7 @@
     <result column="student_name" jdbcType="VARCHAR" property="studentName"/>
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="title" jdbcType="VARCHAR" property="title" />
+      <result column="workOrderId" jdbcType="INTEGER" property="workOrderId" />
   </resultMap>
     <resultMap id="todoCounselMap" type="org.gdou.model.bo.TodoCounselBo">
         <result column="student_id" jdbcType="INTEGER" property="studentId"/>
@@ -257,12 +258,14 @@
           Raw.student_id,
           Raw.teacher_id,
           Raw.title,
+          Raw.workOrderId,
         <if test="teacherId!=null"> Raw.teacher_name</if>
         <if test="studentId!=null"> Raw.student_name</if>
       FROM
           `user`,
           (
               SELECT
+                  work_order.id as workOrderId,
                   teacher_id,
                   `user`.`name` AS
                   <if test="teacherId!=null">teacher_name,</if>

@@ -131,12 +131,12 @@ public class CounselController {
      * @Author: HILL
      * @date: 2020/3/25 22:22
      *
-     * @param wordOrderId
+     * @param workOrderId
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping("/msgRecord")
-    public Result getMsgRecord(Integer wordOrderId, PageInfoDto pageInfoDto){
-       return counselService.getMsgRecord(wordOrderId,pageInfoDto);
+    public Result getMsgRecord(Integer workOrderId, PageInfoDto pageInfoDto){
+       return counselService.getMsgRecord(workOrderId,pageInfoDto);
     }
 
     /**

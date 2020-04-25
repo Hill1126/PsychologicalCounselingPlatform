@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 /**
  * @author HILL
@@ -84,7 +83,7 @@ public class ServiceTest {
         dto.setPageSize(10);
         dto.setPageNum(1);
         Result msgRecord = counselService.getMsgRecord(10010,dto);
-        var data = (List)msgRecord.getData();
+        var data = msgRecord.getData();
         Assert.assertNotNull(data);
     }
 

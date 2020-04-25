@@ -130,9 +130,9 @@ public class CounselService {
         return ResultGenerator.genSuccessResult(historyList);
     }
 
-    public Result getMsgRecord(Integer wordOrderId, PageInfoDto pageInfoDto) {
+    public Result getMsgRecord(Integer workOrderId, PageInfoDto pageInfoDto) {
         MsgRecordExample recordExample = new MsgRecordExample();
-        recordExample.createCriteria().andOrderIdEqualTo(wordOrderId);
+        recordExample.createCriteria().andOrderIdEqualTo(workOrderId);
         //根据发送时间的降序排列
         recordExample.setOrderByClause("time desc");
         PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());

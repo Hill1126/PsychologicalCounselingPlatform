@@ -13,6 +13,7 @@ import java.time.LocalTime;
 @Data
 public class CounselHistoryVo {
 
+    private Integer workOrderId;
     private Integer teacherId;
     private String teacherName;
     private Integer studentId;

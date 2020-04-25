@@ -1,6 +1,7 @@
 package org.gdou.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.result.Result;
 import org.gdou.dao.DefaultResultMapper;
@@ -77,12 +78,12 @@ public class PaperService {
      * @date: 2020/4/24 15:30
      *
      * @param pageInfoDto
-     * @return: org.gdou.common.result.Result
+     * @return: org.gdou.common.result.Result 带有分页信息的list
     **/
     public  Result listPreviews(PageInfoDto pageInfoDto) {
         PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
         List<PaperAbstractVo> paperAbstractVos = paperMapper.listPreviews();
-        return Result.genSuccessResult(paperAbstractVos);
+        return Result.genSuccessResult(PageInfo.of(paperAbstractVos));
     }
 
     /**

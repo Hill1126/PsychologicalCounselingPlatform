@@ -1,6 +1,7 @@
 package org.gdou.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.result.Result;
 import org.gdou.dao.TestRecordMapper;
@@ -30,13 +31,13 @@ public class TestRecordService {
      *
      * @param pageInfoDto 分页信息
      * @param userId 用户id
-     * @return: org.gdou.common.result.Result 返回带有TestRecordVo集合的result
+     * @return: org.gdou.common.result.Result 返回带有TestRecordVo集合并附带分页信息的result
     **/
     public Result listRecords(PageInfoDto pageInfoDto, Integer userId) {
         log.debug("执行方法【listRecords】,分页信息为：{}",pageInfoDto.toString());
         PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
         List<TestRecordVo> testRecordVos =  testRecordMapper.listRecords(userId);
         log.info("查询用户id【{}】的测试成绩，总条数为【{}】",userId,testRecordVos);
-        return Result.genSuccessResult(testRecordVos);
+        return Result.genSuccessResult(PageInfo.of(testRecordVos));
     }
 }
