@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.gdou</groupId>
     <artifactId>counsel</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.2-SNAPSHOT</version>
     <name>counsel</name>
     <description>心理咨询平台后端子系统</description>
 

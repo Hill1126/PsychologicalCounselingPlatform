@@ -75,4 +75,17 @@ public class Question {
     public void setCreatBy(String creatBy) {
         this.creatBy = creatBy == null ? null : creatBy.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", paperId=" + paperId +
+                ", questionTitle='" + questionTitle + '\'' +
+                ", questionType='" + questionType + '\'' +
+                ", questionStatus=" + questionStatus +
+                ", creatAt=" + creatAt +
+                ", creatBy='" + creatBy + '\'' +
+                '}';
+    }
 }

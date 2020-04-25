@@ -46,7 +46,7 @@ public class PaperService {
     public Result creatPaper(Paper paper) {
         paperMapper.insert(paper);
         log.info("用户id为【{}】新建试卷，标题为【{}】",paper.getCreatUserId(),paper.getPaperTitle());
-        return Result.genSuccessResult();
+        return Result.genSuccessResult(paper);
     }
 
     public Result updatePaper( PaperDto paperDto) {
@@ -59,7 +59,7 @@ public class PaperService {
     }
 
     /**
-     * 根据传入的用户id，返回改用户创建的试卷
+     * 根据传入的用户id，返回该用户创建的试卷集合
      * @Author: HILL
      * @date: 2020/4/22 22:57
      *
@@ -96,6 +96,9 @@ public class PaperService {
     public Result getPaper(Integer paperId) {
         PaperDetailVo detailVo = new PaperDetailVo();
         Paper paper = paperMapper.selectByPrimaryKey(paperId);
+        if (paper==null){
+            return Result.genNotFound("试卷信息未找到");
+        }
         BeanUtils.copyProperties(paper,detailVo);
         log.debug("获取试卷【id:{}】的信息",paperId);
         //将试卷所属的问题列表放入vo中
@@ -123,6 +126,9 @@ public class PaperService {
         String description = defaultResultMapper.getResultByScore(paperId, totalScore);
         log.info("用户：id【{}】提交了一次考试，成绩为：【{}】，试卷id为【{}】"
                 ,userId,totalScore,paperId);
+        if (description==null){
+            description = "此分数范围没有结果可以查看，请联系管理员";
+        }
         //记录这一次的考试成绩
         var testRecord = new TestRecord();
         testRecord.setCreateAt(LocalDateTime.now());

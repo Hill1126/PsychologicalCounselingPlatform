@@ -53,4 +53,15 @@ public class Answer {
     public void setAnswerStatus(Integer answerStatus) {
         this.answerStatus = answerStatus;
     }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "id=" + id +
+                ", questionId=" + questionId +
+                ", answerValue='" + answerValue + '\'' +
+                ", answerScore=" + answerScore +
+                ", answerStatus=" + answerStatus +
+                '}';
+    }
 }

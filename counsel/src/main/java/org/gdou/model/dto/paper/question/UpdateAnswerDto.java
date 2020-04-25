@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class UpdateAnswerDto {
 
     @NotNull(message = "答案id不能为空")
-    private Integer id;
+    private Integer answerId;
 
     private String answerValue;
 

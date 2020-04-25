@@ -50,6 +50,9 @@ public class AdminQuestionController {
     **/
     @RequestMapping(value = "/creat",method = RequestMethod.POST)
     public Result addQuestion(Integer paperId, String questionTitle, HttpServletRequest request){
+        if (paperId==null || questionTitle==null){
+            return Result.genFailResult("试卷id或问题详情不能为空");
+        }
         var user = UserUtils.getUserInRequest(request);
         //构建问题对象
         Question question = new Question();
@@ -62,12 +65,12 @@ public class AdminQuestionController {
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.POST)
-    public Result updateQuestion(QuestionDto questionDto,HttpServletRequest request){
+    public Result updateQuestion(@Validated QuestionDto questionDto,HttpServletRequest request){
         User user = UserUtils.getUserInRequest(request);
         return questionService.updateQuestion(questionDto,user);
     }
 
-    @RequestMapping(value = "/get")
+    @RequestMapping(value = "/list")
     public Result listQuestions( Integer paperId){
         if (paperId==null){
             return Result.genFailResult("试卷id不能为空");
@@ -82,7 +85,7 @@ public class AdminQuestionController {
      *
      * @return: org.gdou.common.result.Result
     **/
-    @RequestMapping("/addAnswer")
+    @RequestMapping(value = "/addAnswer",method = RequestMethod.POST)
     public Result addAnswer(@Validated CreateAnswerDto answerDto){
         var answer = new Answer();
         BeanUtils.copyProperties(answerDto,answer);
@@ -99,10 +102,11 @@ public class AdminQuestionController {
      * @param answerDto 要修改的答案
      * @return: org.gdou.common.result.Result
     **/
-    @RequestMapping("/updateAnswer")
-    public Result updateAnswer(UpdateAnswerDto answerDto){
+    @RequestMapping(value = "/updateAnswer",method = RequestMethod.POST)
+    public Result updateAnswer(@Validated UpdateAnswerDto answerDto){
         var answer = new Answer();
         BeanUtils.copyProperties(answerDto,answer);
+        answer.setId(answerDto.getAnswerId());
         return answerService.updateAnswer(answer);
     }
 

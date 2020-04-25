@@ -43,8 +43,11 @@ public class PaperController {
         return paperService.listPreviews(pageInfoDto);
     }
 
-    @RequestMapping("/startTest")
+    @RequestMapping("/get")
     public Result getPaper(Integer paperId){
+        if (paperId==null){
+            return Result.genFailResult("试卷id不能为空");
+        }
         return paperService.getPaper(paperId);
     }
 

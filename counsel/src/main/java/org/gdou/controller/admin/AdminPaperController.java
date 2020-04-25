@@ -3,6 +3,7 @@ package org.gdou.controller.admin;
 import org.gdou.common.constant.CommonDataStatus;
 import org.gdou.common.result.Result;
 import org.gdou.common.utils.UserUtils;
+import org.gdou.model.dto.paper.DefaultResultDto;
 import org.gdou.model.dto.paper.PaperDto;
 import org.gdou.model.po.DefaultResult;
 import org.gdou.model.po.Paper;
@@ -70,8 +71,8 @@ public class AdminPaperController {
         return  paperService.updatePaper(paperDto);
     }
 
-    @RequestMapping("/get")
-    public Result getByUser(HttpServletRequest request){
+    @RequestMapping("/list")
+    public Result listPapers(HttpServletRequest request){
         Integer userId = UserUtils.getUserInRequest(request).getId();
         return paperService.listPapers(userId);
     }
@@ -83,10 +84,13 @@ public class AdminPaperController {
     }
 
     @RequestMapping(value = "/updateResult",method = RequestMethod.POST)
-    public Result updateDefaultResult(DefaultResult defaultResult){
-        if (defaultResult.getId()==null){
+    public Result updateDefaultResult(Integer resultId, DefaultResultDto defaultResultDto){
+        if (resultId==null){
             return Result.genFailResult("默认结果id不能为空");
         }
+        var defaultResult = new DefaultResult();
+        BeanUtils.copyProperties(defaultResultDto,defaultResult);
+        defaultResult.setId(resultId);
         return defaultResultService.updateResult(defaultResult);
     }
 

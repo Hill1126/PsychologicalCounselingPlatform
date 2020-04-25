@@ -1,7 +1,6 @@
 package org.gdou.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.gdou.common.constant.CommonDataStatus;
 import org.gdou.common.result.Result;
 import org.gdou.dao.AnswerMapper;
 import org.gdou.model.po.Answer;
@@ -47,8 +46,7 @@ public class AnswerService {
     **/
     public Result updateAnswer(Answer answer) {
         answerMapper.updateByPrimaryKeySelective(answer);
-        log.info("答案id【{}】已被{}",answer.getId(),
-                answer.getAnswerStatus()== CommonDataStatus.DELETE?"删除":"更新");
+        log.info("答案id【{}】已更新，更新的值为：{}",answer.getId(),answer.toString());
         return Result.genSuccessResult();
     }
 

@@ -1,7 +1,5 @@
 package org.gdou.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.result.Result;
 import org.gdou.dao.AnswerMapper;
@@ -32,8 +30,6 @@ public class QuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private AnswerMapper answerMapper;
-    @Autowired
-    private ObjectMapper objectMapper;
     /**
      * 给某个试卷添加问题
      * @Author: HILL
@@ -61,18 +57,15 @@ public class QuestionService {
     public Result updateQuestion(QuestionDto questionDto, User user) {
         int i = questionMapper.checkUserAuthority(questionDto.getQuestionId(), user.getId());
         if (i==0){
-            log.info("用户修改试题【{}】失败，用户名为【{}】",questionDto.getQuestionId(),user.getName());
+            log.info("用户修改试题【{}】失败，没有修改权限。用户名为【{}】",questionDto.getQuestionId(),user.getName());
             return Result.genFailResult("您没有权限修改当前的题目");
         }else {
             var question = new Question();
             BeanUtils.copyProperties(questionDto,question);
-            try {
-                log.info("用户【{}】修改问题成功，问题详情为:{}",user.getName()
-                        ,objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(question));
-            } catch (JsonProcessingException e) {
-                log.error("日志json对象转换失败");
-            }
+            question.setId(questionDto.getQuestionId());
             questionMapper.updateByPrimaryKeySelective(question);
+            log.info("用户【{}】修改问题成功，问题详情为:{}",user.getName()
+                    ,question.toString());
         }
         return Result.genSuccessResult();
     }

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -29,6 +30,16 @@ import java.util.Map;
 @Slf4j
 @Component
 public class SystemLogAop {
+
+
+
+    private static final HashSet<String> skipParaSet = new HashSet(){
+        {
+            add("request");
+            add("session");
+            add("response");
+        }
+    } ;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -109,6 +120,10 @@ public class SystemLogAop {
     private Map<String, Object> buildRequestParam(String[] paramNames, Object[] paramValues) {
         Map<String, Object> requestParams = new HashMap<>();
         for (int i = 0; i < paramNames.length; i++) {
+
+            if (skipParaSet.contains(paramNames[i])){
+                continue;
+            }
             Object value = paramValues[i];
 
             //如果是文件对象
@@ -120,7 +135,7 @@ public class SystemLogAop {
             requestParams.put(paramNames[i], value);
         }
         //去除循环依赖
-        requestParams.remove("session");
+
         return requestParams;
     }
 }
