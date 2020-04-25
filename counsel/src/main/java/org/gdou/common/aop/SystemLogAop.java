@@ -84,9 +84,9 @@ public class SystemLogAop {
         requestErrorInfo.setClassMethod(String.format("%s.%s", joinPoint.getSignature().getDeclaringTypeName(),
                 joinPoint.getSignature().getName()));
         requestErrorInfo.setRequestParams(getRequestParamsByJoinPoint(joinPoint));
-        requestErrorInfo.setException(e);
+        requestErrorInfo.setExceptionMsg(e.getMessage());
         try {
-            log.info("Error Request Info      : {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestErrorInfo));
+            log.error("Error Request Info      : {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestErrorInfo));
         }catch (JsonProcessingException jsonException){
             log.error("日志打印失败，信息为{}",jsonException.getMessage());
         }

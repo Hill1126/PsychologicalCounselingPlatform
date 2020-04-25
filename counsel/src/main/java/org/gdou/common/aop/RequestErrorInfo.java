@@ -14,5 +14,5 @@ public class RequestErrorInfo {
     private String httpMethod;
     private String classMethod;
     private Object requestParams;
-    private RuntimeException exception;
+    private String exceptionMsg;
 }
