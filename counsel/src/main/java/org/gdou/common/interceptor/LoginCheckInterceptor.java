@@ -3,6 +3,7 @@ package org.gdou.common.interceptor;
 import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultCode;
+import org.gdou.common.utils.UserUtils;
 import org.gdou.model.po.Oauths;
 import org.gdou.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        var user = request.getSession().getAttribute(ProjectConstant.USER_SESSION_KEY);
+        var user = UserUtils.getUserInRequest(request);
         if (user == null && "dev".equals(active)){
             Result result = userService.login(Oauths.builder().oauthId("testStu").credential("123456").build());
             request.getSession().setAttribute(ProjectConstant.USER_SESSION_KEY,result.getData());

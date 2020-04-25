@@ -2,14 +2,13 @@ package org.gdou.controller;
 
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
+import org.gdou.common.utils.UserUtils;
 import org.gdou.model.bo.MakeAppointmentBO;
 import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.dto.counsel.MakeAppointmentDto;
-import org.gdou.model.po.User;
 import org.gdou.model.qo.CounselHistoryQo;
 import org.gdou.service.impl.CounselService;
 import org.springframework.beans.BeanUtils;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author HILL
@@ -78,19 +77,19 @@ public class CounselController {
      * @date: 2020/3/25 14:48
      *
      * @param makeAppointmentDto 包括老师id、预约日期时间等
-     * @param session 获取当前登录用户的信息
+     * @param request 获取当前登录用户的信息
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping("/appointment")
-    public Result makeAppointment(@Validated MakeAppointmentDto makeAppointmentDto, HttpSession session){
-        var attribute = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
+    public Result makeAppointment(@Validated MakeAppointmentDto makeAppointmentDto, HttpServletRequest request){
+        var user = UserUtils.getUserInRequest(request);
         MakeAppointmentBO bo = new MakeAppointmentBO();
         BeanUtils.copyProperties(makeAppointmentDto,bo);
         var appointmentDateTime = makeAppointmentDto.getAppointmentDateTime();
         bo.setAppointmentTime(appointmentDateTime.toLocalTime());
         bo.setAppointmentDate(appointmentDateTime.toLocalDate());
-        bo.setStudentId(attribute.getId());
-        bo.setStudentName(attribute.getName());
+        bo.setStudentId(user.getId());
+        bo.setStudentName(user.getName());
         return counselService.makeAppointment(bo);
     }
 
@@ -99,12 +98,12 @@ public class CounselController {
      * @Author: HILL
      * @date: 2020/3/25 14:49
      *
-     * @param session
+     * @param request
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping("/myAppointment")
-    public Result getWorkOrderById(HttpSession session){
-        var user = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
+    public Result getWorkOrderById(HttpServletRequest request){
+        var user = UserUtils.getUserInRequest(request);
         return counselService.getWorkOrderByID(user.getId());
     }
 
@@ -116,8 +115,8 @@ public class CounselController {
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping("/history")
-    public Result getMyCounselHistory(HttpSession session){
-        var user = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
+    public Result getMyCounselHistory(HttpServletRequest request){
+        var user = UserUtils.getUserInRequest(request);
         CounselHistoryQo historyQo = new CounselHistoryQo();
         if (user.getUserType().equals(UserType.STUDENT)){
             historyQo.setStudentId(user.getId());
@@ -136,7 +135,7 @@ public class CounselController {
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping("/msgRecord")
-    public Result getMsgRecord(Integer wordOrderId, @Validated PageInfoDto pageInfoDto){
+    public Result getMsgRecord(Integer wordOrderId, PageInfoDto pageInfoDto){
        return counselService.getMsgRecord(wordOrderId,pageInfoDto);
     }
 
@@ -148,8 +147,8 @@ public class CounselController {
      * @return: org.gdou.common.result.Result
     **/    
     @RequestMapping("/todoCounsel")
-    public Result getTodoCounsel(HttpSession session){
-        var user = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
+    public Result getTodoCounsel(HttpServletRequest request){
+        var user = UserUtils.getUserInRequest(request);
         return counselService.getTodoCounsel(user.getId());
     }
 
