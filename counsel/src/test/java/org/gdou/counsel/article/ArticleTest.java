@@ -2,7 +2,7 @@ package org.gdou.counsel.article;
 
 import org.gdou.dao.ArticleMapper;
 import org.gdou.model.bo.SearchArticleBo;
-import org.gdou.model.vo.ArticlePreviewVo;
+import org.gdou.model.vo.article.ArticlePreviewVo;
 import org.gdou.service.impl.ArticleService;
 import org.junit.Assert;
 import org.junit.Test;

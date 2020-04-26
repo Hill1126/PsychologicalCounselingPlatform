@@ -24,7 +24,7 @@ import org.gdou.dao.ConfigMapper;
 import org.gdou.model.bo.SearchArticleBo;
 import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.po.Article;
-import org.gdou.model.vo.ArticlePreviewVo;
+import org.gdou.model.vo.article.ArticlePreviewVo;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -68,17 +68,25 @@ public class ArticleService {
         return Result.genSuccessResult(PageInfo.of(articlePreview));
     }
 
-    public Result getArticleById(Integer articleId){
-        var article = (Article)redisUtil.hget(ProjectConstant.ARTICLE_KEY, articleId);
-        if (article==null){
+    public Result getArticleById(Integer articleId) throws IOException {
+        String articleJson = redisUtil.get(ProjectConstant.ARTICLE_KEY + articleId);
+        Article article = null;
+        if (articleJson==null){
             //redis中不存在则从数据库获取拼放入redis中。
             article= articleMapper.selectByPrimaryKey(articleId);
             if (article!=null){
-                redisUtil.hset(ProjectConstant.ARTICLE_KEY,articleId.toString(),article,ProjectConstant.ORDER_KEY_EXPIRE);
+                article.setArticleContent(null);
+                redisUtil.setEx(ProjectConstant.ARTICLE_KEY+articleId,
+                        objectMapper.writeValueAsString(article), ProjectConstant.ORDER_KEY_EXPIRE);
             }else{
-                return Result.genNotFound("您要查看的文内容不存在");
+                return Result.genNotFound("您要查看的内容不存在");
             }
+        }else {
+            //更新redis的时间
+            article = objectMapper.readValue(articleJson,Article.class);
+            redisUtil.expire(ProjectConstant.ARTICLE_KEY+articleId,ProjectConstant.ORDER_KEY_EXPIRE);
         }
+
         return Result.genSuccessResult(article);
     }
 

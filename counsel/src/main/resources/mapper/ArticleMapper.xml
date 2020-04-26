@@ -18,7 +18,7 @@
     <result column="article_content" jdbcType="LONGVARCHAR" property="articleContent" />
     <result column="content_html" jdbcType="LONGVARCHAR" property="contentHtml" />
   </resultMap>
-  <resultMap id="ArticlePreviewMap" type="org.gdou.model.vo.ArticlePreviewVo">
+  <resultMap id="ArticlePreviewMap" type="org.gdou.model.vo.article.ArticlePreviewVo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
@@ -41,7 +41,7 @@
     from article
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="getArticlePreview" resultType="org.gdou.model.vo.ArticlePreviewVo"
+  <select id="getArticlePreview" resultType="org.gdou.model.vo.article.ArticlePreviewVo"
           resultMap="ArticlePreviewMap">
     select id , title,update_at,article_source,author,head_img_url
     from article

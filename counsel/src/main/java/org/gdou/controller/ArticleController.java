@@ -42,7 +42,7 @@ public class ArticleController {
     }
 
     @RequestMapping("/{articleId}")
-    public Result getArticle(@PathVariable Integer articleId){
+    public Result getArticle(@PathVariable Integer articleId) throws IOException {
         return articleService.getArticleById(articleId);
     }
 

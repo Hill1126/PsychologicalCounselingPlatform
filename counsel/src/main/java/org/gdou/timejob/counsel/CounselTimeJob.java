@@ -50,7 +50,7 @@ public class CounselTimeJob {
         List<Integer> changeList = new ArrayList<>(4);
         //拿id到redis中查询是否存在
         ids.forEach((orderId)->{
-            if (!redisUtil.hHasKey(ProjectConstant.ORDER_KEY,orderId+"")){
+            if (redisUtil.get(ProjectConstant.ORDER_KEY+orderId)==null){
                 //不存在则记录，然后后续调用mapper修改状态
                 changeList.add(orderId);
                 log.info("订单id【{}】准备更新状态为已完成",orderId);

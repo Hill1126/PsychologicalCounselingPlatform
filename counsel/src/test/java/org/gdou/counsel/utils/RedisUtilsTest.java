@@ -31,9 +31,9 @@ public class RedisUtilsTest {
     public void fun2(){
         User user = new User();
         user.setName("许俊锋");
-        redisUtil.set("user",user);
-        var user1 = (User)redisUtil.get("user");
-        System.out.println(user1.getName());
+        redisUtil.set("user","11");
+        var user1 = redisUtil.get("user");
+        System.out.println(user1);
 
     }
 

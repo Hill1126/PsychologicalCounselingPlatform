@@ -1,7 +1,7 @@
 package org.gdou.dao;
 
 import org.gdou.model.po.Article;
-import org.gdou.model.vo.ArticlePreviewVo;
+import org.gdou.model.vo.article.ArticlePreviewVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.gdou.model.vo;
+package org.gdou.model.vo.article;
 
 import lombok.Data;
 

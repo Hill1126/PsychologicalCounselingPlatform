@@ -180,7 +180,7 @@ public class CounselService {
     public void insertMsgRecord(MsgRecord msgRecord) {
         msgRecordMapper.insert(msgRecord);
         //更新redis的记录时间
-        redisUtil.hset(ProjectConstant.ORDER_KEY,msgRecord.getOrderId().toString(),
+        redisUtil.setEx(ProjectConstant.ORDER_KEY+msgRecord.getOrderId(),
                 "1",ProjectConstant.ORDER_KEY_EXPIRE);
     }
 }
