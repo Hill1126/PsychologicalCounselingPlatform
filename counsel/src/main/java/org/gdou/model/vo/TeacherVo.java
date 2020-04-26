@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class TeacherVo {
 
-    private int id;
+    private int teacherId;
     private String name;
     private String avatarUrl;
 

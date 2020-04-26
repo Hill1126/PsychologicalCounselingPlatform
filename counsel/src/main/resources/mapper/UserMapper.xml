@@ -14,7 +14,7 @@
     <result column="user_type" jdbcType="INTEGER" property="userType" />
   </resultMap>
   <resultMap id="chatUserMap" type="org.gdou.model.vo.TeacherVo">
-    <id column="teacher_id" jdbcType="INTEGER" property="id" />
+    <id column="teacher_id" jdbcType="INTEGER" property="teacherId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
   </resultMap>
