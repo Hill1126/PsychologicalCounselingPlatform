@@ -136,7 +136,8 @@ public class CounselService {
         //根据发送时间的降序排列
         recordExample.setOrderByClause("time desc");
         PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
-        return ResultGenerator.genSuccessResult(PageInfo.of(msgRecordMapper.selectByExample(recordExample)));
+        List<MsgRecord> msgRecords = msgRecordMapper.selectByExample(recordExample);
+        return ResultGenerator.genSuccessResult(PageInfo.of(msgRecords));
     }
 
     /**

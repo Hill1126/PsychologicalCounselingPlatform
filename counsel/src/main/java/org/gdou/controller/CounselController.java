@@ -136,6 +136,9 @@ public class CounselController {
     **/
     @RequestMapping("/msgRecord")
     public Result getMsgRecord(Integer workOrderId, PageInfoDto pageInfoDto){
+        if (workOrderId==null){
+            return Result.genFailResult("workOrderId不能为null");
+        }
        return counselService.getMsgRecord(workOrderId,pageInfoDto);
     }
 
