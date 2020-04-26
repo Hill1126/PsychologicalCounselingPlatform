@@ -213,8 +213,7 @@
         work_order
         WHERE
         work_order.teacher_id = `user`.id
-        AND work_order.appointment_date BETWEEN DATE_ADD( NOW(), INTERVAL - 1 DAY )
-        AND DATE_ADD( NOW(), INTERVAL 1 DAY )
+        AND work_order.appointment_date BETWEEN #{startDate} AND #{endDate}
         AND `status` = 1
         GROUP BY
         teacher_id
