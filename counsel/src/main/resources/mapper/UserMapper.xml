@@ -14,7 +14,7 @@
     <result column="user_type" jdbcType="INTEGER" property="userType" />
   </resultMap>
   <resultMap id="chatUserMap" type="org.gdou.model.vo.TeacherVo">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="teacher_id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
   </resultMap>
@@ -202,23 +202,42 @@
 
   <select id="selectAppointmentTeacher" resultType="org.gdou.model.vo.TeacherVo"
           parameterType="org.gdou.model.qo.TeacherChatQo" resultMap="chatUserMap">
-          SELECT
-            teacher_id,
-            `user`.`name`,
-            `user`.avatar_url
-          FROM
-            `user`,
-            work_order
-          WHERE
-            work_order.teacher_id = `user`.id
-          AND work_order.appointment_date BETWEEN #{startDate}  AND #{endDate}
-          GROUP BY
-            teacher_id
-          HAVING COUNT(teacher_id) <![CDATA[ < ]]> 14
-          ORDER BY COUNT(teacher_id)
-          <if test="isHot ==false ">
-            asc
-          </if>
+
+    ( SELECT
+        teacher_id,
+        `user`.`name`,
+        `user`.avatar_url,
+        COUNT( teacher_id ) AS appointmentCount
+        FROM
+        `user`,
+        work_order
+        WHERE
+        work_order.teacher_id = `user`.id
+        AND work_order.appointment_date BETWEEN DATE_ADD( NOW(), INTERVAL - 1 DAY )
+        AND DATE_ADD( NOW(), INTERVAL 1 DAY )
+        AND `status` = 1
+        GROUP BY
+        teacher_id
+        HAVING
+        COUNT( teacher_id ) <![CDATA[ < ]]> 14
+        ) UNION
+        (
+        SELECT DISTINCT
+        `user`.id,
+        `user`.`name`,
+        avatar_url,
+        0 AS appointmentCount
+        FROM
+        `user`,
+        work_order
+        WHERE
+        `user`.user_type = 2
+        AND `user`.id NOT IN ( SELECT DISTINCT teacher_id FROM work_order WHERE `status` = 1 )
+        )
+        ORDER BY appointmentCount
+        <if test="isHot ==false ">
+          ASC
+        </if>
 
   </select>
 
