@@ -64,9 +64,10 @@ public class PaperService {
      * @param userId 用户id
      * @return: org.gdou.common.result.Result
     **/
-    public Result listPapers(Integer userId) {
+    public Result listPapers(PageInfoDto pageInfoDto,Integer userId) {
+        PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
         List<Paper> paperList =  paperMapper.listPapers(userId);
-        return Result.genSuccessResult(paperList);
+        return Result.genSuccessResult(PageInfo.of(paperList));
     }
 
     /**

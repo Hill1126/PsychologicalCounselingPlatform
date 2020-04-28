@@ -3,6 +3,7 @@ package org.gdou.controller.admin;
 import org.gdou.common.constant.CommonDataStatus;
 import org.gdou.common.result.Result;
 import org.gdou.common.utils.UserUtils;
+import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.dto.paper.DefaultResultDto;
 import org.gdou.model.dto.paper.PaperDto;
 import org.gdou.model.po.DefaultResult;
@@ -90,9 +91,9 @@ public class AdminPaperController {
     }
 
     @RequestMapping("/list")
-    public Result listPapers(HttpServletRequest request){
+    public Result listPapers(PageInfoDto pageInfoDto,HttpServletRequest request){
         Integer userId = UserUtils.getUserInRequest(request).getId();
-        return paperService.listPapers(userId);
+        return paperService.listPapers(pageInfoDto,userId);
     }
 
 

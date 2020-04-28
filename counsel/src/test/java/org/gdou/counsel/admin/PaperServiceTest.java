@@ -3,6 +3,7 @@ package org.gdou.counsel.admin;
 import org.gdou.common.constant.CommonDataStatus;
 import org.gdou.common.result.Result;
 import org.gdou.dao.PaperMapper;
+import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.po.Paper;
 import org.gdou.service.impl.PaperService;
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class PaperServiceTest {
 
     @Test
     public void listPapersTest(){
-        Result result = paperService.listPapers(1111);
+        Result result = paperService.listPapers(new PageInfoDto(),1111);
     }
 
     @Test
