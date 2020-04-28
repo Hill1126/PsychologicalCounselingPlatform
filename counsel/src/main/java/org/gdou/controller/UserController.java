@@ -94,10 +94,7 @@ public class UserController {
         //判断是否有头像文件上传
         if (avatar !=null){
             //保存文件到百度的文件管理库
-            var result = (Result)bosService.uploadAvatar(avatar,user);
-            if (result.getCode()!=ResultCode.SUCCESS) {
-                return ResultGenerator.genFailResult("图片上传失败");
-            }
+            bosService.uploadAvatar(avatar,user);
         }
         user.setUpdatedAt(LocalDateTime.now());
         user =  userService.updateUserInfo(user);

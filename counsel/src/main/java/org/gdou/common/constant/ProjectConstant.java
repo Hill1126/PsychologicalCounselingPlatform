@@ -13,7 +13,6 @@ public final class ProjectConstant {
     public static final Long ORDER_KEY_EXPIRE = 1000*60*15L;
     public static final String ARTICLE_KEY = "ARTICLE:";
 
-    public static final String AVATAR_BUCKET_NAME = "avatar-img";
     /** es相关常量
     */
     public static final String ARTICLE_INDEX_NAME = "article";
