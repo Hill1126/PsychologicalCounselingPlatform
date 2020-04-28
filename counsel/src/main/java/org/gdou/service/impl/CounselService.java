@@ -31,10 +31,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author HILL
@@ -70,17 +68,17 @@ public class CounselService {
         List<AppointmentTimeBo> timeList = workOrderMapper.getAppointmentById(new AvailableTimeQo(id,
                 now,now.plusDays(1)));
         //分离出今天与明天已预约的时间
-        Map<LocalTime, Boolean> todayListMap = TimeQuantum.getDefaultTimeMap();
-        Map<LocalTime, Boolean> tomorrowTimeMap = TimeQuantum.getDefaultTimeMap();
+        var todayList = TimeQuantum.getDefaultTimeList();
+        var tomorrowList = TimeQuantum.getDefaultTimeList();
         timeList.forEach((bo)->{
             //根据日期设定某个时间段已经被预约
             if(bo.getAppointmentDate().equals(now)){
-                todayListMap.put(bo.getAppointmentTime(),true);
+                todayList.remove(bo.getAppointmentTime());
             }else{
-                tomorrowTimeMap.put(bo.getAppointmentTime(),true);
+                tomorrowList.remove(bo.getAppointmentTime());
             }
         });
-        return ResultGenerator.genSuccessResult(new AppointmentTimeVo(todayListMap,tomorrowTimeMap));
+        return ResultGenerator.genSuccessResult(new AppointmentTimeVo(todayList,tomorrowList));
 
     }
 

@@ -3,7 +3,7 @@ package org.gdou.model.vo;
 import lombok.Getter;
 
 import java.time.LocalTime;
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author HILL
@@ -13,11 +13,11 @@ import java.util.Map;
 @Getter
 public class AppointmentTimeVo {
 
-    private Map<LocalTime,Boolean> todayTimeMap;
-    private Map<LocalTime,Boolean> tomorrowTimeMap;
+    private List<LocalTime> todayTimeList;
+    private List<LocalTime> tomorrowTimeList;
 
-    public AppointmentTimeVo(Map<LocalTime, Boolean> todayTimeMap, Map<LocalTime, Boolean> tomorrowTimeMap) {
-        this.todayTimeMap = todayTimeMap;
-        this.tomorrowTimeMap = tomorrowTimeMap;
+    public AppointmentTimeVo(List<LocalTime> todayTimeList, List<LocalTime> tomorrowTimeList) {
+        this.todayTimeList = todayTimeList;
+        this.tomorrowTimeList = tomorrowTimeList;
     }
 }

@@ -1,8 +1,7 @@
 package org.gdou.common.constant.chat;
 
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.ArrayList;
 
 /**
  * 描述时间段，用于预约时的时间段确定
@@ -19,16 +18,16 @@ public class TimeQuantum {
     public static final LocalTime THREE_PM = LocalTime.of(15,0);
     public static final LocalTime FOUR_PM = LocalTime.of(16,0);
 
-    private static HashMap<LocalTime,Boolean> timeMap;
+    private static ArrayList<LocalTime> timeSet;
 
     static {
-        timeMap = new HashMap(8);
-        timeMap.put(NINE_AM,false);
-        timeMap.put(TEN_AM,false);
-        timeMap.put(ELEVEN_AM,false);
-        timeMap.put(TWO_PM,false);
-        timeMap.put(THREE_PM,false);
-        timeMap.put(FOUR_PM,false);
+        timeSet = new ArrayList<>(8);
+        timeSet.add(NINE_AM );
+        timeSet.add(TEN_AM );
+        timeSet.add(ELEVEN_AM );
+        timeSet.add(TWO_PM );
+        timeSet.add(THREE_PM );
+        timeSet.add(FOUR_PM );
     }
 
     /**
@@ -38,10 +37,10 @@ public class TimeQuantum {
      *
      * @return: java.util.HashMap<java.time.LocalTime,java.lang.Boolean>
     **/
-    public static TreeMap<LocalTime,Boolean> getDefaultTimeMap(){
-        var map = new TreeMap<LocalTime,Boolean>();
-        map.putAll(timeMap);
-        return map;
+    public static ArrayList<LocalTime> getDefaultTimeList(){
+        var list = new ArrayList<LocalTime>();
+        list.addAll(timeSet);
+        return list;
     }
 
 
