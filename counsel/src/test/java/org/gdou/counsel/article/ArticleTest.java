@@ -1,5 +1,6 @@
 package org.gdou.counsel.article;
 
+import org.gdou.common.constant.article.ArticleStatus;
 import org.gdou.dao.ArticleMapper;
 import org.gdou.model.bo.SearchArticleBo;
 import org.gdou.model.vo.article.ArticlePreviewVo;
@@ -30,9 +31,9 @@ public class ArticleTest {
 
     @Test
     public void getArticlePreviewTest(){
-        List<ArticlePreviewVo> articlePreview = articleMapper.getArticlePreview(null);
+        List<ArticlePreviewVo> articlePreview = articleMapper.getArticlePreview(null, ArticleStatus.NORMAL);
         Assert.assertNotEquals(0,articlePreview.size());
-        List<ArticlePreviewVo> preview = articleMapper.getArticlePreview("科技");
+        List<ArticlePreviewVo> preview = articleMapper.getArticlePreview("科技",null);
 
     }
 

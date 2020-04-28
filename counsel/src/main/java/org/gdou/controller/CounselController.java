@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author HILL
@@ -67,7 +68,7 @@ public class CounselController {
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping("/availableTime")
-    public Result getAppointmentTime(int teacherId){
+    public Result getAppointmentTime(@NotNull(message = "参数teacherId不能为空") int teacherId){
         return counselService.getAppointmentTimeById(teacherId);
     }
 
@@ -135,10 +136,8 @@ public class CounselController {
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping("/msgRecord")
-    public Result getMsgRecord(Integer workOrderId, PageInfoDto pageInfoDto){
-        if (workOrderId==null){
-            return Result.genFailResult("workOrderId不能为null");
-        }
+    public Result getMsgRecord(@NotNull(message = "参数workOrderId不能为空") Integer workOrderId,
+                               PageInfoDto pageInfoDto){
        return counselService.getMsgRecord(workOrderId,pageInfoDto);
     }
 

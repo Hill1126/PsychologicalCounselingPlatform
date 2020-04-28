@@ -25,4 +25,12 @@ public final class ProjectConstant {
     public static final Long SCROLL_ID_EXPIRE_TIME = 1*60*5L;
     public static final String SEARCH_KEY_WORD = "keyWord";
 
+    /**
+     * 爬虫变量相关
+    **/
+    public static final String CRAWL_URL_KEY = "CRAWL_URL";
+    public static final String DEFAULT_CATEGORY = "心理知识";
+
+
+
 }

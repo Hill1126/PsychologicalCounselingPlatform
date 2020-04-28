@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -84,10 +85,8 @@ public class AdminPaperController {
     }
 
     @RequestMapping(value = "/updateResult",method = RequestMethod.POST)
-    public Result updateDefaultResult(Integer resultId, DefaultResultDto defaultResultDto){
-        if (resultId==null){
-            return Result.genFailResult("默认结果id不能为空");
-        }
+    public Result updateDefaultResult(@NotNull(message = "参数resultId不能为空") Integer resultId,
+                                      DefaultResultDto defaultResultDto){
         var defaultResult = new DefaultResult();
         BeanUtils.copyProperties(defaultResultDto,defaultResult);
         defaultResult.setId(resultId);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 
 /**
@@ -48,7 +49,9 @@ public class ArticleController {
 
 
     @RequestMapping("/search")
-    public Result searchArticle(@RequestParam(defaultValue = "false") boolean nextPage, String keyWord, HttpServletRequest request) throws IOException {
+    public Result searchArticle(@RequestParam(defaultValue = "false") boolean nextPage,
+                                @NotBlank(message = "参数keyWord不能为空") String keyWord,
+                                HttpServletRequest request) throws IOException {
         HttpSession session = request.getSession();
         String scrollId = null;
         //如果需要翻页，则尝试获取scrollId

@@ -40,14 +40,19 @@
     <include refid="Blob_Column_List" />
     from article
     where id = #{id,jdbcType=INTEGER}
+    and article_status = 1
   </select>
   <select id="getArticlePreview" resultType="org.gdou.model.vo.article.ArticlePreviewVo"
           resultMap="ArticlePreviewMap">
     select id , title,update_at,article_source,author,head_img_url
     from article
-    WHERE article_status = 1
-    <if test="value!=null">
-      AND article_category = #{value}
+    WHERE
+    1 = 1
+    <if test="param2!=null">
+       and article_status = #{param2}
+    </if>
+    <if test="param1!=null">
+      AND article_category = #{param1}
     </if>
     ORDER BY update_at desc
 

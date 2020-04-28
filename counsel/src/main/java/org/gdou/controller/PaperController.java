@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author HILL
@@ -44,19 +45,15 @@ public class PaperController {
     }
 
     @RequestMapping("/get")
-    public Result getPaper(Integer paperId){
-        if (paperId==null){
-            return Result.genFailResult("试卷id不能为空");
-        }
+    public Result getPaper(@NotNull(message = "参数paperId不能为空") Integer paperId){
         return paperService.getPaper(paperId);
     }
 
 
     @RequestMapping(value = "/commit",method = RequestMethod.POST)
-    public Result getResult(Integer paperId, Double totalScore, HttpServletRequest request){
-        if (paperId==null || totalScore==null){
-            return Result.genFailResult("获取结果失败，试卷id或分数不能为空");
-        }
+    public Result getResult(@NotNull(message = "参数paperId不能为空")Integer paperId,
+                            @NotNull(message = "参数totalScore不能为空")Double totalScore,
+                            HttpServletRequest request){
         User user = UserUtils.getUserInRequest(request);
         return paperService.commit(paperId,totalScore,user.getId());
     }

@@ -16,7 +16,7 @@ public interface ArticleMapper {
 
     Article selectByPrimaryKey(Integer id);
 
-    List<ArticlePreviewVo> getArticlePreview(String category);
+    List<ArticlePreviewVo> getArticlePreview(String category,Integer status);
 
     int updateByPrimaryKeySelective(Article record);
 
