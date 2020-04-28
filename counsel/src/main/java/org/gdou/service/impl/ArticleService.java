@@ -1,21 +1,29 @@
 package org.gdou.service.impl;
 
 import com.alibaba.druid.util.StringUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.gdou.common.constant.ProjectConstant;
+import org.gdou.common.constant.article.ArticleStatus;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
 import org.gdou.common.utils.RedisUtil;
@@ -23,8 +31,10 @@ import org.gdou.dao.ArticleMapper;
 import org.gdou.dao.ConfigMapper;
 import org.gdou.model.bo.SearchArticleBo;
 import org.gdou.model.dto.PageInfoDto;
+import org.gdou.model.dto.article.ArticleDto;
 import org.gdou.model.po.Article;
-import org.gdou.model.vo.ArticlePreviewVo;
+import org.gdou.model.vo.article.ArticlePreviewVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -57,28 +67,54 @@ public class ArticleService {
 
     final Scroll scroll = new Scroll(TimeValue.timeValueMinutes(5L));
 
+    /**
+     * 获取文章的分类
+     * @Author: HILL
+     * @date: 2020/4/27 22:59
+     *
+     * @return: org.gdou.common.result.Result
+    **/
     public Result getArticleCategory(){
         List<String> categoryList = configMapper.getValueByName("article", "category");
+
         return ResultGenerator.genSuccessResult(categoryList);
     }
 
+
+    /**
+     * 返回文章的预览属性
+     * @Author: HILL
+     * @date: 2020/4/26 22:55
+     *
+     * @param pageInfoDto
+     * @param category 文章种类，为空则按最新处理
+     * @return: org.gdou.common.result.Result
+    **/
     public Result getArticlePreview(PageInfoDto pageInfoDto, String category) {
         PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
-        List<ArticlePreviewVo> articlePreview = articleMapper.getArticlePreview(category);
+        List<ArticlePreviewVo> articlePreview = articleMapper.getArticlePreview(category, ArticleStatus.NORMAL);
         return Result.genSuccessResult(PageInfo.of(articlePreview));
     }
 
-    public Result getArticleById(Integer articleId){
-        var article = (Article)redisUtil.hget(ProjectConstant.ARTICLE_KEY, articleId);
-        if (article==null){
+    public Result getArticleById(Integer articleId) throws IOException {
+        String articleJson = redisUtil.get(ProjectConstant.ARTICLE_KEY + articleId);
+        Article article = null;
+        if (articleJson==null){
             //redis中不存在则从数据库获取拼放入redis中。
             article= articleMapper.selectByPrimaryKey(articleId);
             if (article!=null){
-                redisUtil.hset(ProjectConstant.ARTICLE_KEY,articleId.toString(),article,ProjectConstant.ORDER_KEY_EXPIRE);
+                article.setArticleContent(null);
+                redisUtil.setEx(ProjectConstant.ARTICLE_KEY+articleId,
+                        objectMapper.writeValueAsString(article), ProjectConstant.ORDER_KEY_EXPIRE);
             }else{
-                return Result.genNotFound("您要查看的文内容不存在");
+                return Result.genNotFound("您要查看的内容不存在");
             }
+        }else {
+            //更新redis的时间
+            article = objectMapper.readValue(articleJson,Article.class);
+            redisUtil.expire(ProjectConstant.ARTICLE_KEY+articleId,ProjectConstant.ORDER_KEY_EXPIRE);
         }
+
         return Result.genSuccessResult(article);
     }
 
@@ -136,4 +172,81 @@ public class ArticleService {
         return  null;
 
     }
+
+    /**
+     * 先修改数据库的状态
+     * 先从es库删除对应的文章，然后删除redis的缓存
+     * @Author: HILL
+     * @date: 2020/4/26 23:18
+     *
+     * @param articleId 文章id
+     * @return: void
+     **/
+    public void deleteArticle(Integer articleId) throws IOException {
+        //更新数据库文章状态
+        Article temp = new Article();
+        temp.setId(articleId);
+        temp.setArticleStatus(ArticleStatus.DELETE);
+        articleMapper.updateByPrimaryKeySelective(temp);
+        log.info("id：【{}】文章状态已修改为【删除】",articleId);
+        //删除redis缓存
+        redisUtil.delete(ProjectConstant.ARTICLE_KEY+articleId);
+        log.info("redis删除的文章id【{}】的缓存",articleId);
+        //删除es索引
+        DeleteRequest deleteRequest = new DeleteRequest(ProjectConstant.ARTICLE_INDEX_NAME
+                ,ProjectConstant.ARTICLE_TYPE_NAME,articleId+"");
+        restHighLevelClient.deleteAsync(deleteRequest, RequestOptions.DEFAULT,
+                new ActionListener<DeleteResponse>() {
+                    @Override
+                    public void onResponse(DeleteResponse deleteResponse) {
+                        log.info("es删除文章id【{}】的索引",articleId);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        log.error("删除文章【{}】失败，请手动尝试。失败信息为：{}",articleId,e.getMessage());
+                    }
+                });
+    }
+
+
+    /**
+     * 更新数据库的数据，
+     * 然后再更新es的数据
+     * 然后删除redis的缓存
+     * @Author: HILL
+     * @date: 2020/4/27 14:59
+     *
+     * @param articleId id
+     * @param articleDto 要更新的数据
+     * @return: void
+     **/
+    public void updateArticle(Integer articleId, ArticleDto articleDto) throws JsonProcessingException {
+        //更新数据库信息
+        var article = new Article();
+        BeanUtils.copyProperties(articleDto,article);
+        article.setId(articleId);
+        articleMapper.updateByPrimaryKeySelective(article);
+        //删除redis缓存
+        redisUtil.delete(ProjectConstant.ARTICLE_KEY+articleId);
+        //更新es文章
+        UpdateRequest updateRequest = new UpdateRequest(ProjectConstant.ARTICLE_INDEX_NAME
+                ,ProjectConstant.ARTICLE_TYPE_NAME,articleId+"");
+        String jsonArticle = objectMapper.writeValueAsString(article);
+        updateRequest.doc(jsonArticle, XContentType.JSON);
+        restHighLevelClient.updateAsync(updateRequest, RequestOptions.DEFAULT,
+                new ActionListener<UpdateResponse>() {
+                    @Override
+                    public void onResponse(UpdateResponse updateResponse) {
+                        log.info("文章更新成功，id为【{}】",articleId);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        log.error("文章更新失败，请查看日志，信息为{}",e.getMessage());
+                    }
+                });
+    }
+
+
 }

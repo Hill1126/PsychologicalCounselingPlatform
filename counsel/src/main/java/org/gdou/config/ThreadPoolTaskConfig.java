@@ -16,20 +16,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 @EnableAsync
 public class ThreadPoolTaskConfig {
 
-    @Bean("bosUploadExecutor")
-    public ThreadPoolTaskExecutor BosUploadExecutor(){
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(1);
-        executor.setMaxPoolSize(4);
-        executor.setQueueCapacity(30);
-        executor.setKeepAliveSeconds(10);
-        executor.setThreadNamePrefix("bosUpload-Thread-");
-        //拒绝策略为交付给原线程执行
-        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        executor.initialize();
-        return executor;
-    }
-
     @Bean("msgInsertExecutor")
     public ThreadPoolTaskExecutor MsgInsertExecutor(){
         var executor = new ThreadPoolTaskExecutor();

@@ -9,11 +9,10 @@ package org.gdou.common.constant;
 public final class ProjectConstant {
 
     public static final String USER_SESSION_KEY = "USER";
-    public static final String ORDER_KEY = "COUNSEL_ORDER";
+    public static final String ORDER_KEY = "COUNSEL_ORDER:";
     public static final Long ORDER_KEY_EXPIRE = 1000*60*15L;
-    public static final String ARTICLE_KEY = "ARTICLE";
+    public static final String ARTICLE_KEY = "ARTICLE:";
 
-    public static final String AVATAR_BUCKET_NAME = "avatar-img";
     /** es相关常量
     */
     public static final String ARTICLE_INDEX_NAME = "article";
@@ -25,5 +24,13 @@ public final class ProjectConstant {
     public static final String SCROLL_ID_NAME = "scrollId";
     public static final Long SCROLL_ID_EXPIRE_TIME = 1*60*5L;
     public static final String SEARCH_KEY_WORD = "keyWord";
+
+    /**
+     * 爬虫变量相关
+    **/
+    public static final String CRAWL_URL_KEY = "CRAWL_URL";
+    public static final String DEFAULT_CATEGORY = "心理知识";
+
+
 
 }

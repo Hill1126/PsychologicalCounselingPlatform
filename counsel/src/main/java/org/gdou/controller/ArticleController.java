@@ -5,6 +5,7 @@ import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.result.Result;
 import org.gdou.model.dto.PageInfoDto;
 import org.gdou.service.impl.ArticleService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 
 /**
@@ -23,6 +25,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/article")
 @Slf4j
+@Validated
 public class ArticleController {
 
     private ArticleService articleService;
@@ -42,13 +45,15 @@ public class ArticleController {
     }
 
     @RequestMapping("/{articleId}")
-    public Result getArticle(@PathVariable Integer articleId){
+    public Result getArticle(@PathVariable Integer articleId) throws IOException {
         return articleService.getArticleById(articleId);
     }
 
 
     @RequestMapping("/search")
-    public Result searchArticle(@RequestParam(defaultValue = "false") boolean nextPage, String keyWord, HttpServletRequest request) throws IOException {
+    public Result searchArticle(@RequestParam(defaultValue = "false") boolean nextPage,
+                                @NotBlank(message = "参数keyWord不能为空") String keyWord,
+                                HttpServletRequest request) throws IOException {
         HttpSession session = request.getSession();
         String scrollId = null;
         //如果需要翻页，则尝试获取scrollId

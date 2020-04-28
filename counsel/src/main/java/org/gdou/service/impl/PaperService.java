@@ -8,7 +8,6 @@ import org.gdou.dao.DefaultResultMapper;
 import org.gdou.dao.PaperMapper;
 import org.gdou.dao.TestRecordMapper;
 import org.gdou.model.dto.PageInfoDto;
-import org.gdou.model.dto.paper.PaperDto;
 import org.gdou.model.po.Paper;
 import org.gdou.model.po.TestRecord;
 import org.gdou.model.vo.paper.PaperAbstractVo;
@@ -50,9 +49,7 @@ public class PaperService {
         return Result.genSuccessResult(paper);
     }
 
-    public Result updatePaper( PaperDto paperDto) {
-        var paper = new Paper();
-        BeanUtils.copyProperties(paperDto,paper);
+    public Result updatePaper( Paper paper) {
         paperMapper.updateByPrimaryKeySelective(paper);
         log.info("试卷状态更新，信息为：{}",paper.toString());
         return Result.genSuccessResult();
@@ -67,9 +64,10 @@ public class PaperService {
      * @param userId 用户id
      * @return: org.gdou.common.result.Result
     **/
-    public Result listPapers(Integer userId) {
+    public Result listPapers(PageInfoDto pageInfoDto,Integer userId) {
+        PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
         List<Paper> paperList =  paperMapper.listPapers(userId);
-        return Result.genSuccessResult(paperList);
+        return Result.genSuccessResult(PageInfo.of(paperList));
     }
 
     /**

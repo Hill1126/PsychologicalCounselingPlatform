@@ -1,8 +1,11 @@
 package org.gdou.model.po;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Article implements Serializable {
 
     private Integer id;

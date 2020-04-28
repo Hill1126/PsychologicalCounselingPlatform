@@ -3,20 +3,24 @@ package org.gdou.controller.admin;
 import org.gdou.common.constant.CommonDataStatus;
 import org.gdou.common.result.Result;
 import org.gdou.common.utils.UserUtils;
+import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.dto.paper.DefaultResultDto;
 import org.gdou.model.dto.paper.PaperDto;
 import org.gdou.model.po.DefaultResult;
 import org.gdou.model.po.Paper;
+import org.gdou.service.impl.BosService;
 import org.gdou.service.impl.DefaultResultService;
 import org.gdou.service.impl.PaperService;
-import org.gdou.service.impl.QuestionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
@@ -29,15 +33,15 @@ import java.time.LocalDateTime;
 @RequestMapping("/admin/paper")
 public class AdminPaperController {
 
-    public AdminPaperController(PaperService paperService, QuestionService questionService, DefaultResultService defaultResultService) {
+    public AdminPaperController(PaperService paperService, DefaultResultService defaultResultService, BosService bosService) {
         this.paperService = paperService;
-        this.questionService = questionService;
         this.defaultResultService = defaultResultService;
+        this.bosService = bosService;
     }
 
     private PaperService paperService;
-    private QuestionService questionService;
     private DefaultResultService defaultResultService;
+    private BosService bosService;
 
     /**
      * 根据相关信息添加试卷
@@ -48,15 +52,28 @@ public class AdminPaperController {
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping(value = "/creat",method = RequestMethod.POST)
-    public Result creatPaper(PaperDto paperDto, HttpServletRequest request){
+    public Result creatPaper(@Validated PaperDto paperDto, HttpServletRequest request){
         var user = UserUtils.getUserInRequest(request);
         var paper = new Paper();
+
         BeanUtils.copyProperties(paperDto,paper);
         paper.setCreatUserId(user.getId());
         paper.setCreatAt(LocalDateTime.now());
         paper.setPaperStatus(CommonDataStatus.EDIT);
         return  paperService.creatPaper(paper);
     }
+
+    @RequestMapping(value = "/setCover",method = RequestMethod.POST)
+    public Result setCover(@NotNull(message = "参数paperId不能为空") Integer paperId,
+                           @NotNull(message = "上传文件coverImg不能为空") MultipartFile coverImg) throws IOException {
+        Result result = bosService.uploadArticleImg(coverImg);
+        Paper paper = new Paper();
+        paper.setId(paperId);
+        paper.setCoverUrl(result.getData().toString());
+        paperService.updatePaper(paper);
+        return result;
+    }
+
 
     /**
      * 根据前端传入数据，更新相应的paper字段
@@ -68,13 +85,15 @@ public class AdminPaperController {
      **/
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Result updateStatus(@Validated PaperDto paperDto){
-        return  paperService.updatePaper(paperDto);
+        var paper = new Paper();
+        BeanUtils.copyProperties(paperDto,paper);
+        return  paperService.updatePaper(paper);
     }
 
     @RequestMapping("/list")
-    public Result listPapers(HttpServletRequest request){
+    public Result listPapers(PageInfoDto pageInfoDto,HttpServletRequest request){
         Integer userId = UserUtils.getUserInRequest(request).getId();
-        return paperService.listPapers(userId);
+        return paperService.listPapers(pageInfoDto,userId);
     }
 
 
@@ -84,10 +103,8 @@ public class AdminPaperController {
     }
 
     @RequestMapping(value = "/updateResult",method = RequestMethod.POST)
-    public Result updateDefaultResult(Integer resultId, DefaultResultDto defaultResultDto){
-        if (resultId==null){
-            return Result.genFailResult("默认结果id不能为空");
-        }
+    public Result updateDefaultResult(@NotNull(message = "参数resultId不能为空") Integer resultId,
+                                      DefaultResultDto defaultResultDto){
         var defaultResult = new DefaultResult();
         BeanUtils.copyProperties(defaultResultDto,defaultResult);
         defaultResult.setId(resultId);

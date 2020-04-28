@@ -11,6 +11,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 /**
@@ -53,6 +54,11 @@ public class GlobalExceptionHandler {
     public Result bceClientExceptionHandler(BceClientException e){
         log.error("图片上传失败 详情：{}",e.getMessage());
         return ResultGenerator.genFailResult("图片上传失败，请稍后再试");
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public Result constraintViolationExceptionHandler(ConstraintViolationException e){
+        return ResultGenerator.genFailResult("接口参数校验不通过："+e.getMessage());
     }
 
     @ExceptionHandler(WebSocketNullPointException.class)

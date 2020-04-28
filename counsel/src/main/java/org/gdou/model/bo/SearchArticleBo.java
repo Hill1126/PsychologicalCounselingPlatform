@@ -2,7 +2,7 @@ package org.gdou.model.bo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.gdou.model.vo.ArticlePreviewVo;
+import org.gdou.model.vo.article.ArticlePreviewVo;
 
 import java.util.List;
 

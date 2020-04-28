@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -49,10 +50,9 @@ public class AdminQuestionController {
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping(value = "/creat",method = RequestMethod.POST)
-    public Result addQuestion(Integer paperId, String questionTitle, HttpServletRequest request){
-        if (paperId==null || questionTitle==null){
-            return Result.genFailResult("试卷id或问题详情不能为空");
-        }
+    public Result addQuestion(@NotNull(message = "参数paperId不能为空") Integer paperId,
+                              @NotNull(message = "参数questionTitle不能为空") String questionTitle,
+                              HttpServletRequest request){
         var user = UserUtils.getUserInRequest(request);
         //构建问题对象
         Question question = new Question();
@@ -71,10 +71,7 @@ public class AdminQuestionController {
     }
 
     @RequestMapping(value = "/list")
-    public Result listQuestions( Integer paperId){
-        if (paperId==null){
-            return Result.genFailResult("试卷id不能为空");
-        }
+    public Result listQuestions( @NotNull(message = "参数paperId不能为空") Integer paperId){
         return questionService.listQuestions(paperId);
     }
 

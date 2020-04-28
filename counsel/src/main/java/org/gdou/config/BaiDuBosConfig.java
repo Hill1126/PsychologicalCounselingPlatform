@@ -18,6 +18,9 @@ public class BaiDuBosConfig {
     public static final String SECRET_ACCESS_KEY  = "d15f962503344d368ea68e010ee76f6c";
     public static final String GZ_ENDPOINT = "gz.bcebos.com";
 
+    public static final String AVATAR_BUCKET_NAME = "avatar-img";
+    public static final String ARTICLE_BUCKET_NAME = "article-img";
+
     @Bean
     public BosClient getBosClient(){
         BosClientConfiguration config = new BosClientConfiguration();
