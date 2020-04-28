@@ -6,6 +6,7 @@ import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.po.User;
 import org.gdou.service.impl.PaperService;
 import org.gdou.service.impl.TestRecordService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotNull;
  * @date 2020/4/24
  **/
 @RestController
+@Validated
 @RequestMapping("/paper")
 public class PaperController {
 

@@ -28,6 +28,7 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/counsel")
 @Slf4j
+@Validated
 public class CounselController {
 
 

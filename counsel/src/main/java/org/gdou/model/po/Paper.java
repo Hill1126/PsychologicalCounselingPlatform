@@ -17,6 +17,8 @@ public class Paper {
 
     private String paperAbstract;
 
+    private String coverUrl;
+
     public Integer getId() {
         return id;
     }
@@ -73,16 +75,11 @@ public class Paper {
         this.paperAbstract = paperAbstract == null ? null : paperAbstract.trim();
     }
 
-    @Override
-    public String toString() {
-        return "Paper{" +
-                "id=" + id +
-                ", paperTitle='" + paperTitle + '\'' +
-                ", creatAt=" + creatAt +
-                ", creatUserId=" + creatUserId +
-                ", paperStatus=" + paperStatus +
-                ", paperType='" + paperType + '\'' +
-                ", paperAbstract='" + paperAbstract + '\'' +
-                '}';
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl == null ? null : coverUrl.trim();
     }
 }
