@@ -40,7 +40,7 @@ public class QuestionService {
     **/
     public Result addQuestion(Question question) {
         questionMapper.insert(question);
-        log.info("用户【{}】添加为试卷【】添加了一个问题，标题为【】",question.getCreatBy()
+        log.info("用户【{}】添加为试卷【{}】添加了一个问题，标题为【{}】",question.getCreatBy()
                 ,question.getPaperId(),question.getQuestionTitle());
         return Result.genSuccessResult(question);
     }

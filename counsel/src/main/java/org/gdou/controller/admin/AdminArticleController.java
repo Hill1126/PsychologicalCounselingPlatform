@@ -30,11 +30,11 @@ import java.time.LocalDateTime;
 public class AdminArticleController {
 
 
-    AdminService adminService;
+    private AdminService adminService;
 
-    ArticleService articleService;
+    private ArticleService articleService;
 
-    BosService bosService;
+    private BosService bosService;
 
     public AdminArticleController(AdminService adminService, ArticleService articleService, BosService bosService) {
         this.adminService = adminService;

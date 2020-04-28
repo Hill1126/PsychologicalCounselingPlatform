@@ -3,7 +3,6 @@ package org.gdou.counsel.admin;
 import org.gdou.common.constant.CommonDataStatus;
 import org.gdou.common.result.Result;
 import org.gdou.dao.PaperMapper;
-import org.gdou.model.dto.paper.PaperDto;
 import org.gdou.model.po.Paper;
 import org.gdou.service.impl.PaperService;
 import org.junit.Test;
@@ -41,10 +40,10 @@ public class PaperServiceTest {
 
     @Test
     public void updateTest(){
-        var paperDto = new PaperDto();
-        paperDto.setPaperAbstract(LocalDateTime.now().toString());
-        paperDto.setId(1111);
-        paperService.updatePaper(paperDto);
+        var paper = new Paper();
+        paper.setPaperAbstract(LocalDateTime.now().toString());
+        paper.setId(1111);
+        paperService.updatePaper(paper);
     }
 
     @Test
