@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -83,12 +82,18 @@ public class QuestionService {
         var questionVoList = questionMapper.listQuestions(paperId);
         //生成问题id的集合，根据问题id查找对应的答案。
         List<Integer> ids = questionVoList.stream().map(QuestionsVo::getQuestionId).collect(Collectors.toList());
-        List<Answer> answerList = answerMapper.listAnswers(ids);
-        //根据id匹配答案与题目
-        Map<Integer, List<Answer>> collect = answerList.stream().collect(Collectors.groupingBy(Answer::getQuestionId));
-        questionVoList.forEach((vo) -> {
-            vo.setAnswerList(collect.get(vo.getQuestionId()));
-        });
+        //若试卷有问题，那么进行答案的获取
+        List<Answer> answerList;
+        if (ids!=null && ids.size()>0){
+            answerList = answerMapper.listAnswers(ids);
+            var collect = answerList.stream().
+                    collect(Collectors.groupingBy(Answer::getQuestionId));
+            //根据id匹配答案与题目
+            questionVoList.forEach((vo) -> {
+                vo.setAnswerList(collect.get(vo.getQuestionId()));
+            });
+        }
+
         return Result.genSuccessResult(questionVoList);
 
     }
