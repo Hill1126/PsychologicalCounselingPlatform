@@ -96,6 +96,23 @@ public class AdminPaperController {
         return paperService.listPapers(pageInfoDto,userId);
     }
 
+    /**
+     * 将paper更新为删除状态
+     * @Author: HILL
+     * @date: 2020/4/29 14:42
+     *
+     * @param paperId
+     * @return: org.gdou.common.result.Result
+    **/
+    @RequestMapping("/delete")
+    public Result deletePaper(@NotNull(message = "参数paperId不能为空") Integer paperId){
+        var paper = new Paper();
+        paper.setId(paperId);
+        paper.setPaperStatus(CommonDataStatus.DELETE);
+        paperService.updatePaper(paper);
+        return Result.genSuccessResult();
+    }
+
 
     @RequestMapping(value = "/addResult",method = RequestMethod.POST)
     public Result addDefaultResult(@Validated DefaultResult defaultResult){
@@ -111,6 +128,14 @@ public class AdminPaperController {
         return defaultResultService.updateResult(defaultResult);
     }
 
+    @RequestMapping("/listResult")
+    public Result listDefaultResult(@NotNull(message = "参数paperId不能为空") Integer paperId){
+        return defaultResultService.listResults(paperId);
+    }
 
+    @RequestMapping("/deleteResult")
+    public Result deleteResult(@NotNull(message = "参数resultId不能为空") Integer resultId){
+        return defaultResultService.deleteResult(resultId);
+    }
 
 }
