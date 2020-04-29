@@ -21,7 +21,7 @@ public class MakeAppointmentDto {
     @NotBlank(message = "老师姓名不能为空")
     private String teacherName;
     @Future(message = "预约时间已经无效")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
     @NotNull(message = "预约日期不能为空")
     private LocalDateTime appointmentDateTime;
 

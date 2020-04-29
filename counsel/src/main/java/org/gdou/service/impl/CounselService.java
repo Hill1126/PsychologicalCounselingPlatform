@@ -31,8 +31,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author HILL
@@ -65,6 +67,7 @@ public class CounselService {
 
     public Result getAppointmentTimeById(Integer id){
         LocalDate now = LocalDate.now();
+        LocalTime localTime = LocalTime.now();
         List<AppointmentTimeBo> timeList = workOrderMapper.getAppointmentById(new AvailableTimeQo(id,
                 now,now.plusDays(1)));
         //分离出今天与明天已预约的时间
@@ -78,7 +81,10 @@ public class CounselService {
                 tomorrowList.remove(bo.getAppointmentTime());
             }
         });
-        return ResultGenerator.genSuccessResult(new AppointmentTimeVo(todayList,tomorrowList));
+        //去除今日已过期时间
+        List<LocalTime> collect = todayList.stream().filter((time) -> time.compareTo(localTime) > 0)
+                .collect(Collectors.toList());
+        return ResultGenerator.genSuccessResult(new AppointmentTimeVo(collect,tomorrowList));
 
     }
 
