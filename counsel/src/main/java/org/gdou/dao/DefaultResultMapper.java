@@ -24,4 +24,6 @@ public interface DefaultResultMapper {
     String getResultByScore(Integer paperId, Double totalScore);
 
     List<DefaultResult> listResultsByPaperId(Integer paperId);
+
+    Integer scoreCheck(DefaultResult defaultResult);
 }
