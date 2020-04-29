@@ -75,6 +75,17 @@ public class AdminQuestionController {
         return questionService.listQuestions(paperId);
     }
 
+    @RequestMapping("/delete")
+    public Result deleteQuestion(@NotNull(message = "参数questionId不能为空") Integer questionId,
+                                HttpServletRequest request){
+        User user = UserUtils.getUserInRequest(request);
+        var questionDto = new QuestionDto();
+        questionDto.setQuestionId(questionId);
+        questionDto.setQuestionStatus(CommonDataStatus.DELETE);
+        return questionService.updateQuestion(questionDto,user);
+
+    }
+
     /**
      *
      * @Author: HILL
@@ -107,6 +118,13 @@ public class AdminQuestionController {
         return answerService.updateAnswer(answer);
     }
 
+    @RequestMapping("/deleteAnswer")
+    public Result deleteAnswer(@NotNull(message = "参数answerId不能为空") Integer answerId){
+        var answer = new Answer();
+        answer.setAnswerStatus(CommonDataStatus.DELETE);
+        answer.setId(answerId);
+        return answerService.updateAnswer(answer);
+    }
 
 
 }

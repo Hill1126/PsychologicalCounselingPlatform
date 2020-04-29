@@ -4,7 +4,9 @@ import org.gdou.common.constant.CommonDataStatus;
 import org.gdou.common.result.Result;
 import org.gdou.dao.PaperMapper;
 import org.gdou.model.dto.PageInfoDto;
+import org.gdou.model.po.DefaultResult;
 import org.gdou.model.po.Paper;
+import org.gdou.service.impl.DefaultResultService;
 import org.gdou.service.impl.PaperService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +29,8 @@ public class PaperServiceTest {
     PaperService paperService;
     @Autowired
     PaperMapper paperMapper;
+    @Autowired
+    DefaultResultService defaultResultService;
 
     @Test
     public void createTest(){
@@ -56,6 +60,17 @@ public class PaperServiceTest {
     public void fun(){
         Result result = paperService.getPaper(300101);
         System.out.println(result.getData().toString());
+    }
+
+    @Test
+    public void resultScopeTest(){
+        var result = new DefaultResult();
+        result.setPaperId(300101);
+        result.setScoreStart(2.5);
+        result.setScoreEnd(4.0);
+        result.setDescription("test");
+        Result r = defaultResultService.addDefaultResult(result);
+
     }
 
 }

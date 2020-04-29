@@ -36,7 +36,32 @@
 
 
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="listResultsByPaperId" resultType="org.gdou.model.po.DefaultResult">
+      SELECT
+          *
+      FROM
+          default_result
+      WHERE
+          paper_id = #{value}
+    </select>
+  <select id="scoreCheck" resultType="java.lang.Integer">
+    SELECT count(*) FROM default_result r
+    where
+    (
+    (#{scoreStart} <![CDATA[ >= ]]>  r.score_start AND #{scoreEnd} <![CDATA[ <= ]]>  r.score_end )
+    OR ( #{scoreStart} <![CDATA[ < ]]>  r.score_end AND #{scoreEnd} <![CDATA[ > ]]>  r.score_end )
+    OR ( #{scoreStart} <![CDATA[ < ]]> r.score_start AND #{scoreEnd} <![CDATA[ > ]]> r.score_start)
+    OR ( #{scoreStart} <![CDATA[ < ]]>  r.score_start AND #{scoreEnd} <![CDATA[ > ]]> r.score_end )
+    )
+    <if test="id != null">
+      and id != #{id}
+    </if>
+
+
+
+
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from default_result
     where id = #{id,jdbcType=INTEGER}
   </delete>
