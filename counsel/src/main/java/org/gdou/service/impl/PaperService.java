@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.result.Result;
+import org.gdou.dao.AnswerMapper;
 import org.gdou.dao.DefaultResultMapper;
 import org.gdou.dao.PaperMapper;
 import org.gdou.dao.TestRecordMapper;
@@ -35,12 +36,14 @@ public class PaperService {
     private QuestionService questionService;
     private DefaultResultMapper defaultResultMapper;
     private TestRecordMapper testRecordMapper;
+    private AnswerMapper answerMapper;
 
-    public PaperService(PaperMapper paperMapper, QuestionService questionService, DefaultResultMapper defaultResultMapper, TestRecordMapper testRecordMapper) {
+    public PaperService(PaperMapper paperMapper, QuestionService questionService, DefaultResultMapper defaultResultMapper, TestRecordMapper testRecordMapper, AnswerMapper answerMapper) {
         this.paperMapper = paperMapper;
         this.questionService = questionService;
         this.defaultResultMapper = defaultResultMapper;
         this.testRecordMapper = testRecordMapper;
+        this.answerMapper = answerMapper;
     }
 
     public Result creatPaper(Paper paper) {
@@ -116,11 +119,19 @@ public class PaperService {
      * @date: 2020/4/24 16:43
      *
      * @param paperId 试卷id
-     * @param totalScore 总分
+     * @param answerIds 考试用户选择的答案id
      * @param userId 当前考试用户的id
      * @return: org.gdou.common.result.Result 返回包含成绩和描述的结果
     **/
-    public Result commit(Integer paperId, Double totalScore,Integer userId) {
+    public Result commit(Integer paperId,List<Integer> answerIds, Integer userId) {
+
+        //根据提交答案id获得分数
+        Double totalScore ;
+        if (answerIds.size()==0){
+            totalScore = 0.0;
+        }else {
+            totalScore = answerMapper.getTotalScoreByIds(answerIds);
+        }
         //根据总分获取结果
         String description = defaultResultMapper.getResultByScore(paperId, totalScore);
         log.info("用户：id【{}】提交了一次考试，成绩为：【{}】，试卷id为【{}】"
