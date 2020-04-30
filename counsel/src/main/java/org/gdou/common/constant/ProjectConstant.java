@@ -8,10 +8,19 @@ package org.gdou.common.constant;
 **/
 public final class ProjectConstant {
 
-    public static final String USER_SESSION_KEY = "USER";
+    public static final String USER_SESSION_KEY = "USER:";
     public static final String ORDER_KEY = "COUNSEL_ORDER:";
     public static final Long ORDER_KEY_EXPIRE = 1000*60*15L;
     public static final String ARTICLE_KEY = "ARTICLE:";
+
+    /**
+     * 用户redis相关
+    **/
+    public static final String TOKEN_NAME = "USER_TOKEN";
+    /**
+     * 用户token在redis的存活过期时间
+     */
+    public static final Long USER_EXPIRE = 1000*60*60*24*3L;
 
     /** es相关常量
     */

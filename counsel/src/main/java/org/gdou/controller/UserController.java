@@ -1,12 +1,16 @@
 package org.gdou.controller;
 
 import com.alibaba.druid.util.StringUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultCode;
 import org.gdou.common.result.ResultGenerator;
+import org.gdou.common.utils.CookieUtils;
+import org.gdou.common.utils.RedisUtil;
 import org.gdou.model.dto.user.UserInfoDto;
 import org.gdou.model.dto.user.UserRegisterDto;
 import org.gdou.model.po.Oauths;
@@ -20,9 +24,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * @author HILL
@@ -37,10 +44,14 @@ public class UserController {
 
     private UserService userService;
     private BosService bosService;
+    private RedisUtil redisUtil;
+    private ObjectMapper objectMapper;
 
-    public UserController(UserService userService, BosService bosService) {
+    public UserController(UserService userService, BosService bosService, RedisUtil redisUtil, ObjectMapper objectMapper) {
         this.userService = userService;
         this.bosService = bosService;
+        this.redisUtil = redisUtil;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -49,18 +60,24 @@ public class UserController {
      * @date: 2020/3/7 22:26
      *
      * @param oauth 凭证和密码
-     * @param session 存放用户的session
-     * @param useTokenLogin 是否使用token免密码登录(暂不开发)
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public Result login(@Validated Oauths oauth, HttpSession session,boolean useTokenLogin){
+    public Result login(@Validated Oauths oauth,
+                        HttpServletResponse response, HttpServletRequest request
+                        ) throws JsonProcessingException {
         Result result = userService.login(oauth);
         if (result.getCode()== ResultCode.SUCCESS){
-            //将用户放入session会话中，返回结果
+            //将用户redis中，并在cookie中添加token
             var user =  (User)result.getData();
-            session.setAttribute(ProjectConstant.USER_SESSION_KEY,user);
-
+            String token = UUID.randomUUID().toString();
+            String userJson = objectMapper.writeValueAsString(user);
+            //设置用户信息在redis的缓存
+            redisUtil.setEx(ProjectConstant.USER_SESSION_KEY+token,
+                    userJson,ProjectConstant.USER_EXPIRE);
+            //往用户写入cookie
+            CookieUtils.setCookie(request,response,ProjectConstant.TOKEN_NAME,
+                            token,1);
         }
         return result;
     }
