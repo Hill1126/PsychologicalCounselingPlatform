@@ -9,6 +9,7 @@ import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultCode;
 import org.gdou.common.result.ResultGenerator;
+import org.gdou.common.utils.CookieUtils;
 import org.gdou.common.utils.RedisUtil;
 import org.gdou.model.dto.user.UserInfoDto;
 import org.gdou.model.dto.user.UserRegisterDto;
@@ -83,7 +84,7 @@ public class UserController {
                 userJson,ProjectConstant.USER_EXPIRE);
         //往用户写入token
         Cookie cookie = new Cookie(ProjectConstant.TOKEN_NAME,token);
-        cookie.setMaxAge(3*24*60*60);
+        cookie.setMaxAge(Integer.MAX_VALUE);
         cookie.setPath("/");
         response.addCookie(cookie);
     }
@@ -127,16 +128,19 @@ public class UserController {
     }
 
     /**
-     * 将session保存的用户信息删除并返回结果
+     * 将保存在redis中的token信息删除，同时删除cookie
      * @Author: HILL
-     * @date: 2020/3/11 22:52
+     * @date: 2020/4/30 16:06
      *
-     * @param session
+     * @param request
+     * @param response
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping("/exit")
-    public Result exit(HttpSession session){
-        session.removeAttribute(ProjectConstant.USER_SESSION_KEY);
+    public Result exit(HttpServletRequest request,HttpServletResponse response){
+        String token = CookieUtils.getCookieValue(request, ProjectConstant.TOKEN_NAME);
+        redisUtil.delete(ProjectConstant.USER_SESSION_KEY+token);
+        CookieUtils.deleteCookie(request,response,ProjectConstant.TOKEN_NAME);
         return ResultGenerator.genSuccessResult();
     }
 
