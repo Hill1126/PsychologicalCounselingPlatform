@@ -20,4 +20,6 @@ public interface AnswerMapper {
     int updateByPrimaryKey(Answer record);
 
     List<Answer> listAnswers(Iterable<Integer> ids);
+
+    Double getTotalScoreByIds(List<Integer> answerIds);
 }

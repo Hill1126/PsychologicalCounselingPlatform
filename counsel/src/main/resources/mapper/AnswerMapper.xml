@@ -30,7 +30,21 @@
         AND answer_status != -1
 
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="getTotalScoreByIds" resultType="java.lang.Double">
+      SELECT
+          sum( answer_score )
+      FROM
+          answer
+      WHERE
+          id IN
+    <foreach collection="list" item="id" index="index"
+             open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+
+
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from answer
     where id = #{id,jdbcType=INTEGER}
   </delete>
