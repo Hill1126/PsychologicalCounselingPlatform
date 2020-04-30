@@ -68,18 +68,22 @@ public class UserController {
                         ) throws JsonProcessingException {
         Result result = userService.login(oauth);
         if (result.getCode()== ResultCode.SUCCESS){
-            //将用户redis中，并在cookie中添加token
-            var user =  (User)result.getData();
-            String token = UUID.randomUUID().toString();
-            String userJson = objectMapper.writeValueAsString(user);
-            //设置用户信息在redis的缓存
-            redisUtil.setEx(ProjectConstant.USER_SESSION_KEY+token,
-                    userJson,ProjectConstant.USER_EXPIRE);
-            //往用户写入cookie
-            CookieUtils.setCookie(request,response,ProjectConstant.TOKEN_NAME,
-                            token,1);
+            ssoProcess(response, request, result);
         }
         return result;
+    }
+
+    private void ssoProcess(HttpServletResponse response, HttpServletRequest request, Result result) throws JsonProcessingException {
+        //将用户redis中，并在cookie中添加token
+        var user =  (User)result.getData();
+        String token = UUID.randomUUID().toString();
+        String userJson = objectMapper.writeValueAsString(user);
+        //设置用户信息在redis的缓存
+        redisUtil.setEx(ProjectConstant.USER_SESSION_KEY+token,
+                userJson,ProjectConstant.USER_EXPIRE);
+        //往用户写入token
+        CookieUtils.setCookie(request,response,ProjectConstant.TOKEN_NAME,
+                        token);
     }
 
     /**
