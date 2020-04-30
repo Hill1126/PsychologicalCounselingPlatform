@@ -9,7 +9,6 @@ import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultCode;
 import org.gdou.common.result.ResultGenerator;
-import org.gdou.common.utils.CookieUtils;
 import org.gdou.common.utils.RedisUtil;
 import org.gdou.model.dto.user.UserInfoDto;
 import org.gdou.model.dto.user.UserRegisterDto;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -82,8 +82,10 @@ public class UserController {
         redisUtil.setEx(ProjectConstant.USER_SESSION_KEY+token,
                 userJson,ProjectConstant.USER_EXPIRE);
         //往用户写入token
-        CookieUtils.setCookie(request,response,ProjectConstant.TOKEN_NAME,
-                        token);
+        Cookie cookie = new Cookie(ProjectConstant.TOKEN_NAME,token);
+        cookie.setMaxAge(3*24*60*60);
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
     /**

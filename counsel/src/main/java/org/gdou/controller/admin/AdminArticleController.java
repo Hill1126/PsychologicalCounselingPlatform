@@ -12,6 +12,7 @@ import org.gdou.service.impl.BosService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -78,9 +79,8 @@ public class AdminArticleController {
         return adminService.getArticle(articleId);
     }
 
-    @RequestMapping("/update")
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Result updateArticle(@NotNull(message = "参数articleId不能为空") Integer articleId,ArticleDto articleDto) throws JsonProcessingException {
-
         articleService.updateArticle(articleId,articleDto);
         return Result.genSuccessResult();
     }
@@ -91,7 +91,7 @@ public class AdminArticleController {
         return Result.genSuccessResult();
     }
 
-    @RequestMapping("/uploadImg")
+    @RequestMapping(value = "/uploadImg",method = RequestMethod.POST)
     public Result uploadArticleImg(@NotNull(message = "参数image不能为空") MultipartFile image) throws IOException {
         return bosService.uploadArticleImg(image);
     }
@@ -105,7 +105,7 @@ public class AdminArticleController {
      * @param category
      * @return: org.gdou.common.result.Result
     **/
-    @RequestMapping("/addCrawlUrl")
+    @RequestMapping(value = "/addCrawlUrl",method = RequestMethod.POST)
     public Result addCrawlUrl(@NotNull(message = "参数crawlUrl不能为空") String crawlUrl,
                                String category){
         return adminService.addCrawlUrl(crawlUrl,category);
