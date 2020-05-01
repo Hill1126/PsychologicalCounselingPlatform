@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.gdou.common.constant.ProjectConstant;
 import org.gdou.model.po.User;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,12 @@ public class UserUtils {
 
         //通过request获取token
         String token = CookieUtils.getCookieValue(request, ProjectConstant.TOKEN_NAME);
+        return getUserByToken(token);
+
+    }
+
+    @Nullable
+    public static User getUserByToken(String token) throws JsonProcessingException {
         if (StringUtils.isEmpty(token)){
             return null;
         }
@@ -54,11 +61,12 @@ public class UserUtils {
             redisUtil.expire(ProjectConstant.USER_SESSION_KEY+token,ProjectConstant.USER_EXPIRE);
             return user;
         }
-
     }
 
     public static User getUserInRequest( HttpServletRequest request) {
         return (User)request.getSession().getAttribute(ProjectConstant.USER_SESSION_KEY);
     }
+
+
 
 }

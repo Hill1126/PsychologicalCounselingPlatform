@@ -224,4 +224,34 @@ public final class CookieUtils {
         return domainName;
     }
 
+    /**
+     * 从header字符串中解析出自己需要的cookie。
+     * @Author: HILL
+     * @date: 2020/5/1 22:09
+     *
+     * @param cookieName 需要解析的cookie的键
+     * @param cookieStr 整个header的cookie字符串
+     * @return: java.lang.String cookie的值
+    **/
+    public static String getCookieInHeaderString(String cookieName,String cookieStr){
+        String[] cookieNodeArr = cookieStr.split(";");
+       for (int i=0;i<cookieNodeArr.length;i++){
+           //遍历每个cookie，找到合适的cookieName
+           var value = cookieNodeArr[i];
+           //每个cookie以=分割，判断name是否相等
+           String[] split = value.split("=");
+           if (split.length>1){
+               var key = split[0];
+               if (cookieName.equals(key)){
+                   return split[1];
+               }
+           }
+
+       }
+       return null;
+
+    }
+
+
+
 }

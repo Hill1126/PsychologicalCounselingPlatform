@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -116,11 +115,7 @@ public class WebSocketServer {
     @NotNull
     private User getUserFromConfig(EndpointConfig config) {
         //获取user信息
-        var httpSession = (HttpSession)config.getUserProperties().get(HttpSession.class.getName());
-        if (httpSession==null){
-            throw new WebSocketNullPointException("用户会话session不存在");
-        }
-        var user = (User)httpSession.getAttribute(ProjectConstant.USER_SESSION_KEY);
+        var user = (User)config.getUserProperties().get(ProjectConstant.USER_SESSION_KEY);
         if (user==null) {
             throw new WebSocketNullPointException("用户未登录");
         }
