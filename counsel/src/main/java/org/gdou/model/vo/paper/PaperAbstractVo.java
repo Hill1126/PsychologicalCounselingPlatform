@@ -24,4 +24,6 @@ public class PaperAbstractVo {
 
     private String questionSetter;
 
+    private String coverUrl;
+
 }

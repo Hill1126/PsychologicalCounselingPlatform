@@ -18,9 +18,10 @@
     <result column="paper_abstract" jdbcType="VARCHAR" property="paperAbstract" />
     <result column="creat_at" jdbcType="TIMESTAMP" property="creatAt" />
     <result column="questionSetter" jdbcType="VARCHAR" property="questionSetter" />
+    <result column="cover_url" jdbcType="VARCHAR" property="coverUrl" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, paper_title, creat_at, creat_user_id, paper_status, paper_type, paper_abstract
+    id, paper_title, creat_at, creat_user_id, paper_status, paper_type, paper_abstract,cover_url
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -43,12 +44,13 @@
         paper_title,
         paper_abstract,
         paper.creat_at,
-        `user`.`name` as questionSetter
+        `user`.`name` as questionSetter,
+        cover_url
     FROM
         paper,`user`
     WHERE
 				paper.creat_user_id = `user`.id
-         and paper_status not in (-1,1)
+         and paper_status not in (-1)
     ORDER BY paper.creat_at DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
