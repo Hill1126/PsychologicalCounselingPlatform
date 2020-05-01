@@ -71,6 +71,8 @@ public class UserController {
         if (result.getCode()== ResultCode.SUCCESS){
             ssoProcess(response, request, result);
         }
+        //放入session中，方便在websocket中获取用户信息
+        request.getSession(true).setAttribute(ProjectConstant.USER_SESSION_KEY,result.getData());
         return result;
     }
 
