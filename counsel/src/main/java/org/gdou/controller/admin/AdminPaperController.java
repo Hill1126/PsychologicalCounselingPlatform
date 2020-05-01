@@ -52,7 +52,7 @@ public class AdminPaperController {
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping(value = "/creat",method = RequestMethod.POST)
-    public Result creatPaper(@Validated PaperDto paperDto, HttpServletRequest request){
+    public Result creatPaper( PaperDto paperDto, HttpServletRequest request){
         var user = UserUtils.getUserInRequest(request);
         var paper = new Paper();
 
@@ -88,6 +88,23 @@ public class AdminPaperController {
         var paper = new Paper();
         BeanUtils.copyProperties(paperDto,paper);
         return  paperService.updatePaper(paper);
+    }
+
+    /**
+     * 将试卷发布到用户端
+     * @Author: HILL
+     * @date: 2020/5/1 10:22
+     *
+     * @param paperId 要发布的试卷
+     * @return: org.gdou.common.result.Result
+    **/
+    @RequestMapping("/public")
+    public Result publicPaper(@NotNull(message = "参数paperId不能为空") Integer paperId){
+        var paper = new Paper();
+        paper.setId(paperId);
+        paper.setPaperStatus(CommonDataStatus.PUBLIC);
+        paperService.updatePaper(paper);
+        return Result.genSuccessResult();
     }
 
     @RequestMapping("/list")

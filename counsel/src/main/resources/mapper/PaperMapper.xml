@@ -48,7 +48,7 @@
         paper,`user`
     WHERE
 				paper.creat_user_id = `user`.id
-        and paper_status != - 1
+         and paper_status not in (-1,1)
     ORDER BY paper.creat_at DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
