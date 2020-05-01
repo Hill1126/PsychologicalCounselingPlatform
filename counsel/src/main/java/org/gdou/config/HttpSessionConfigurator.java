@@ -23,6 +23,7 @@ public class HttpSessionConfigurator extends ServerEndpointConfig.Configurator {
         //将http的session放入到sec的map中，方便在websocket服务器中获取session
         if (httpSession!=null){
             sec.getUserProperties().put(HttpSession.class.getName(), httpSession);
+
         }
         super.modifyHandshake(sec,request,response);
     }
