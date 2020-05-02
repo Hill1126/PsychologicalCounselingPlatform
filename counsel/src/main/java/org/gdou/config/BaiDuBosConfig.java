@@ -3,6 +3,7 @@ package org.gdou.config;
 import com.baidubce.auth.DefaultBceCredentials;
 import com.baidubce.services.bos.BosClient;
 import com.baidubce.services.bos.BosClientConfiguration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +15,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BaiDuBosConfig {
 
-    public static final String ACCESS_KEY_ID = "dd71e9aeb6e8433b86a10a998cf8e8ac";
-    public static final String SECRET_ACCESS_KEY  = "d15f962503344d368ea68e010ee76f6c";
+    @Value("${baidu.bos.ACCESS_KEY_ID}")
+    public  String ACCESS_KEY_ID ;
+    @Value("${baidu.bos.SECRET_ACCESS_KEY}")
+    public  String SECRET_ACCESS_KEY ;
+
+
     public static final String GZ_ENDPOINT = "gz.bcebos.com";
 
     public static final String AVATAR_BUCKET_NAME = "avatar-img";

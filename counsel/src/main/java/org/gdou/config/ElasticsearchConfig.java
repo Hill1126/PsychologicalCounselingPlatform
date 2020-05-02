@@ -19,12 +19,15 @@ public class ElasticsearchConfig  {
     String host;
     @Value("${elasticsearch.port}")
     String port;
+    @Value("${elasticsearch.port}")
+    String password;
+
 
     @Bean
     public RestHighLevelClient restHighLevelClient() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo(host+":"+port)
-                .withBasicAuth("elastic","wbxgsnmm...")
+                .withBasicAuth("elastic",password)
                 .withConnectTimeout(10000L)
                 .build();
         return RestClients.create(clientConfiguration).rest();

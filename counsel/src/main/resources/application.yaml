@@ -10,7 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://106.13.98.231:3310/PsySystem?serverTimezone=CTT
     username: hill
-    password: wbxgsnmm...
+    password: ENC(SyEoGEBiQqcIIEzbLq8oHkrroNJfS53cLHJHDWkUKZLJONPjmXMGwOpeVDI0caxa)
 
     # Druid连接池配置
     type: com.alibaba.druid.pool.DruidDataSource
@@ -43,10 +43,6 @@ spring:
       force: true
 
 
-
-
-
-
 mybatis:
   type-aliases-package: org.gdou.model.po
   mapper-locations: classpath:mapper/*.xml
@@ -56,6 +52,11 @@ pagehelper:
   params: count=countSql
   helper-dialect: mysql
 
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD}
 
-
-
+baidu:
+  bos:
+    ACCESS_KEY_ID: ENC(ctriaRinKcSkjln9kAlCSlglYUaF9D1e5GWIoXkGBwET8hzLwDXeuqxEnZcpWU26cUvhQZXfVjR6Z/N8tgXrOJs0HR4tbih9FzTbOPIs1pQ=)
+    SECRET_ACCESS_KEY: ENC(HYFwbWPS1RArXEPJOOeFmu5i5Xj3NTf34W5q1+DbZrD/Sxs9SEsEUz2he+lISwgSP1lymYG3NThUtaHNiWpOTDNZSwDpjdkSmeHAg6IwSec=)
