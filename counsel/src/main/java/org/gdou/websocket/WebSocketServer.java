@@ -133,6 +133,7 @@ public class WebSocketServer {
     **/
     @OnMessage
     public void onMessage(Session session, String msg) throws IOException {
+        log.info("准备发送消息");
         boolean success = sendMessage(msg);
         //如果成功，则记录消息
         if (success){
@@ -155,10 +156,11 @@ public class WebSocketServer {
      * 当关闭连接：1.移除会话对象
      */
     @OnClose
-    public void onClose(Session session) {
+    public void onClose(Session session) throws IOException {
         int currentUserId = user.getId();
         log.info("用户id{} 已断开",currentUserId);
         onlineClient.remove(currentUserId);
+        session.close();
     }
 
     /**
@@ -183,9 +185,14 @@ public class WebSocketServer {
             return false;
         }
         WebSocketServer socketServer = onlineClient.get(receiverId);
-        socketServer.session.getBasicRemote().sendText(msg);
+        if(socketServer.session.isOpen()){
+            socketServer.session.getBasicRemote().sendText(msg);
+            log.info("消息发送成功{}",msg);
+            return true;
+        }else {
+            return false;
+        }
 
-        return true;
 
     }
 
