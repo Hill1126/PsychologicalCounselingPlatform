@@ -27,20 +27,26 @@ public class HttpSessionConfigurator extends ServerEndpointConfig.Configurator {
 
     @Override
     public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
+        log.info("接受websocket连接请求:URL为【{}】,",request.getRequestURI());
         Map<String, List<String>> header = request.getHeaders();
         List<String> cookie = header.get("cookie");
         //获取存放于header的cookie，通过token获取user
         if (cookie!=null && cookie.size()>0){
             String cookieStr = cookie.get(0);
             String token = CookieUtils.getCookieInHeaderString(ProjectConstant.TOKEN_NAME, cookieStr);
+            log.info("websocket获取到用户token：【{}】",token);
             try {
                 //根据token获取用户，并传入websocket
                 User user = UserUtils.getUserByToken(token);
-                sec.getUserProperties().put(ProjectConstant.USER_SESSION_KEY, user);
+                if (user!=null){
+                    sec.getUserProperties().put(ProjectConstant.USER_SESSION_KEY, user);
+                }
             } catch (JsonProcessingException e) {
                 log.error("用户信息json转换失败");
             }
 
+        }else {
+            log.info("webSocket获取cookie失败，cookie数量为0");
         }
         super.modifyHandshake(sec,request,response);
     }
