@@ -33,6 +33,7 @@ public class HttpSessionConfigurator extends ServerEndpointConfig.Configurator {
         //获取存放于header的cookie，通过token获取user
         if (cookie!=null && cookie.size()>0){
             String cookieStr = cookie.get(0);
+            log.info("当前cookie字符串：【{}】",cookieStr);
             String token = CookieUtils.getCookieInHeaderString(ProjectConstant.TOKEN_NAME, cookieStr);
             log.info("websocket获取到用户token：【{}】",token);
             try {
