@@ -11,6 +11,7 @@ import org.gdou.common.result.ResultCode;
 import org.gdou.common.result.ResultGenerator;
 import org.gdou.common.utils.CookieUtils;
 import org.gdou.common.utils.RedisUtil;
+import org.gdou.common.utils.UserUtils;
 import org.gdou.model.dto.user.UserInfoDto;
 import org.gdou.model.dto.user.UserRegisterDto;
 import org.gdou.model.po.Oauths;
@@ -71,8 +72,6 @@ public class UserController {
         if (result.getCode()== ResultCode.SUCCESS){
             ssoProcess(response, request, result);
         }
-        //放入session中，方便在websocket中获取用户信息
-        request.getSession(true).setAttribute(ProjectConstant.USER_SESSION_KEY,result.getData());
         return result;
     }
 
@@ -105,7 +104,10 @@ public class UserController {
         BeanUtils.copyProperties(userRegisterDto,user);
         if(!StringUtils.isEmpty(authCode) && "Teacher".equals(authCode)){
             user.setUserType(UserType.TEACHER);
-        }else{
+        }else if (!StringUtils.isEmpty(authCode) && "Admin".equals(authCode)){
+            user.setUserType(UserType.ADMIN);
+        }
+        else{
             user.setUserType(UserType.STUDENT);
         }
         user.setCreatedAt(LocalDateTime.now());
@@ -146,7 +148,19 @@ public class UserController {
         return ResultGenerator.genSuccessResult();
     }
 
-
+    /**
+     * 根据token请求返回当前登录用户的数据
+     * @Author: HILL
+     * @date: 2020/5/5 15:57
+     *
+     * @param request
+     * @return: org.gdou.common.result.Result
+    **/
+    @RequestMapping("/loginInfo")
+    public Result getInfoByToken(HttpServletRequest request) throws JsonProcessingException {
+        User user = UserUtils.getUserByToken(request);
+        return Result.genSuccessResult(user);
+    }
 
 
 

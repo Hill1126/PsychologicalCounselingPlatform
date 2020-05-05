@@ -30,7 +30,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             response.getWriter().write(result.toString());
             return false;
         }
-        request.getSession(true).setAttribute(ProjectConstant.USER_SESSION_KEY,user);
+        //为每一个请求带上user
+        request.setAttribute(ProjectConstant.USER_SESSION_KEY,user);
         return true;
     }
 
