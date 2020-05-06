@@ -28,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -115,9 +114,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/editInfo",method = RequestMethod.POST)
-    public Result editInfo(UserInfoDto userInfo, MultipartFile avatar,HttpSession session)
+    public Result editInfo(UserInfoDto userInfo, MultipartFile avatar,HttpServletRequest request)
             throws IOException {
-        var user = (User)session.getAttribute(ProjectConstant.USER_SESSION_KEY);
+        User user = UserUtils.getUserInRequest(request);
         BeanUtils.copyProperties(userInfo,user);
         //判断是否有头像文件上传
         if (avatar !=null){
@@ -126,7 +125,12 @@ public class UserController {
         }
         user.setUpdatedAt(LocalDateTime.now());
         user =  userService.updateUserInfo(user);
-        session.setAttribute(ProjectConstant.USER_SESSION_KEY,user);
+        //更新在redis的user资料
+        log.info("用户id【{}】，更新资料成功",user.getName());
+        String token = CookieUtils.getCookieValue(request, ProjectConstant.TOKEN_NAME);
+        String userJson = objectMapper.writeValueAsString(user);
+        redisUtil.setEx(ProjectConstant.USER_SESSION_KEY+token,
+                userJson,ProjectConstant.USER_EXPIRE);
         return ResultGenerator.genSuccessResult(user);
 
     }
@@ -158,7 +162,7 @@ public class UserController {
     **/
     @RequestMapping("/loginInfo")
     public Result getInfoByToken(HttpServletRequest request) throws JsonProcessingException {
-        User user = UserUtils.getUserByToken(request);
+        User user = UserUtils.getUserInRequest(request);
         return Result.genSuccessResult(user);
     }
 
