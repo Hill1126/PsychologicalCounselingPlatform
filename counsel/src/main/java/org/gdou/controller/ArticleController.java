@@ -5,6 +5,7 @@ import org.gdou.common.constant.ProjectConstant;
 import org.gdou.common.result.Result;
 import org.gdou.model.dto.PageInfoDto;
 import org.gdou.service.impl.ArticleService;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class ArticleController {
     }
 
     @RequestMapping("/preview")
-    public Result getArticlePreview(PageInfoDto pageInfoDto,String category){
+    public Result getArticlePreview(PageInfoDto pageInfoDto,@DefaultValue(value = ProjectConstant.PREVIEW_CATEGORY)String category){
         return articleService.getArticlePreview(pageInfoDto,category);
     }
 

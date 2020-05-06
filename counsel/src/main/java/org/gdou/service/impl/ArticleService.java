@@ -96,7 +96,11 @@ public class ArticleService {
             category = null;
         }
         List<ArticlePreviewVo> articlePreview = articleMapper.getArticlePreview(category, ArticleStatus.NORMAL);
-        return Result.genSuccessResult(PageInfo.of(articlePreview));
+        if (articlePreview!=null){
+            return Result.genSuccessResult(PageInfo.of(articlePreview));
+        }
+        return Result.genSuccessResult();
+
     }
 
     public Result getArticleById(Integer articleId) throws IOException {
