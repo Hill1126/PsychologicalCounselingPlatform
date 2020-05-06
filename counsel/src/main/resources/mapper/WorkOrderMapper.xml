@@ -323,6 +323,14 @@
             and status = 1;
 
     </select>
+    <select id="getByOrderId" resultType="org.gdou.model.po.WorkOrder" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from work_order
+        where id = #{param1}
+        and status = #{param2}
+
+    </select>
     <update id="updateByExampleSelective" parameterType="map">
     update work_order
     <set>
