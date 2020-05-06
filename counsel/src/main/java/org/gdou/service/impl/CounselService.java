@@ -110,7 +110,7 @@ public class CounselService {
 
 
     /**
-     * 根据id查询当前惊醒中的咨询工单
+     * 根据id查询当前进行中的咨询工单
      * @Author: HILL
      * @date: 2020/3/24 22:17
      *
@@ -187,4 +187,18 @@ public class CounselService {
         redisUtil.setEx(ProjectConstant.ORDER_KEY+msgRecord.getOrderId(),
                 "1",ProjectConstant.ORDER_KEY_EXPIRE);
     }
+
+    /**
+     * 根据传入的id以及工单状态查找工单
+     * @Author: HILL
+     * @date: 2020/5/6 9:56
+     *
+     * @param orderId 查找的id
+     * @param orderStatus 状态
+     * @return: org.gdou.model.po.WorkOrder
+    **/
+    public WorkOrder getByOrderId(Integer orderId,Integer orderStatus){
+        return workOrderMapper.getByOrderId(orderId,orderStatus);
+    }
+
 }

@@ -55,6 +55,5 @@ public interface WorkOrderMapper {
     List<Integer> getTimeUpOrderId(TimeQo timeQo);
 
 
-
-
+    WorkOrder getByOrderId(Integer orderId, Integer orderStatus);
 }
