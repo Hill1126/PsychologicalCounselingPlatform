@@ -13,7 +13,6 @@ import org.gdou.dao.WorkOrderMapper;
 import org.gdou.model.po.MsgRecord;
 import org.gdou.model.po.User;
 import org.gdou.model.po.WorkOrder;
-import org.gdou.model.po.example.WorkOrderExample;
 import org.gdou.service.impl.CounselService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -84,27 +82,28 @@ public class WebSocketServer {
         //放入map中，此session是javax.websocket.session
         this.session = session;
         //验证连接条件,验证当前工单是否存在或已完结。
-        WorkOrderExample workOrderExample = new WorkOrderExample();
-        var criteria = workOrderExample.createCriteria();
-        criteria.andIdEqualTo(workOrderId).andStatusEqualTo(WorkOrderStatus.READY);
-        List<WorkOrder> orders = workOrderMapper.selectByExample(workOrderExample);
+        WorkOrder order = counselService.getByOrderId(this.workOrderId, WorkOrderStatus.READY);
         boolean exitsOrder = false;
         //如果存在此工单，设置当前用户id和目标id
-        if (orders!=null && orders.size()!=0){
-            WorkOrder order = orders.get(0);
+        if (order!=null ){
             //设置目标id，并且保证当前连接用户时工单中的预约用户
             if (user.getUserType().equals(UserType.STUDENT)){
-                exitsOrder = user.getId().equals(order.getStudentId());
+                exitsOrder = this.user.getId().equals(order.getStudentId());
                 this.targetUserId = order.getTeacherId();
-            }else {
+                log.info("当前用户是学生用户，id为【{}】，目标老师用户id为【{}】，该订单是否属于用户【{}】："
+                            ,this.user.getId(),this.targetUserId,exitsOrder);
+            }else if (user.getUserType().equals(UserType.TEACHER)){
                 exitsOrder = user.getId().equals(order.getTeacherId());
                 this.targetUserId = order.getStudentId();
+                log.info("当前用户是老师用户，id为【{}】，目标学生用户id为【{}】，该订单是否属于用户【{}】："
+                        ,this.user.getId(),this.targetUserId,exitsOrder);
             }
         }
         //如果已存在连接，或工单状态检查失败
-        if (onlineClient.containsKey(currentUserId) || !exitsOrder){
-            onClose(session);
-            log.info("用户{} 连接验证失败",user.getName());
+        boolean exitsSession = onlineClient.containsKey(currentUserId);
+        if (exitsSession || !exitsOrder){
+            log.info("用户{} 连接验证失败,工单验证为【{}】，连接集合是否冲突【{}】",user.getName()
+                        ,exitsOrder,exitsSession);
             this.session.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION,"请传入预约工单号"));
         }
         onlineClient.put(currentUserId,this);

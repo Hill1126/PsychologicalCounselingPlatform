@@ -39,6 +39,7 @@ public final class ProjectConstant {
     **/
     public static final String CRAWL_URL_KEY = "CRAWL_URL";
     public static final String DEFAULT_CATEGORY = "心理知识";
+    public static final String PREVIEW_CATEGORY = "最新资讯";
 
 
 

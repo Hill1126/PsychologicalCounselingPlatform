@@ -92,6 +92,9 @@ public class ArticleService {
     **/
     public Result getArticlePreview(PageInfoDto pageInfoDto, String category) {
         PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
+        if(ProjectConstant.PREVIEW_CATEGORY.equals(category)){
+            category = null;
+        }
         List<ArticlePreviewVo> articlePreview = articleMapper.getArticlePreview(category, ArticleStatus.NORMAL);
         return Result.genSuccessResult(PageInfo.of(articlePreview));
     }
