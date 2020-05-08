@@ -67,9 +67,21 @@ public class AdminService {
     }
 
 
+    /**
+     * 根据种类获取文章详情，这里与前端用户的获取方式相同，后续可根据情况修改。
+     * @Author: HILL
+     * @date: 2020/5/8 14:36
+     *
+     * @param pageInfoDto
+     * @param category
+     * @return: org.gdou.common.result.Result
+    **/
     public Result listArticlePreviews(PageInfoDto pageInfoDto, String category) {
         PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
-        List<ArticlePreviewVo> articlePreview = articleMapper.getArticlePreview(category,ArticleStatus.NORMAL);
+        if (ProjectConstant.PREVIEW_CATEGORY.equals(category)){
+            category = null;
+        }
+        List<ArticlePreviewVo> articlePreview = articleMapper.getArticlePreview(category, ArticleStatus.NORMAL);
         return Result.genSuccessResult(PageInfo.of(articlePreview));
 
     }
