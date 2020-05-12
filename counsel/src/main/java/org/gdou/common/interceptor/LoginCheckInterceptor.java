@@ -10,6 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  * 登录检查过滤器
@@ -42,10 +43,11 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         var roleControl = methodRole==null?typeRole:methodRole;
         //通过注解判断权限控制
         if (roleControl!=null){
-            int requireType = roleControl.userType();
+            //检测注解是否含有当前用户所代表的角色
             Integer userType = user.getUserType();
-            //值越小权限越大，若当前用户大于需求权限，则放行
-            if (userType.compareTo(requireType)>0){
+            boolean hasRole = Arrays.stream(roleControl.userType()).anyMatch((roleCode) -> userType.equals(roleCode));
+            //如果没有权限
+            if (!hasRole){
                 response.setContentType("text/json;charset=UTF-8");
                 Result result = new Result();
                 result.setMessage("无权限操作");

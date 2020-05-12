@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 @RestController
 @Validated
 @RequestMapping("/admin/article")
-@RoleControl(userType = UserType.ADMIN)
+@RoleControl(userType = {UserType.ADMIN})
 public class AdminArticleController {
 
 

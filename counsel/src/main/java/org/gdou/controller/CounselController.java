@@ -2,6 +2,7 @@ package org.gdou.controller;
 
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.gdou.common.annotaions.RoleControl;
 import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
@@ -49,6 +50,7 @@ public class CounselController {
      * @return: org.gdou.common.result.Result
     **/
     @RequestMapping("/teacherList")
+    @RoleControl
     public Result getTeacherList(@RequestParam(defaultValue = "1") int pageNum,
                                  @RequestParam(defaultValue = "5") int pageSize,
                                  @RequestParam(defaultValue = "false") boolean isHot){
@@ -82,6 +84,7 @@ public class CounselController {
      * @param request 获取当前登录用户的信息
      * @return: org.gdou.common.result.Result
     **/
+    @RoleControl
     @RequestMapping("/appointment")
     public Result makeAppointment(@Validated MakeAppointmentDto makeAppointmentDto, HttpServletRequest request){
         var user = UserUtils.getUserInRequest(request);
@@ -148,7 +151,8 @@ public class CounselController {
      * @date: 2020/3/25 23:03
      * 
      * @return: org.gdou.common.result.Result
-    **/    
+    **/
+    @RoleControl(userType = UserType.TEACHER)
     @RequestMapping("/todoCounsel")
     public Result getTodoCounsel(HttpServletRequest request){
         var user = UserUtils.getUserInRequest(request);

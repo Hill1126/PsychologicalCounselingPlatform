@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RoleControl {
 
-    int userType() default UserType.STUDENT;
+    int[] userType() default UserType.STUDENT;
 
 }
 
