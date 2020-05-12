@@ -1,6 +1,8 @@
 package org.gdou.controller.admin;
 
+import org.gdou.common.annotaions.RoleControl;
 import org.gdou.common.constant.CommonDataStatus;
+import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.utils.UserUtils;
 import org.gdou.model.dto.PageInfoDto;
@@ -31,6 +33,7 @@ import java.time.LocalDateTime;
 @RestController
 @Validated
 @RequestMapping("/admin/paper")
+@RoleControl(userType = UserType.TEACHER)
 public class AdminPaperController {
 
     public AdminPaperController(PaperService paperService, DefaultResultService defaultResultService, BosService bosService) {

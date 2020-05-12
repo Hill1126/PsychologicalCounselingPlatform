@@ -1,7 +1,9 @@
 package org.gdou.controller.admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.gdou.common.annotaions.RoleControl;
 import org.gdou.common.constant.article.ArticleStatus;
+import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.model.dto.PageInfoDto;
 import org.gdou.model.dto.article.ArticleDto;
@@ -28,6 +30,7 @@ import java.time.LocalDateTime;
 @RestController
 @Validated
 @RequestMapping("/admin/article")
+@RoleControl(userType = UserType.ADMIN)
 public class AdminArticleController {
 
 

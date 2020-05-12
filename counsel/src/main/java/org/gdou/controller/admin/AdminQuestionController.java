@@ -1,6 +1,8 @@
 package org.gdou.controller.admin;
 
+import org.gdou.common.annotaions.RoleControl;
 import org.gdou.common.constant.CommonDataStatus;
+import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.utils.UserUtils;
 import org.gdou.model.dto.paper.question.CreateAnswerDto;
@@ -29,6 +31,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/admin/question")
 @Validated
+@RoleControl(userType = UserType.TEACHER)
 public class AdminQuestionController {
 
     public AdminQuestionController(QuestionService questionService, AnswerService answerService) {
