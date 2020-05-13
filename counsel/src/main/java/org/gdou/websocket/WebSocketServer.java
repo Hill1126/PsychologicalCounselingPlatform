@@ -181,6 +181,7 @@ public class WebSocketServer {
     private  boolean sendMessage( String msg) throws IOException {
         int receiverId = this.targetUserId;
         if (!onlineClient.containsKey(receiverId)) {
+            log.info("消息发送失败，对方未连接");
             return false;
         }
         WebSocketServer socketServer = onlineClient.get(receiverId);
