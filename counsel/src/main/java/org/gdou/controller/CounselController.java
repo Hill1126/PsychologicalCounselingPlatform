@@ -3,6 +3,7 @@ package org.gdou.controller;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.annotaions.RoleControl;
+import org.gdou.common.constant.chat.TimeQuantum;
 import org.gdou.common.constant.user.UserType;
 import org.gdou.common.result.Result;
 import org.gdou.common.result.ResultGenerator;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 /**
  * @author HILL
@@ -87,10 +90,17 @@ public class CounselController {
     @RoleControl
     @RequestMapping("/appointment")
     public Result makeAppointment(@Validated MakeAppointmentDto makeAppointmentDto, HttpServletRequest request){
+        var appointmentDateTime = makeAppointmentDto.getAppointmentDateTime();
+        ArrayList<LocalTime> defaultTimeList = TimeQuantum.getDefaultTimeList();
+        boolean match = defaultTimeList.stream().anyMatch((time) -> time.equals(appointmentDateTime));
+        //如果时间不是规定的时间，则拒绝预约
+        if (!match){
+            return Result.genFailResult("请选择正确的预约时间");
+        }
+        //构建预约数据
         var user = UserUtils.getUserInRequest(request);
         MakeAppointmentBO bo = new MakeAppointmentBO();
         BeanUtils.copyProperties(makeAppointmentDto,bo);
-        var appointmentDateTime = makeAppointmentDto.getAppointmentDateTime();
         bo.setAppointmentTime(appointmentDateTime.toLocalTime());
         bo.setAppointmentDate(appointmentDateTime.toLocalDate());
         bo.setStudentId(user.getId());
