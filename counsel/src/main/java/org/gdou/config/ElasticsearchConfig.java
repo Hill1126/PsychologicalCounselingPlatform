@@ -19,7 +19,7 @@ public class ElasticsearchConfig  {
     String host;
     @Value("${elasticsearch.port}")
     String port;
-    @Value("${elasticsearch.port}")
+    @Value("${elasticsearch.password}")
     String password;
 
 
