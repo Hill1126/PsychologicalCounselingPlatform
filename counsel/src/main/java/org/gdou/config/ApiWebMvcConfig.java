@@ -42,7 +42,6 @@ public class ApiWebMvcConfig implements WebMvcConfigurer {
         //添加文章搜索过滤器
         registry.addInterceptor(getArticleController()).addPathPatterns("/article/search");
 
-        //registry.addInterceptor(getSystemLogInterceptor()).addPathPatterns("/**");
 
 
     }
