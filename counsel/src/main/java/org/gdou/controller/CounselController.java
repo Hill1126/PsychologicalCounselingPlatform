@@ -92,11 +92,14 @@ public class CounselController {
     public Result makeAppointment(@Validated MakeAppointmentDto makeAppointmentDto, HttpServletRequest request){
         var appointmentDateTime = makeAppointmentDto.getAppointmentDateTime();
         ArrayList<LocalTime> defaultTimeList = TimeQuantum.getDefaultTimeList();
-        boolean match = defaultTimeList.stream().anyMatch((time) -> time.equals(appointmentDateTime));
+       /* 暂时忽略校验
+        boolean match = defaultTimeList.stream().anyMatch((time) -> time.equals(appointmentDateTime.toLocalTime()));
         //如果时间不是规定的时间，则拒绝预约
         if (!match){
             return Result.genFailResult("请选择正确的预约时间");
-        }
+        }*/
+
+
         //构建预约数据
         var user = UserUtils.getUserInRequest(request);
         MakeAppointmentBO bo = new MakeAppointmentBO();
