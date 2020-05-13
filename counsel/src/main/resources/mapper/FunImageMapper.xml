@@ -23,6 +23,7 @@
       <include refid="Base_Column_List" />
       from fun_image
       where status != -1
+      order by create_at desc
 
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
