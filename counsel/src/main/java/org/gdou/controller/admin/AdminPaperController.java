@@ -136,7 +136,7 @@ public class AdminPaperController {
 
     @RequestMapping(value = "/addResult",method = RequestMethod.POST)
     public Result addDefaultResult(@Validated DefaultResult defaultResult){
-        if (defaultResult.getScoreStart().compareTo(defaultResult.getScoreEnd())<0){
+        if (defaultResult.getScoreStart().compareTo(defaultResult.getScoreEnd())>0){
             return Result.genFailResult("参数范围不正确");
         }
         return defaultResultService.addDefaultResult(defaultResult);
