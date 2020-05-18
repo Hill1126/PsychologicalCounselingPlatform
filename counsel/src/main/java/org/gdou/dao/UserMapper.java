@@ -42,4 +42,6 @@ public interface UserMapper {
      * @return: java.util.List<org.gdou.model.vo.TeacherVo>
     **/
     List<TeacherVo> selectAppointmentTeacher(TeacherChatQo teacherChatQo);
+
+    String getAvatar(Integer userId);
 }

@@ -95,4 +95,15 @@ public class UserService {
         return user;
     }
 
+    /**
+     * 根据id获取用户头像
+     * @Author: HILL
+     * @date: 2020/5/18 9:34
+     * 
+     * @param userId 用户id
+     * @return: org.gdou.common.result.Result
+    **/
+    public Result getAvatar(Integer userId) {
+        return Result.genSuccessResult(userMapper.getAvatar(userId));
+    }
 }

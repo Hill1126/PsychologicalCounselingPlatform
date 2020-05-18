@@ -239,8 +239,15 @@
         </if>
 
   </select>
+    <select id="getAvatar" resultType="java.lang.String">
+      select
+        avatar_url
+      from user
+      where id = #{id,jdbcType=INTEGER}
 
-  <update id="updateByExampleSelective" parameterType="map">
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map">
     update user
     <set>
       <if test="record.id != null">

@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -166,6 +167,10 @@ public class UserController {
         return Result.genSuccessResult(user);
     }
 
+    @RequestMapping("/Avatar")
+    public Result getAvatar(@NotNull Integer userId){
+        return  userService.getAvatar(userId);
+    }
 
 
 
