@@ -167,7 +167,7 @@ public class UserController {
         return Result.genSuccessResult(user);
     }
 
-    @RequestMapping("/Avatar")
+    @RequestMapping("/avatar")
     public Result getAvatar(@NotNull Integer userId){
         return  userService.getAvatar(userId);
     }
