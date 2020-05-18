@@ -32,23 +32,27 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
         //检查注解是否需要权限校验。
         // 这个方法一般就是controller
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        //类上的注解
-        RoleControl typeRole = ((HandlerMethod) handler).getBeanType().getAnnotation(RoleControl.class);
-        //方法上的注解
-        RoleControl methodRole = ((HandlerMethod) handler).getMethod().getAnnotation(RoleControl.class);
-        var roleControl = methodRole==null?typeRole:methodRole;
-        //通过注解判断权限控制
-        if (roleControl!=null){
-            //检测注解是否含有当前用户所代表的角色
-            Integer userType = user.getUserType();
-            boolean hasRole = Arrays.stream(roleControl.userType()).anyMatch((roleCode) -> userType.equals(roleCode));
-            //如果没有权限
-            if (!hasRole){
-                writeUnauthorizedResult(response, "无权限操作");
-                return false;
+        var realHandler = handler;
+        if (handler instanceof HandlerMethod){
+            realHandler = (HandlerMethod) handler;
+            //类上的注解
+            RoleControl typeRole = ((HandlerMethod) handler).getBeanType().getAnnotation(RoleControl.class);
+            //方法上的注解
+            RoleControl methodRole = ((HandlerMethod) handler).getMethod().getAnnotation(RoleControl.class);
+            var roleControl = methodRole==null?typeRole:methodRole;
+            //通过注解判断权限控制
+            if (roleControl!=null){
+                //检测注解是否含有当前用户所代表的角色
+                Integer userType = user.getUserType();
+                boolean hasRole = Arrays.stream(roleControl.userType()).anyMatch((roleCode) -> userType.equals(roleCode));
+                //如果没有权限
+                if (!hasRole){
+                    writeUnauthorizedResult(response, "无权限操作");
+                    return false;
+                }
             }
         }
+
 
         //为每一个请求带上user
         request.setAttribute(ProjectConstant.USER_SESSION_KEY,user);
