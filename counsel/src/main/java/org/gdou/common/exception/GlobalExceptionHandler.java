@@ -45,8 +45,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Result commonExceptionHandler(Exception e){
-
-        log.error(e.getMessage());
+        log.error("发生全局异常",e.fillInStackTrace());
         return ResultGenerator.genFailResult("系统发生未知错误,错误信息为："+e.getMessage());
     }
 
