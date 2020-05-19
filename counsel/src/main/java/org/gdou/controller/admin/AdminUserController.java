@@ -31,6 +31,10 @@ public class AdminUserController {
 
     UserService userService;
 
+    public AdminUserController(UserService userService) {
+        this.userService = userService;
+    }
+
     /**
      * 根据用户类别返回相应的用户信息。
      * @Author: HILL
