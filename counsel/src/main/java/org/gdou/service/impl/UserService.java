@@ -180,7 +180,8 @@ public class UserService {
     public Result updatePassWord(User user, String oldPass, String newPass) {
         var example = new OauthsExample();
         example.createCriteria().andUserIdEqualTo(user.getId())
-                .andOauthTypeEqualTo(OauthsType.PASS_WORD);
+                .andOauthTypeEqualTo(OauthsType.PASS_WORD)
+                .andCredentialEqualTo(oldPass);
         List<Oauths> list = oauthsMapper.selectByExample(example);
         //密码验证失败，返回提示
         if (list==null||list.size()==0){
