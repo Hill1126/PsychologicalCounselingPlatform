@@ -251,7 +251,7 @@
     SELECT
           `user`.`name` AS
          <if test="teacherId!=null">student_name,</if>
-         <if test="studentId!=null">student_name,</if>
+         <if test="studentId!=null">teacher_name,</if>
           Raw.appointment_date,
           Raw.appointment_time,
           Raw.`status`,
