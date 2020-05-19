@@ -228,4 +228,11 @@
       credential = #{credential,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <update id="reSetPassWord">
+      update oauths
+     set
+      credential = #{param2}
+     where user_id = #{param1}
+
+    </update>
 </mapper>

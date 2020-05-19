@@ -138,14 +138,18 @@ public class UserService {
     **/
     @Transactional(rollbackFor = RuntimeException.class)
     public Result reSetPassWord(Integer userId) {
+        return updatePassword(userId,"123456");
+    }
+
+    private Result updatePassword(Integer userId,String password) {
         //更新用户密码
         User user = new User();
-        user.setPassword("123456");
+        user.setPassword(password);
         user.setUpdatedAt(LocalDateTime.now());
         userMapper.updateByPrimaryKeySelective(user);
         //更新用户凭证
-        oauthsMapper.reSetPassWord(userId,"123456");
-        log.info("用户id【{}】的密码被重置",userId);
+        oauthsMapper.reSetPassWord(userId,password);
+        log.info("用户id【{}】的密码被修改为【{}】",userId,password);
         return Result.genSuccessResult();
     }
 
@@ -160,5 +164,29 @@ public class UserService {
         log.info("用户id【{}】被删除",userId);
         return Result.genSuccessResult();
 
+    }
+
+    /**
+     * 根据用户旧密码验证，修改为新密码
+     * @Author: HILL
+     * @date: 2020/5/19 15:06
+     *
+     * @param user 用户信息
+     * @param oldPass 旧密码
+     * @param newPass 新密码
+     * @return: org.gdou.common.result.Result
+    **/
+    @Transactional(rollbackFor = RuntimeException.class)
+    public Result updatePassWord(User user, String oldPass, String newPass) {
+        var example = new OauthsExample();
+        example.createCriteria().andUserIdEqualTo(user.getId())
+                .andOauthTypeEqualTo(OauthsType.PASS_WORD);
+        List<Oauths> list = oauthsMapper.selectByExample(example);
+        //密码验证失败，返回提示
+        if (list==null||list.size()==0){
+            return Result.genFailResult("密码验证错误，请重试。");
+        }
+        updatePassword(user.getId(),newPass);
+        return Result.genSuccessResult();
     }
 }

@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -167,9 +168,32 @@ public class UserController {
         return Result.genSuccessResult(user);
     }
 
+    /**
+     * 获取用户的头像
+     * @Author: HILL
+     * @date: 2020/5/19 15:05
+     *
+     * @param userId
+     * @return: org.gdou.common.result.Result
+    **/
     @RequestMapping("/avatar")
     public Result getAvatar(@NotNull Integer userId){
         return  userService.getAvatar(userId);
+    }
+
+    /**
+     * 根据用户的旧密码验证更改为新的密码
+     * @Author: HILL
+     * @date: 2020/5/19 15:05
+     *
+     * @param oldPass
+     * @param newPass
+     * @return: org.gdou.common.result.Result
+    **/
+    @RequestMapping("/changePass")
+    public Result updatePass(HttpServletRequest request,@NotBlank String oldPass,@NotBlank String newPass){
+        User user = UserUtils.getUserInRequest(request);
+        return userService.updatePassWord(user,oldPass,newPass);
     }
 
 
