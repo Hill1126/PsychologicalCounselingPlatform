@@ -34,4 +34,6 @@ public interface OauthsMapper {
     int updateByPrimaryKeySelective(Oauths record);
 
     int updateByPrimaryKey(Oauths record);
+
+    void reSetPassWord(Integer userId,String passWord);
 }

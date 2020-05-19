@@ -1,5 +1,6 @@
 package org.gdou.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.constant.user.OauthsType;
 import org.gdou.common.result.Result;
@@ -9,8 +10,11 @@ import org.gdou.dao.UserMapper;
 import org.gdou.model.po.Oauths;
 import org.gdou.model.po.example.OauthsExample;
 import org.gdou.model.po.User;
+import org.gdou.model.po.example.UserExample;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -91,7 +95,7 @@ public class UserService {
     public User updateUserInfo(User user){
         userMapper.updateByPrimaryKeySelective(user);
         user = userMapper.selectByPrimaryKey(user.getId());
-        user.setPassword("");
+        user.setPassword(null);
         return user;
     }
 
@@ -105,5 +109,56 @@ public class UserService {
     **/
     public Result getAvatar(Integer userId) {
         return Result.genSuccessResult(userMapper.getAvatar(userId));
+    }
+
+    /**
+     * 根据用户类型返回用户信息，若无用户类型则默认返回所有类型
+     * @Author: HILL
+     * @date: 2020/5/19 13:27
+     *
+     * @param userType
+     * @return: org.gdou.common.result.Result
+    **/
+    public Result listUsers(Integer userType) {
+        UserExample example = new UserExample();
+        if (userType!=null){
+            example.createCriteria().andUserTypeEqualTo(userType);
+        }
+        PageInfo<User> info = PageInfo.of(userMapper.selectByExample(example));
+        return Result.genSuccessResult(info);
+    }
+
+    /**
+     * 将用户的登录密码重置为123456
+     * @Author: HILL
+     * @date: 2020/5/19 14:07
+     *
+     * @param userId
+     * @return: org.gdou.common.result.Result
+    **/
+    @Transactional(rollbackFor = RuntimeException.class)
+    public Result reSetPassWord(Integer userId) {
+        //更新用户密码
+        User user = new User();
+        user.setPassword("123456");
+        user.setUpdatedAt(LocalDateTime.now());
+        userMapper.updateByPrimaryKeySelective(user);
+        //更新用户凭证
+        oauthsMapper.reSetPassWord(userId,"123456");
+        log.info("用户id【{}】的密码被重置",userId);
+        return Result.genSuccessResult();
+    }
+
+    @Transactional(rollbackFor = RuntimeException.class)
+    public Result deleteUser(Integer userId) {
+        //删除用户
+        userMapper.deleteByPrimaryKey(userId);
+        //删除用户凭证
+        var example = new OauthsExample();
+        example.createCriteria().andUserIdEqualTo(userId);
+        oauthsMapper.deleteByExample(example);
+        log.info("用户id【{}】被删除",userId);
+        return Result.genSuccessResult();
+
     }
 }
