@@ -13,6 +13,7 @@ import org.gdou.service.impl.ArticleService;
 import org.gdou.service.impl.BosService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,7 @@ import java.time.LocalDateTime;
 @Validated
 @RequestMapping("/admin/article")
 @RoleControl(userType = {UserType.ADMIN})
+@CrossOrigin
 public class AdminArticleController {
 
 
