@@ -25,7 +25,7 @@ public final class ProjectConstant {
     /** es相关常量
     */
     public static final String ARTICLE_INDEX_NAME = "article";
-    public static final String ARTICLE_TYPE_NAME = "doc";
+    public static final String ARTICLE_TYPE_NAME = "_doc";
 
     /**
      * 搜索相关变量
