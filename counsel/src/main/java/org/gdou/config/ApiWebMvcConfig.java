@@ -60,7 +60,7 @@ public class ApiWebMvcConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowedMethods("*")
                 .allowedOrigins("*")
-                .exposedHeaders("*")
+                .exposedHeaders("Access-Control-Allow-Origin")
                 .maxAge(1000L*60*60);
 
     }
