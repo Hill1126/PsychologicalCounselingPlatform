@@ -331,6 +331,79 @@
         and status = #{param2}
 
     </select>
+    <select id="getCounselHistoryByStudentId" resultType="org.gdou.model.vo.CounselHistoryVo"
+    resultMap="historyCounselMap">
+        SELECT
+        `user`.`name` AS teacher_name,
+        Raw.appointment_date,
+        Raw.appointment_time,
+        Raw.`status`,
+        Raw.student_id,
+        Raw.teacher_id,
+        Raw.title,
+        Raw.workOrderId,
+        Raw.student_name
+        FROM
+        `user`,
+        (
+        SELECT
+            work_order.id as workOrderId,
+            teacher_id,
+            `user`.`name` AS student_name,
+            student_id,
+            `status`,
+            appointment_time,
+            appointment_date,
+            title
+        FROM
+            work_order,
+            `user`
+        WHERE
+            `status` != ${status}
+            AND    student_id = #{studentId}
+            AND    student_id = `user`.id
+
+        ) Raw
+        WHERE
+            Raw.teacher_id = `user`.id
+    </select>
+    <select id="getCounselHistoryByTeacherId" resultType="org.gdou.model.vo.CounselHistoryVo"
+    resultMap="historyCounselMap">
+         SELECT
+        `user`.`name` AS student_name,
+        Raw.appointment_date,
+        Raw.appointment_time,
+        Raw.`status`,
+        Raw.student_id,
+        Raw.teacher_id,
+        Raw.title,
+        Raw.workOrderId,
+        Raw.teacher_name
+        FROM
+        `user`,
+        (
+        SELECT
+            work_order.id as workOrderId,
+            teacher_id,
+            `user`.`name` AS teacher_name,
+            student_id,
+            `status`,
+            appointment_time,
+            appointment_date,
+            title
+        FROM
+            work_order,
+            `user`
+        WHERE
+            `status` != ${status}
+            AND    teacher_id = #{teacherId}
+            AND    teacher_id = `user`.id
+
+        ) Raw
+        WHERE
+            Raw.student_id = `user`.id
+
+    </select>
     <update id="updateByExampleSelective" parameterType="map">
     update work_order
     <set>

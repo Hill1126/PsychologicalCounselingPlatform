@@ -130,9 +130,23 @@ public class CounselService {
      * @return: org.gdou.common.result.Result
     **/
     public Result getMyCounselHistory(CounselHistoryQo qo){
-        List<CounselHistoryVo> historyList = workOrderMapper.getCounselHistory(qo);
+        List<CounselHistoryVo> historyList = null;
+        if (qo.getStudentId()!=null){
+            historyList = getCounselHistoryByStudentId(qo);
+        }else if (qo.getTeacherId()!=null){
+            historyList = getCounselHistoryByTeacherId(qo);
+        }
         return ResultGenerator.genSuccessResult(historyList);
     }
+
+    private List<CounselHistoryVo> getCounselHistoryByTeacherId(CounselHistoryQo qo) {
+        return workOrderMapper.getCounselHistoryByTeacherId(qo);
+    }
+
+    private List<CounselHistoryVo> getCounselHistoryByStudentId(CounselHistoryQo qo){
+        return workOrderMapper.getCounselHistoryByStudentId(qo);
+    }
+
 
     public Result getMsgRecord(Integer workOrderId, PageInfoDto pageInfoDto) {
         MsgRecordExample recordExample = new MsgRecordExample();
@@ -200,5 +214,8 @@ public class CounselService {
     public WorkOrder getByOrderId(Integer orderId,Integer orderStatus){
         return workOrderMapper.getByOrderId(orderId,orderStatus);
     }
+
+
+
 
 }

@@ -56,4 +56,8 @@ public interface WorkOrderMapper {
 
 
     WorkOrder getByOrderId(Integer orderId, Integer orderStatus);
+
+    List<CounselHistoryVo> getCounselHistoryByStudentId(CounselHistoryQo qo);
+
+    List<CounselHistoryVo> getCounselHistoryByTeacherId(CounselHistoryQo qo);
 }
