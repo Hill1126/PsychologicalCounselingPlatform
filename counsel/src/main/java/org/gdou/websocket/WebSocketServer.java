@@ -104,7 +104,13 @@ public class WebSocketServer {
         if (exitsSession || !exitsOrder){
             log.info("用户{} 连接验证失败,工单验证为【{}】，连接集合是否冲突【{}】",user.getName()
                         ,exitsOrder,exitsSession);
-            this.session.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION,"请传入预约工单号"));
+            String reason = null;
+            if (!exitsOrder){
+                reason = "不存在工单"+workOrderId;
+            }else if (exitsSession){
+                reason = "用户连接有冲突";
+            }
+            this.session.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION,reason));
             return;
         }
         onlineClient.put(currentUserId,this);
