@@ -59,8 +59,9 @@ public class ApiWebMvcConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .allowedHeaders("*")
                 .allowedMethods("*")
-                .allowedOrigins("*");
-
+                .allowedOrigins("*")
+                .exposedHeaders("*")
+                .maxAge(1000L*60*60);
 
     }
 }
