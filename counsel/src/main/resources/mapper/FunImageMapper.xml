@@ -31,7 +31,7 @@
     where fun_image_id = #{funImageId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="org.gdou.model.po.FunImage">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+    <selectKey keyProperty="funImageId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into fun_image (fun_image_id, title, image_abstract, 

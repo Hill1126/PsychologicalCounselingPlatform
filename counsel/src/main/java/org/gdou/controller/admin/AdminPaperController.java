@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 @RestController
 @Validated
 @RequestMapping("/admin/paper")
-@RoleControl(userType = UserType.TEACHER)
+@RoleControl(userType = {UserType.TEACHER,UserType.ADMIN})
 public class AdminPaperController {
 
     public AdminPaperController(PaperService paperService, DefaultResultService defaultResultService, BosService bosService) {

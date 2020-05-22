@@ -31,7 +31,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/admin/question")
 @Validated
-@RoleControl(userType = UserType.TEACHER)
+@RoleControl(userType =  {UserType.TEACHER,UserType.ADMIN})
 public class AdminQuestionController {
 
     public AdminQuestionController(QuestionService questionService, AnswerService answerService) {

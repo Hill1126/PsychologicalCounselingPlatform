@@ -39,6 +39,7 @@ public class FunImageService {
     public Result create(FunImage funImage) {
         funImage.setCreateAt(LocalDateTime.now());
         funImage.setStatus(CommonDataStatus.PUBLIC);
+
         funImageMapper.insert(funImage);
         return Result.genSuccessResult(funImage);
 

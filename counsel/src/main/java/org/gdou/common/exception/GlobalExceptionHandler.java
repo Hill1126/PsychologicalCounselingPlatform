@@ -1,5 +1,6 @@
 package org.gdou.common.exception;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baidubce.BceClientException;
 import lombok.extern.slf4j.Slf4j;
 import org.gdou.common.exception.runtime.EsIndexException;
@@ -45,7 +46,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Result commonExceptionHandler(Exception e){
-        log.error("发生全局异常",e.fillInStackTrace());
+        if (e.getMessage()==null || StringUtils.isEmpty(e.getMessage())){
+            log.error("发生全局异常:",e.fillInStackTrace());
+        }else{
+            log.error("发生全局异常:",e.getMessage());
+        }
+
         return ResultGenerator.genFailResult("系统发生未知错误,错误信息为："+e.getMessage());
     }
 

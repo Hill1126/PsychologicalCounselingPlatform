@@ -93,6 +93,7 @@ public class UserService {
      * @return: org.gdou.common.result.Result
     **/
     public User updateUserInfo(User user){
+        user.setUpdatedAt(LocalDateTime.now());
         userMapper.updateByPrimaryKeySelective(user);
         user = userMapper.selectByPrimaryKey(user.getId());
         user.setPassword(null);

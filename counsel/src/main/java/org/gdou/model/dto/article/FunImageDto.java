@@ -1,5 +1,6 @@
 package org.gdou.model.dto.article;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,5 +21,6 @@ public class FunImageDto {
     @NotBlank
     String imageAbstract;
     @NotNull
+    @JsonIgnore
     MultipartFile img;
 }
