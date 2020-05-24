@@ -6,6 +6,7 @@ import org.gdou.model.dto.PageInfoDto;
 import org.gdou.service.impl.FunImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +27,11 @@ public class FunImageController {
     @RequestMapping(value = "/list")
     public Result listFunImages(PageInfoDto pageInfoDto){
         return funImageService.listFunImages(pageInfoDto);
+    }
+
+    @RequestMapping("/{funImageId}")
+    public Result getFunImage(@PathVariable Integer funImageId){
+        return funImageService.getFunImage(funImageId);
     }
 
 }

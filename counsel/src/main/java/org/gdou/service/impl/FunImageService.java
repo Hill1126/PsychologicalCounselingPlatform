@@ -66,4 +66,8 @@ public class FunImageService {
         List<FunImage> funImages = funImageMapper.listFunImages();
         return Result.genSuccessResult(PageInfo.of(funImages));
     }
+
+    public Result getFunImage(Integer funImageId) {
+        return Result.genSuccessResult(funImageMapper.selectByPrimaryKey(funImageId));
+    }
 }
