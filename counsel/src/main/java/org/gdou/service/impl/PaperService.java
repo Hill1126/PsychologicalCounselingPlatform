@@ -154,4 +154,10 @@ public class PaperService {
         return Result.genSuccessResult(map);
 
     }
+
+    public Result listAll(PageInfoDto pageInfoDto) {
+        PageHelper.startPage(pageInfoDto.getPageNum(),pageInfoDto.getPageSize());
+        List<Paper> paperList =  paperMapper.listAll();
+        return Result.genSuccessResult(PageInfo.of(paperList));
+    }
 }
