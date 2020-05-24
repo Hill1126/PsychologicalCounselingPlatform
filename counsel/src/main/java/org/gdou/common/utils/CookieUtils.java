@@ -241,7 +241,7 @@ public final class CookieUtils {
            //每个cookie以=分割，判断name是否相等
            String[] split = value.split("=");
            if (split.length>1){
-               var key = split[0];
+               var key = split[0].trim();
                if (cookieName.equals(key)){
                    return split[1];
                }
