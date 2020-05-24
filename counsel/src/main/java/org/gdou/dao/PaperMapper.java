@@ -19,6 +19,14 @@ public interface PaperMapper {
 
     int updateByPrimaryKey(Paper record);
 
+    /**
+     * 获取用户设置的试卷
+     * @Author: HILL
+     * @date: 2020/5/24 12:47
+     *
+     * @param userId
+     * @return: java.util.List<org.gdou.model.po.Paper>
+    **/
     List<Paper> listPapers(Integer userId);
 
     List<PaperAbstractVo> listPreviews();
