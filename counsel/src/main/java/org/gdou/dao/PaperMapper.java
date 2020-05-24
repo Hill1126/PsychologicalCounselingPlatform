@@ -30,4 +30,6 @@ public interface PaperMapper {
     List<Paper> listPapers(Integer userId);
 
     List<PaperAbstractVo> listPreviews();
+
+    List<Paper> listAll();
 }

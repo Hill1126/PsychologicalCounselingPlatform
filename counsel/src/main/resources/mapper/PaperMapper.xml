@@ -53,7 +53,14 @@
          and paper_status not in (-1)
     ORDER BY paper.creat_at DESC
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="listAll" resultType="org.gdou.model.po.Paper" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from paper
+    where paper_status != -1
+
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from paper
     where id = #{id,jdbcType=INTEGER}
   </delete>

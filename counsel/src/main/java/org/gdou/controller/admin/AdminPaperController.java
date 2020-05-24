@@ -10,6 +10,7 @@ import org.gdou.model.dto.paper.DefaultResultDto;
 import org.gdou.model.dto.paper.PaperDto;
 import org.gdou.model.po.DefaultResult;
 import org.gdou.model.po.Paper;
+import org.gdou.model.po.User;
 import org.gdou.service.impl.BosService;
 import org.gdou.service.impl.DefaultResultService;
 import org.gdou.service.impl.PaperService;
@@ -112,8 +113,14 @@ public class AdminPaperController {
 
     @RequestMapping("/list")
     public Result listPapers(PageInfoDto pageInfoDto,HttpServletRequest request){
-        Integer userId = UserUtils.getUserInRequest(request).getId();
-        return paperService.listPapers(pageInfoDto,userId);
+        User user = UserUtils.getUserInRequest(request);
+        if (user.getUserType().equals(UserType.ADMIN)){
+            return paperService.listAll(pageInfoDto);
+        }else{
+            Integer userId = user.getId();
+            return paperService.listPapers(pageInfoDto,userId);
+        }
+
     }
 
     /**
