@@ -32,12 +32,12 @@ public class ApiWebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //日志记录过滤器
-        String[] exclude = {"/","/static/**","/templates/**","/index.html"};
+        String[] exclude = {"/","/static/**","/templates/**", "/static/index.html"};
         String [] include = {"/user/**","/admin/**","/counsel/**","/paper/**"};
         //登录检查过滤器
         registry.addInterceptor(getLoginCheckInterceptor()).addPathPatterns(include).excludePathPatterns(exclude)
                 .excludePathPatterns("/user/login").excludePathPatterns("/user/register").excludePathPatterns("/image/**")
-                .excludePathPatterns("/article/**");
+                .excludePathPatterns("/article/**").excludePathPatterns("/paper/previewList");
         //添加文章搜索过滤器
         registry.addInterceptor(getArticleController()).addPathPatterns("/article/search");
 
